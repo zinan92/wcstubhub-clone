@@ -2,7 +2,7 @@ commands:
   install: pnpm install
   dev: PORT=3100 pnpm dev
   build: pnpm build
-  test: pnpm test
+  test: npx vitest run
   typecheck: pnpm typecheck
   lint: pnpm lint
   db-push: pnpm exec prisma db push
