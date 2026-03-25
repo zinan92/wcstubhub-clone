@@ -1,0 +1,67 @@
+{
+  "group": "orders-subpages",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "credentials": "test@example.com / password123",
+    "browserSession": "0820edb98a6a__g2",
+    "viewport": "375x812"
+  },
+  "assertions": {
+    "VAL-PROFILE-003": {
+      "status": "pass",
+      "reason": "Order Record page opens with Purchase tab active (blue/underlined). Two order cards displayed with all required fields: item name, purchase price, current price, quantity, status (\"To be paid\" and \"Paid\"), transaction time, and order number.",
+      "evidence": [
+        "user-profile/orders-subpages/VAL-PROFILE-003-order-record.png"
+      ]
+    },
+    "VAL-PROFILE-004": {
+      "status": "pass",
+      "reason": "Switching to For sale tab shows empty state with box illustration icon and \"No data yet\" text. No order cards rendered.",
+      "evidence": [
+        "user-profile/orders-subpages/VAL-PROFILE-004-for-sale-empty.png"
+      ]
+    },
+    "VAL-PROFILE-005": {
+      "status": "pass",
+      "reason": "Tab switching works bidirectionally. Purchase tab shows order cards, For sale tab shows empty state, switching back to Purchase shows order cards again. Content updates correctly each time.",
+      "evidence": [
+        "user-profile/orders-subpages/VAL-PROFILE-005-purchase.png",
+        "user-profile/orders-subpages/VAL-PROFILE-005-for-sale.png",
+        "user-profile/orders-subpages/VAL-PROFILE-005-purchase-again.png"
+      ]
+    },
+    "VAL-PROFILE-006": {
+      "status": "pass",
+      "reason": "VIP page displays all 8 tiers (VIP1-VIP8) with ascending spending thresholds ($1K, $5K, $10K, $50K, $100K, $500K, $1M, $10M). Tiers shown in order. VIP2 marked as \"Current\" matching the test user's tier.",
+      "evidence": [
+        "user-profile/orders-subpages/VAL-PROFILE-006-vip-page.png"
+      ]
+    },
+    "VAL-PROFILE-007": {
+      "status": "pass",
+      "reason": "Company Profile page shows company name \"SAE-A Trading\", subtitle \"International Trade & Commerce\", and extensive description text including About Us, Industry Focus, and Our Quality Philosophy sections. All content is read-only with no editable fields.",
+      "evidence": [
+        "user-profile/orders-subpages/VAL-PROFILE-007-company-profile.png"
+      ]
+    },
+    "VAL-PROFILE-008": {
+      "status": "pass",
+      "reason": "Personal Center page displays a user avatar image in a circular frame with \"Avatar\" label. Default placeholder image shown (from picsum.photos).",
+      "evidence": [
+        "user-profile/orders-subpages/VAL-PROFILE-008-personal-center.png"
+      ]
+    },
+    "VAL-SEED-003": {
+      "status": "pass",
+      "reason": "At least 2 purchase orders exist for the test user: \"Phoenix Suns VS Los Angeles Lakers\" (status: To be paid) and \"Lionel Messi #10 Argentina Jersey\" (status: Paid). Order Record page shows data confirming seed data creates orders.",
+      "evidence": [
+        "user-profile/orders-subpages/VAL-SEED-003-order-record-with-orders.png"
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "toolsUsed": ["agent-browser"],
+  "summary": "Tested 7 assertions: all 7 passed. Order Record page shows Purchase/For sale tabs with correct content and bidirectional switching. VIP page shows 8 tiers with current tier indicated. Company Profile shows SAE-A Trading info as read-only. Personal Center shows avatar. Seed data provides orders for the test user."
+}

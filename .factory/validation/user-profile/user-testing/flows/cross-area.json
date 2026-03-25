@@ -1,0 +1,66 @@
+{
+  "group": "cross-area",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "assertions": {
+    "VAL-CROSS-001": {
+      "status": "fail",
+      "reason": "Unauthenticated user visiting /my is correctly redirected to /login?callbackUrl=%2Fmy. However, after login, user lands on the callback URL (/my) instead of the Goods home page (/) as specified in the contract. The NextAuth callbackUrl mechanism redirects to the originally requested page, not to the Goods home page.",
+      "evidence": [
+        "user-profile/cross-area/VAL-CROSS-001-redirect-to-login.png",
+        "user-profile/cross-area/VAL-CROSS-001-post-login-landing.png"
+      ]
+    },
+    "VAL-CROSS-003": {
+      "status": "pass",
+      "reason": "Unauthenticated user attempting to reach protected pages (/my, /my/orders, /products/1) is correctly redirected to /login with callbackUrl set. Auth gate blocks all protected routes.",
+      "evidence": [
+        "user-profile/cross-area/VAL-CROSS-003-redirect-to-login.png"
+      ]
+    },
+    "VAL-CROSS-006": {
+      "status": "pass",
+      "reason": "From product detail page (/products/cmn5uzrot0002l060cnmfkh4p), browser back navigation successfully returns to the Goods listing page (/). Product grid is visible.",
+      "evidence": [
+        "user-profile/cross-area/VAL-CROSS-006-back-to-listing.png"
+      ]
+    },
+    "VAL-CROSS-007": {
+      "status": "pass",
+      "reason": "After clicking Log out on My page, session is cleared and user is redirected to /login. Subsequently navigating to /my redirects to /login?callbackUrl=%2Fmy, confirming auth gates are enforced on all protected routes post-logout.",
+      "evidence": [
+        "user-profile/cross-area/VAL-CROSS-007-protected-route-redirect.png"
+      ]
+    },
+    "VAL-CROSS-008": {
+      "status": "pass",
+      "reason": "After rapidly navigating through all 5 tabs (Goods -> Football -> Basketball -> Concert -> My), the My page still displays full user profile data (email, VIP level, balance, shares, integration points). Auth state is preserved throughout rapid tab switching.",
+      "evidence": [
+        "user-profile/cross-area/VAL-CROSS-008-my-page-after-tab-cycle.png"
+      ]
+    },
+    "VAL-CROSS-009": {
+      "status": "pass",
+      "reason": "Full end-to-end flow completed successfully: Login -> Goods home -> click product (Messi Jersey) -> product detail -> back to Goods -> Football tab -> click match (Jordan VS Argentina) -> event detail -> back to Football -> My page. All transitions smooth with correct content. Zero console errors throughout.",
+      "evidence": [
+        "user-profile/cross-area/VAL-CROSS-009-step1-goods-home.png",
+        "user-profile/cross-area/VAL-CROSS-009-step2-product-detail.png",
+        "user-profile/cross-area/VAL-CROSS-009-step3-back-to-goods.png",
+        "user-profile/cross-area/VAL-CROSS-009-step4-football.png",
+        "user-profile/cross-area/VAL-CROSS-009-step5-event-detail.png",
+        "user-profile/cross-area/VAL-CROSS-009-step6-back-to-football.png",
+        "user-profile/cross-area/VAL-CROSS-009-step7-my-page.png"
+      ]
+    }
+  },
+  "frictions": [
+    {
+      "description": "Product cards on the Goods page do not appear as interactive elements in agent-browser's interactive snapshot (-i mode). They are only visible in the full accessibility tree. Had to use 'find text' semantic locator to click them.",
+      "resolved": true,
+      "resolution": "Used 'agent-browser find text \"Lionel Messi\" click' to interact with product cards instead of ref-based clicking.",
+      "affectedAssertions": ["VAL-CROSS-006", "VAL-CROSS-009"]
+    }
+  ],
+  "blockers": [],
+  "toolsUsed": ["agent-browser"],
+  "summary": "Tested 6 assertions: 5 passed, 1 failed. VAL-CROSS-001 fails because after login from a redirected protected route, the user lands on the callback URL instead of the Goods home page as specified. All other cross-area flows work correctly: auth gates block unauthenticated access, back navigation works, logout enforces auth, tab cycling preserves auth state, and the full browse flow completes smoothly with no console errors."
+}

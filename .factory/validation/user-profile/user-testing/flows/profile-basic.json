@@ -1,0 +1,101 @@
+{
+  "groupId": "profile-basic",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "credentials": "test@example.com / password123",
+    "browserSession": "0820edb98a6a__g1",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-PROFILE-001": {
+      "id": "VAL-PROFILE-001",
+      "title": "Profile page displays user info and balance",
+      "status": "pass",
+      "steps": [
+        { "action": "Login with test credentials", "expected": "Redirect to home page", "observed": "Redirected to http://localhost:3100/" },
+        { "action": "Navigate to /my", "expected": "Profile page with user info displayed", "observed": "Profile page loaded with all required elements" },
+        { "action": "Check avatar", "expected": "Avatar image visible", "observed": "img 'Avatar' element present" },
+        { "action": "Check account email", "expected": "Email displayed", "observed": "test@example.com displayed" },
+        { "action": "Check VIP level", "expected": "VIP level shown", "observed": "VIP:2 displayed" },
+        { "action": "Check invite code", "expected": "Invite code shown", "observed": "TEST123 displayed" },
+        { "action": "Check credit points", "expected": "Credit points shown", "observed": "1000 displayed" },
+        { "action": "Check balance dashboard", "expected": "Available balance, shares held, integration points", "observed": "Available balance $35,640.00, Shares held 300, Integration points 3240" }
+      ],
+      "evidence": {
+        "screenshots": ["user-profile/profile-basic/VAL-PROFILE-001-profile-page.png", "user-profile/profile-basic/VAL-PROFILE-001-profile-page-full.png"],
+        "consoleErrors": "none"
+      },
+      "reason": "All required profile elements (avatar, email, VIP level, invite code, credit points, balance dashboard) are present and display correct data.",
+      "issues": null
+    },
+    "VAL-PROFILE-002": {
+      "id": "VAL-PROFILE-002",
+      "title": "Balance dashboard shows formatted values",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my", "expected": "Balance section visible", "observed": "Balance section visible with three values" },
+        { "action": "Check available balance format", "expected": "Currency format $XX,XXX.XX", "observed": "$35,640.00 displayed" },
+        { "action": "Check shares held", "expected": "Shares count displayed", "observed": "300 displayed" },
+        { "action": "Check integration points", "expected": "Points count displayed", "observed": "3240 displayed" },
+        { "action": "Verify display-only", "expected": "Values are not editable", "observed": "Values rendered as paragraph text, no input fields" }
+      ],
+      "evidence": {
+        "screenshots": ["user-profile/profile-basic/VAL-PROFILE-002-balance-section.png"],
+        "consoleErrors": "none"
+      },
+      "reason": "Balance dashboard displays available balance as $35,640.00 (currency format), shares held as 300, and integration points as 3240. All values are display-only paragraph elements.",
+      "issues": null
+    },
+    "VAL-PROFILE-009": {
+      "id": "VAL-PROFILE-009",
+      "title": "My page menu navigation",
+      "status": "pass",
+      "steps": [
+        { "action": "Click 'Order record'", "expected": "Navigate to /my/orders", "observed": "Navigated to http://localhost:3100/my/orders" },
+        { "action": "Click 'Personal information'", "expected": "Navigate to /my/personal", "observed": "Navigated to http://localhost:3100/my/personal" },
+        { "action": "Click 'Bank card binding'", "expected": "Navigate to /my/bank-card", "observed": "Navigated to http://localhost:3100/my/bank-card" },
+        { "action": "Click 'Security center'", "expected": "Navigate to /my/security", "observed": "Navigated to http://localhost:3100/my/security" },
+        { "action": "Click 'Notification'", "expected": "Navigate to /my/notification", "observed": "Navigated to http://localhost:3100/my/notification" },
+        { "action": "Click 'VIP'", "expected": "Navigate to /my/vip", "observed": "Navigated to http://localhost:3100/my/vip" },
+        { "action": "Click 'Company Profile'", "expected": "Navigate to /my/company", "observed": "Navigated to http://localhost:3100/my/company" },
+        { "action": "Click 'Language'", "expected": "Navigate to /my/language", "observed": "Navigated to http://localhost:3100/my/language" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "user-profile/profile-basic/VAL-PROFILE-009-order-record.png",
+          "user-profile/profile-basic/VAL-PROFILE-009-personal-info.png",
+          "user-profile/profile-basic/VAL-PROFILE-009-bank-card.png",
+          "user-profile/profile-basic/VAL-PROFILE-009-security-center.png",
+          "user-profile/profile-basic/VAL-PROFILE-009-notification.png",
+          "user-profile/profile-basic/VAL-PROFILE-009-vip.png",
+          "user-profile/profile-basic/VAL-PROFILE-009-company-profile.png",
+          "user-profile/profile-basic/VAL-PROFILE-009-language.png"
+        ],
+        "consoleErrors": "none"
+      },
+      "reason": "All 8 menu items (Order record, Personal information, Bank card binding, Security center, Notification, VIP, Company Profile, Language) are clickable and navigate to their respective pages successfully.",
+      "issues": null
+    },
+    "VAL-PROFILE-010": {
+      "id": "VAL-PROFILE-010",
+      "title": "Logout button on My page",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my", "expected": "Log out button visible", "observed": "button 'Log out' present (ref=e9)" },
+        { "action": "Click 'Log out' button", "expected": "Logout flow triggered, redirect to /login", "observed": "Redirected to http://localhost:3100/login" },
+        { "action": "Verify session cleared by navigating to /my", "expected": "Redirect to /login (session cleared)", "observed": "Redirected to http://localhost:3100/login?callbackUrl=%2Fmy" }
+      ],
+      "evidence": {
+        "screenshots": ["user-profile/profile-basic/VAL-PROFILE-010-logout-button.png", "user-profile/profile-basic/VAL-PROFILE-010-post-logout.png"],
+        "consoleErrors": "none"
+      },
+      "reason": "Log out button is displayed on My page. Clicking it clears the session and redirects to /login. Protected routes (/my) redirect to login after logout, confirming session is fully cleared.",
+      "issues": null
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 4 assertions: all 4 passed. VAL-PROFILE-001 (profile page user info), VAL-PROFILE-002 (balance formatting), VAL-PROFILE-009 (menu navigation to all 8 sub-pages), VAL-PROFILE-010 (logout flow with session clearing)."
+}
