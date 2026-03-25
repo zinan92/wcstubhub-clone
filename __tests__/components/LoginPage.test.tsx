@@ -12,6 +12,10 @@ vi.mock('next/navigation', () => ({
 // Mock next-auth/react
 vi.mock('next-auth/react', () => ({
   signIn: vi.fn(),
+  useSession: vi.fn(() => ({
+    data: null,
+    status: 'unauthenticated',
+  })),
 }));
 
 describe('LoginPage', () => {

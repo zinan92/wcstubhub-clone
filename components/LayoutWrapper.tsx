@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { SessionProvider } from 'next-auth/react';
 import BottomTabNavigation from './BottomTabNavigation';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -13,9 +14,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     pathname.startsWith('/admin');
 
   return (
-    <>
+    <SessionProvider>
       {children}
       {!hideBottomTabs && <BottomTabNavigation />}
-    </>
+    </SessionProvider>
   );
 }
