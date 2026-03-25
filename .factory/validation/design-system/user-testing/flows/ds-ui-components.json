@@ -1,0 +1,70 @@
+{
+  "groupId": "ds-ui-components",
+  "testedAt": "2026-03-26T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "repoRoot": "/Users/wendy/wcstubhub-clone",
+    "browserSession": "a4f4ff25f888__groupB",
+    "credentials": "test@example.com / password123"
+  },
+  "toolsUsed": ["grep", "file-read", "agent-browser"],
+  "assertions": {
+    "VAL-DS-005": {
+      "status": "pass",
+      "evidence": "File components/ui/AnimatedModal.tsx exists. Code inspection confirms: (a) isOpen/onClose props in AnimatedModalProps interface, (b) uses m.div from motion/react with AnimatePresence, (c) panel has initial={{ y: '100%' }} and animate={{ y: 0 }} for slide-up, (d) backdrop m.div with initial/animate/exit opacity transitions, (e) backdrop onClick={onClose} for close on backdrop click. Spring animation with damping=25, stiffness=300. Component is a complete reusable animated modal.",
+      "details": "The AnimatedModal component file exists at components/ui/AnimatedModal.tsx with all required features: isOpen/onClose props, Framer Motion (motion/react m.div) animations, slide-up panel via translateY (y: '100%' -> y: 0), backdrop fade in/out (opacity 0->1->0), and close on backdrop click. Note: The component is not yet imported in any page files (only in test files), but the assertion asks for the component to 'exist' with the specified features, which it does. The existing page modals (product detail, event detail) use inline div-based dialogs rather than this shared component.",
+      "steps": [
+        { "action": "Check file exists at components/ui/AnimatedModal.tsx", "expected": "File exists", "observed": "File exists with 42 lines of code" },
+        { "action": "Verify isOpen/onClose props", "expected": "Props in interface", "observed": "AnimatedModalProps has isOpen: boolean, onClose: () => void, children: React.ReactNode" },
+        { "action": "Verify Framer Motion animation", "expected": "Uses m components from motion/react", "observed": "Imports { m, AnimatePresence } from 'motion/react'" },
+        { "action": "Verify slide-up animation", "expected": "translateY/y property on panel", "observed": "Panel: initial={{ y: '100%', opacity: 0 }}, animate={{ y: 0, opacity: 1 }}, exit={{ y: '100%', opacity: 0 }}" },
+        { "action": "Verify backdrop fade", "expected": "opacity animation on backdrop", "observed": "Backdrop: initial={{ opacity: 0 }}, animate={{ opacity: 1 }}, exit={{ opacity: 0 }}" },
+        { "action": "Verify close on backdrop click", "expected": "onClick handler on backdrop", "observed": "onClick={onClose} on backdrop m.div" }
+      ]
+    },
+    "VAL-DS-006": {
+      "status": "pass",
+      "evidence": "File components/ui/Toast.tsx exists. Code inspection confirms: (a) ToastType = 'success' | 'error' | 'info' with corresponding icons (CheckCircle, XCircle, Info from lucide-react), (b) auto-dismiss via setTimeout at 3000ms (3 seconds), (c) animate in/out via m.div with AnimatePresence (initial={{ y: -100, opacity: 0 }}, animate={{ y: 0, opacity: 1 }}, exit={{ opacity: 0 }}), (d) ToastProvider mounted globally in components/LayoutWrapper.tsx wrapping all children. useToast hook exported.",
+      "details": "Toast system is fully implemented with success/error/info types, 3-second auto-dismiss, animated entrance/exit, and globally mounted provider. The useToast hook provides a showToast(message, type) API. ToastProvider is wrapped in LayoutWrapper.tsx which wraps the entire app tree. Note: useToast is not currently called in any app page files (only in tests), but the provider IS mounted globally and the hook API IS available.",
+      "steps": [
+        { "action": "Check file exists at components/ui/Toast.tsx", "expected": "File exists", "observed": "File exists with ToastProvider and useToast exports" },
+        { "action": "Verify message types", "expected": "success, error, info types", "observed": "type ToastType = 'success' | 'error' | 'info' with corresponding icons" },
+        { "action": "Verify auto-dismiss", "expected": "Auto-dismiss after 3-5 seconds", "observed": "setTimeout with 3000ms (3 seconds)" },
+        { "action": "Verify animate in/out", "expected": "Motion animations", "observed": "m.div with initial={{ y: -100, opacity: 0 }}, animate={{ y: 0, opacity: 1 }}, exit={{ opacity: 0 }} using spring animation" },
+        { "action": "Verify provider mounted globally", "expected": "ToastProvider in layout", "observed": "ToastProvider wraps children in components/LayoutWrapper.tsx (line 21-24)" },
+        { "action": "Verify useToast hook exists", "expected": "Hook exported", "observed": "useToast() exported, returns { showToast } from context" }
+      ]
+    },
+    "VAL-DS-007": {
+      "status": "pass",
+      "evidence": "File components/ui/Skeleton.tsx exists with base Skeleton (pulse + shimmer animation), ProductCardSkeleton, and MatchCardSkeleton variants. Skeleton imports found in 6 pages: app/page.tsx, app/football/page.tsx, app/basketball/page.tsx, app/concert/page.tsx, app/products/[id]/page.tsx, app/events/[id]/page.tsx. rg 'animate-spin' returns zero matches across all .tsx files.",
+      "details": "Skeleton components are fully implemented and adopted. Base Skeleton has animate-pulse class plus inline shimmer animation (shimmer keyframes defined in globals.css). ProductCardSkeleton mimics product card layout (image + title + price). MatchCardSkeleton mimics match card layout (team flags, names, vs, venue). All data-fetching pages use appropriate skeleton variants during loading. Zero instances of animate-spin remain.",
+      "steps": [
+        { "action": "Check Skeleton files exist under components/ui/", "expected": "Skeleton components present", "observed": "components/ui/Skeleton.tsx exports Skeleton, ProductCardSkeleton, MatchCardSkeleton" },
+        { "action": "Verify pulsing/shimmer animation", "expected": "Pulse or shimmer effect", "observed": "animate-pulse class + inline style with 'pulse 2s ... infinite, shimmer 2s linear infinite'. @keyframes shimmer defined in globals.css" },
+        { "action": "Verify domain-specific variant (product card skeleton)", "expected": "At least one domain-specific skeleton", "observed": "ProductCardSkeleton (image + title + price layout) and MatchCardSkeleton (teams + venue layout)" },
+        { "action": "Grep for Skeleton imports in pages", "expected": "Skeleton used in data-fetching pages", "observed": "ProductCardSkeleton imported in app/page.tsx, app/products/[id]/page.tsx. MatchCardSkeleton imported in app/football/page.tsx, app/basketball/page.tsx, app/concert/page.tsx, app/events/[id]/page.tsx" },
+        { "action": "rg 'animate-spin' across .tsx files", "expected": "Zero matches", "observed": "Zero matches - all spinners removed" },
+        { "action": "Browser: Navigate Goods page, verify no spinners", "expected": "No spinning indicators", "observed": "Page loads with products displayed, no spin animations visible" }
+      ]
+    },
+    "VAL-DS-008": {
+      "status": "fail",
+      "evidence": "File components/ui/Button.tsx exists with m.button from motion/react, whileTap={{ scale: 0.97 }}, variant prop supporting primary/secondary/outline/ghost, TypeScript ButtonProps interface. However, the Button component is NOT imported or used in any page file under app/ or components/ (only in __tests__/components/ui/Button.test.tsx). All pages still use inline <button> elements.",
+      "details": "The Button component itself is well-implemented with all required features: (a) Framer Motion whileTap={{ scale: isDisabled ? 1 : 0.97 }} on m.button, (b) variant prop with 'primary' | 'secondary' | 'outline' | 'ghost' variants each with distinct styling, (c) proper TypeScript interface (ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>). HOWEVER, the assertion requires 'used in at least one page replacing inline buttons' — and grep confirms Button is NOT imported in any app page. The login page (app/login/page.tsx line 170) uses an inline <button> with gradient styling. Product detail page (app/products/[id]/page.tsx) uses inline <button> elements for 'For sale' and 'Purchase'. Event detail page similarly uses inline <button> elements. The shared Button component exists but is unused outside its test file.",
+      "issues": "Button component is not imported or used in any page file. Assertion criterion (c) 'used in at least one page replacing inline buttons' is NOT met. Only __tests__/components/ui/Button.test.tsx imports it.",
+      "steps": [
+        { "action": "Check file exists at components/ui/Button.tsx", "expected": "File exists", "observed": "File exists with m.button, whileTap, variant system" },
+        { "action": "Verify whileTap effect", "expected": "whileTap with scale-down", "observed": "whileTap={{ scale: isDisabled ? 1 : 0.97 }} on m.button element" },
+        { "action": "Verify variant props", "expected": "primary, secondary, outline, ghost variants", "observed": "variant?: 'primary' | 'secondary' | 'outline' | 'ghost' with variantClasses map" },
+        { "action": "Verify TypeScript interface", "expected": "Typed ButtonProps", "observed": "ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> with variant, size, loading, children" },
+        { "action": "Grep for Button import in app/ pages", "expected": "Imported in at least one page", "observed": "ZERO imports found in app/ directory. Only import is in __tests__/components/ui/Button.test.tsx" },
+        { "action": "Check login page for shared Button usage", "expected": "Shared Button component used", "observed": "Login page uses inline <button> element with manual gradient classes, NOT the shared Button component" },
+        { "action": "Check product detail page", "expected": "Shared Button used for action buttons", "observed": "Product detail uses inline <button> elements for 'For sale' and 'Purchase'" }
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 4 assertions: 3 passed (VAL-DS-005, VAL-DS-006, VAL-DS-007), 1 failed (VAL-DS-008: Button component exists with all required features but is not imported/used in any page file - only in test file)."
+}

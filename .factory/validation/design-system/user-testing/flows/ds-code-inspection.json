@@ -1,0 +1,40 @@
+{
+  "groupId": "ds-code-inspection",
+  "testedAt": "2026-03-26T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "repoRoot": "/Users/wendy/wcstubhub-clone",
+    "browserSession": "a4f4ff25f888__groupA"
+  },
+  "toolsUsed": ["grep", "file-read", "shell", "agent-browser"],
+  "assertions": {
+    "VAL-DS-001": {
+      "status": "pass",
+      "evidence": "package.json line 18 shows \"motion\": \"^12.38.0\" under dependencies. `pnpm ls motion` resolves to motion@12.38.0 (production dependency).",
+      "details": "Motion package v12.38.0 is installed as a production dependency, satisfying the Framer Motion v11+ requirement."
+    },
+    "VAL-DS-002": {
+      "status": "pass",
+      "evidence": "components/LayoutWrapper.tsx imports { LazyMotion, domAnimation } from 'motion/react' (line 5). LazyMotion wraps the app tree at line 20 with features={domAnimation}. LayoutWrapper is used in app/layout.tsx wrapping {children}.",
+      "details": "LazyMotion provider from motion/react wraps the entire app tree via LayoutWrapper component, using domAnimation feature bundle as required."
+    },
+    "VAL-DS-003": {
+      "status": "pass",
+      "evidence": "tailwind.config.ts theme.extend contains: (a) 7 semantic color groups (primary, accent, success, warning, error, surface, muted) each with 50-900 shades, (b) 3 custom boxShadow values (soft, card, elevated), (c) 2 custom borderRadius values (card: 12px, modal: 16px).",
+      "details": "Comprehensive token system verified: 7 semantic color groups (exceeds 6+ requirement), 3 custom boxShadow values (exceeds 2+ requirement), 2 custom borderRadius values (exceeds 1+ requirement)."
+    },
+    "VAL-DS-004": {
+      "status": "pass",
+      "evidence": "app/layout.tsx imports Inter from 'next/font/google' with subsets: ['latin'] and display: 'swap'. Applied to <body> via className={`${inter.className} antialiased`}. Browser computed style on document.body shows fontFamily: 'Inter, \"Inter Fallback\"'. Screenshot saved to evidence/design-system/ds-group-a/VAL-DS-004-body-font-inter.png.",
+      "details": "Inter font is properly loaded via next/font/google, applied to the root <body> element, and confirmed active in the browser with computed font-family showing Inter as primary font."
+    },
+    "VAL-DS-009": {
+      "status": "pass",
+      "evidence": "Running `rg 'text-\\[#|bg-\\[#|border-\\[#|ring-\\[#|from-\\[#|to-\\[#|via-\\[#' --glob '*.tsx' app/ components/` returned zero matches (exit code 1 = no matches). No arbitrary hex color values found in any .tsx files under app/ or components/.",
+      "details": "All component files use semantic Tailwind classes from the design token system. No hard-coded hex color values detected in any .tsx file."
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. Motion package installed (v12.38.0), LazyMotion wraps app tree via LayoutWrapper, Tailwind config has 7 semantic color groups + shadows + radii, Inter font loaded and applied globally (confirmed via browser), and zero hard-coded hex colors in component files."
+}
