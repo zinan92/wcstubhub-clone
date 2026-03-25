@@ -1,0 +1,18 @@
+commands:
+  install: pnpm install
+  dev: PORT=3100 pnpm dev
+  build: pnpm build
+  test: pnpm test
+  typecheck: pnpm typecheck
+  lint: pnpm lint
+  db-push: pnpm exec prisma db push
+  db-seed: pnpm db:seed
+  db-generate: pnpm exec prisma generate
+
+services:
+  web:
+    start: PORT=3100 pnpm dev
+    stop: lsof -ti :3100 | xargs kill 2>/dev/null || true
+    healthcheck: curl -sf http://localhost:3100
+    port: 3100
+    depends_on: []
