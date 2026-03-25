@@ -56,7 +56,7 @@ export default function ConcertCard({
           <div className="flex-1 min-w-0">
             {/* Artist Name */}
             <div className="flex items-center gap-2 mb-1">
-              <Music className="w-4 h-4 text-[#00CCFF]" />
+              <Music className="w-4 h-4 text-accent-500" />
               <span className="text-sm font-semibold text-gray-900">{artistName}</span>
             </div>
 
@@ -79,7 +79,7 @@ export default function ConcertCard({
 
             {/* Price */}
             <div className="flex items-center justify-between">
-              <span className="text-lg font-bold text-[#0066FF]">
+              <span className="text-lg font-bold text-primary-500">
                 {formatPrice(price)}
               </span>
             </div>

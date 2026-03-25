@@ -104,7 +104,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center pb-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0066FF]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -147,7 +147,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           />
         </div>
       ) : (
-        <div className="w-full aspect-[16/9] bg-gradient-to-br from-[#0066FF] to-[#00CCFF] flex items-center justify-center">
+        <div className="w-full aspect-[16/9] bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
           <div className="text-center text-white">
             {event.type === 'football' || event.type === 'basketball' ? (
               <div className="flex items-center gap-4 text-4xl">
@@ -177,7 +177,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
         ) : (
           <div className="mb-4">
             {event.artistName && (
-              <p className="text-sm font-semibold text-[#00CCFF] mb-1">{event.artistName}</p>
+              <p className="text-sm font-semibold text-accent-500 mb-1">{event.artistName}</p>
             )}
             <h2 className="text-2xl font-bold text-gray-900">{event.title}</h2>
           </div>
@@ -202,7 +202,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
         {/* Price */}
         <div className="mb-4">
           <p className="text-sm text-gray-500 mb-1">Ticket Price</p>
-          <p className="text-3xl font-bold text-[#0066FF]">${event.price.toFixed(2)}</p>
+          <p className="text-3xl font-bold text-primary-500">${event.price.toFixed(2)}</p>
         </div>
 
         {/* Remaining Quantity */}
@@ -228,7 +228,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           {/* For Sale Button - Outline Style */}
           <button
             onClick={handleForSale}
-            className="flex-1 px-6 py-3 border-2 border-[#0066FF] text-[#0066FF] font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+            className="flex-1 px-6 py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
           >
             For sale
           </button>
@@ -236,7 +236,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           {/* Purchase Button - Gradient Style */}
           <button
             onClick={handlePurchase}
-            className="flex-1 px-6 py-3 bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
           >
             Purchase
           </button>
@@ -253,7 +253,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             </p>
             <button
               onClick={closePurchaseDialog}
-              className="w-full px-6 py-3 bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+              className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
             >
               OK
             </button>
@@ -271,7 +271,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             </p>
             <button
               onClick={closeForSaleDialog}
-              className="w-full px-6 py-3 bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+              className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
             >
               OK
             </button>

@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
+import { LazyMotion, domAnimation } from 'motion/react';
 import BottomTabNavigation from './BottomTabNavigation';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -15,8 +16,10 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   return (
     <SessionProvider>
-      {children}
-      {!hideBottomTabs && <BottomTabNavigation />}
+      <LazyMotion features={domAnimation}>
+        {children}
+        {!hideBottomTabs && <BottomTabNavigation />}
+      </LazyMotion>
     </SessionProvider>
   );
 }

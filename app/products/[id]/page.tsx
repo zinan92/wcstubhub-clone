@@ -78,7 +78,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center pb-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0066FF]"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
       </div>
     );
   }
@@ -126,7 +126,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         </h2>
 
         {/* Price */}
-        <p className="text-3xl font-bold text-[#0066FF] mb-4">
+        <p className="text-3xl font-bold text-primary-500 mb-4">
           ${product.price.toFixed(2)}
         </p>
 
@@ -155,7 +155,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           {/* For Sale Button - Outline Style */}
           <button
             onClick={handleForSale}
-            className="flex-1 px-6 py-3 border-2 border-[#0066FF] text-[#0066FF] font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+            className="flex-1 px-6 py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
           >
             For sale
           </button>
@@ -163,7 +163,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           {/* Purchase Button - Gradient Style */}
           <button
             onClick={handlePurchase}
-            className="flex-1 px-6 py-3 bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
           >
             Purchase
           </button>
@@ -182,7 +182,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             </p>
             <button
               onClick={closePurchaseDialog}
-              className="w-full px-6 py-3 bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+              className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
             >
               OK
             </button>
@@ -202,7 +202,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             </p>
             <button
               onClick={closeForSaleDialog}
-              className="w-full px-6 py-3 bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+              className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
             >
               OK
             </button>

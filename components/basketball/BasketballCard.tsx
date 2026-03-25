@@ -54,7 +54,7 @@ export default function BasketballCard({
         </div>
 
         {/* Price */}
-        <div className="text-lg font-bold text-[#0066FF] text-center">
+        <div className="text-lg font-bold text-primary-500 text-center">
           ${price.toFixed(2)}
         </div>
       </div>

@@ -112,7 +112,7 @@ export default function BannerCarousel() {
             onClick={() => setCurrentIndex(index)}
             className={`w-2 h-2 rounded-full transition-all ${
               index === currentIndex
-                ? 'bg-[#0066FF] w-4'
+                ? 'bg-primary-500 w-4'
                 : 'bg-gray-300'
             }`}
             aria-label={`Go to banner ${index + 1}`}

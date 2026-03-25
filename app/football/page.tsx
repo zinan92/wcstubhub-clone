@@ -84,7 +84,7 @@ export default function FootballPage() {
       {/* Football Section Header */}
       <div className="px-4 pb-3">
         <div className="flex items-center gap-2">
-          <Trophy className="w-5 h-5 text-[#0066FF]" />
+          <Trophy className="w-5 h-5 text-primary-500" />
           <h2 className="text-lg font-semibold text-gray-900">Football</h2>
         </div>
       </div>
@@ -93,7 +93,7 @@ export default function FootballPage() {
       <div className="px-4">
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0066FF]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
           </div>
         ) : filteredEvents.length === 0 ? (
           <div className="text-center py-12">

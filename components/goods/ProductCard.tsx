@@ -30,7 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
           {product.name}
         </h3>
-        <p className="text-lg font-bold text-[#0066FF]">
+        <p className="text-lg font-bold text-primary-500">
           ${product.price.toFixed(2)}
         </p>
       </div>

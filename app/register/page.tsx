@@ -87,7 +87,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0066FF] to-[#00CCFF] py-6 px-4 text-center">
+      <div className="bg-gradient-to-r from-primary-500 to-accent-500 py-6 px-4 text-center">
         <h1 className="text-2xl font-bold text-white">SAE-A Trading</h1>
         <p className="text-sm text-white/90 mt-1">Create Your Account</p>
       </div>
@@ -107,7 +107,7 @@ export default function RegisterPage() {
               value={emailOrPhone}
               onChange={(e) => setEmailOrPhone(e.target.value)}
               placeholder="Enter your email or phone number"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
 
@@ -123,7 +123,7 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password (min 6 characters)"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:border-transparent pr-12"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12"
               />
               <button
                 type="button"
@@ -157,7 +157,7 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:border-transparent pr-12"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12"
               />
               <button
                 type="button"
@@ -190,7 +190,7 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-primary-500 to-accent-500 text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {loading ? 'Creating account...' : 'Register'}
           </button>
@@ -200,7 +200,7 @@ export default function RegisterPage() {
         <div className="mt-6 text-center">
           <p className="text-gray-600 text-sm">
             Already have an account?{' '}
-            <Link href="/login" className="text-[#0066FF] font-medium hover:underline">
+            <Link href="/login" className="text-primary-500 font-medium hover:underline">
               Login here
             </Link>
           </p>

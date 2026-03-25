@@ -68,7 +68,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col">
       {/* Header */}
-      <div className="bg-gradient-to-r from-[#0066FF] to-[#00CCFF] py-6 px-4 text-center">
+      <div className="bg-gradient-to-r from-primary-500 to-accent-500 py-6 px-4 text-center">
         <h1 className="text-2xl font-bold text-white">SAE-A Trading</h1>
         <p className="text-sm text-white/90 mt-1">Sports Merchandise & Event Tickets</p>
       </div>
@@ -86,7 +86,7 @@ export default function LoginPage() {
             }}
             className={`flex-1 py-3 px-4 rounded-md font-medium transition-colors ${
               activeTab === 'phone'
-                ? 'bg-white text-[#0066FF] shadow-sm'
+                ? 'bg-white text-primary-500 shadow-sm'
                 : 'text-gray-600'
             }`}
           >
@@ -101,7 +101,7 @@ export default function LoginPage() {
             }}
             className={`flex-1 py-3 px-4 rounded-md font-medium transition-colors ${
               activeTab === 'email'
-                ? 'bg-white text-[#0066FF] shadow-sm'
+                ? 'bg-white text-primary-500 shadow-sm'
                 : 'text-gray-600'
             }`}
           >
@@ -122,7 +122,7 @@ export default function LoginPage() {
               value={emailOrPhone}
               onChange={(e) => setEmailOrPhone(e.target.value)}
               placeholder={activeTab === 'email' ? 'Enter your email' : 'Enter your phone number'}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
 
@@ -138,7 +138,7 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:border-transparent pr-12"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12"
               />
               <button
                 type="button"
@@ -171,7 +171,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-[#0066FF] to-[#00CCFF] text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-primary-500 to-accent-500 text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>
@@ -181,7 +181,7 @@ export default function LoginPage() {
         <div className="mt-6 text-center">
           <p className="text-gray-600 text-sm">
             No account?{' '}
-            <Link href="/register" className="text-[#0066FF] font-medium hover:underline">
+            <Link href="/register" className="text-primary-500 font-medium hover:underline">
               Register now
             </Link>
           </p>
@@ -194,7 +194,7 @@ export default function LoginPage() {
           </label>
           <select
             id="language"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#0066FF] focus:border-transparent bg-white"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
             defaultValue="en"
           >
             <option value="en">English</option>

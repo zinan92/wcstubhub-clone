@@ -90,7 +90,7 @@ export default function BasketballPage() {
       <div className="px-4">
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0066FF]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
           </div>
         ) : filteredEvents.length === 0 ? (
           <div className="text-center py-12">

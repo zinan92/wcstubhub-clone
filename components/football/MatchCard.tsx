@@ -64,7 +64,7 @@ export default function MatchCard({
         </div>
 
         {/* Price */}
-        <div className="text-lg font-bold text-[#0066FF]">
+        <div className="text-lg font-bold text-primary-500">
           ${price.toFixed(2)}
         </div>
       </div>

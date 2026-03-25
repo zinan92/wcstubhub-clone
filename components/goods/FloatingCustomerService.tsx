@@ -11,7 +11,7 @@ export default function FloatingCustomerService() {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-24 right-4 z-40 bg-[#0066FF] text-white p-4 rounded-full shadow-lg hover:bg-[#0052CC] transition-colors"
+      className="fixed bottom-24 right-4 z-40 bg-primary-500 text-white p-4 rounded-full shadow-lg hover:bg-primary-600 transition-colors"
       aria-label="Customer service"
     >
       <MessageCircle className="w-6 h-6" />

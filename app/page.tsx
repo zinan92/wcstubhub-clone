@@ -69,7 +69,7 @@ export default function Home() {
       {/* Commodities Section */}
       <div className="px-4 pb-3">
         <div className="flex items-center gap-2">
-          <Package className="w-5 h-5 text-[#0066FF]" />
+          <Package className="w-5 h-5 text-primary-500" />
           <h2 className="text-lg font-semibold text-gray-900">Commodities</h2>
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function Home() {
       <div className="px-4">
         {isLoading ? (
           <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#0066FF]"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
           </div>
         ) : (
           <ProductGrid products={filteredProducts} />
