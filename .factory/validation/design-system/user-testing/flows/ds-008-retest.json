@@ -1,0 +1,16 @@
+{
+  "flowId": "ds-008-retest",
+  "assertions": {
+    "VAL-DS-008": {
+      "status": "pass",
+      "evidence": "All four criteria verified: (a) Button component exists at components/ui/Button.tsx with whileTap={{ scale: 0.97 }} on line 40; (b) TypeScript interface has variant prop typed as 'primary' | 'secondary' | 'outline' | 'ghost' on line 6; (c) Button is imported and used in app/login/page.tsx (line 7: import Button from '@/components/ui/Button') replacing the inline login button; (d) Visual verification at 375x812 viewport confirms the Login button renders with primary variant gradient styling (white text, gradient blue background, rounded corners). No console errors detected.",
+      "screenshots": [
+        "design-system/ds-008-retest/VAL-DS-008-login-page.png",
+        "design-system/ds-008-retest/VAL-DS-008-login-annotated.png"
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "toolsUsed": ["agent-browser", "grep"]
+}

@@ -1,30 +1,18 @@
 {
   "milestone": "design-system",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "assertionsSummary": {
-    "total": 9,
-    "passed": 8,
-    "failed": 1,
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
-    "VAL-DS-001",
-    "VAL-DS-002",
-    "VAL-DS-003",
-    "VAL-DS-004",
-    "VAL-DS-005",
-    "VAL-DS-006",
-    "VAL-DS-007",
-    "VAL-DS-009"
+    "VAL-DS-008"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-DS-008",
-      "reason": "Button component exists with all required features (whileTap scale-down, 4 variants, TypeScript interface) but is NOT imported or used in any page file. Only imported in __tests__/components/ui/Button.test.tsx. All pages still use inline <button> elements. The assertion requires 'used in at least one page replacing inline buttons'."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
   "appliedUpdates": [],
-  "previousRound": null
+  "previousRound": ".factory/validation/design-system/user-testing/synthesis.json (round 1)"
 }
