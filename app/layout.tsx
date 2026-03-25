@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import LayoutWrapper from "@/components/LayoutWrapper";
 
 export const metadata: Metadata = {
   title: "WCStubHub Clone - SAE-A Trading",
@@ -17,7 +18,7 @@ export default function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
       </head>
       <body className="antialiased">
-        {children}
+        <LayoutWrapper>{children}</LayoutWrapper>
       </body>
     </html>
   );
