@@ -12,6 +12,23 @@ export default withAuth(
       return NextResponse.redirect(new URL('/', req.url));
     }
 
+    // Admin route protection: check if user has admin role
+    if (pathname.startsWith('/admin')) {
+      if (!token) {
+        // Not authenticated - redirect to login with callbackUrl
+        const loginUrl = new URL('/login', req.url);
+        loginUrl.searchParams.set('callbackUrl', pathname);
+        return NextResponse.redirect(loginUrl);
+      }
+      
+      // Check if user has admin role
+      const isAdmin = token.role === 'admin';
+      if (!isAdmin) {
+        // Authenticated but not admin - redirect to home
+        return NextResponse.redirect(new URL('/', req.url));
+      }
+    }
+
     return NextResponse.next();
   },
   {
@@ -24,8 +41,19 @@ export default withAuth(
           return true;
         }
 
+        // For admin routes, handle in middleware function above
+        // Return true here to let middleware handle the role check
+        if (pathname.startsWith('/admin')) {
+          return true;
+        }
+
         // For all other routes, require authentication
-        return !!token;
+        // If not authenticated, redirect to login with callbackUrl
+        if (!token) {
+          return false; // This triggers redirect to signIn page
+        }
+
+        return true;
       },
     },
     pages: {

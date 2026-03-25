@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const [activeTab, setActiveTab] = useState<'email' | 'phone'>('email');
   const [emailOrPhone, setEmailOrPhone] = useState('');
@@ -15,13 +16,16 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Redirect authenticated users to home page
+  // Get callbackUrl from query params (set by middleware when redirecting)
+  const callbackUrl = searchParams.get('callbackUrl') || '/';
+
+  // Redirect authenticated users to callback URL or home page
   useEffect(() => {
     if (status === 'authenticated' && session) {
-      router.push('/');
+      router.push(callbackUrl);
       router.refresh();
     }
-  }, [status, session, router]);
+  }, [status, session, router, callbackUrl]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,8 +55,8 @@ export default function LoginPage() {
         setError('Invalid email/phone or password');
         setLoading(false);
       } else {
-        // Successful login - redirect to home
-        router.push('/');
+        // Successful login - redirect to callbackUrl or home
+        router.push(callbackUrl);
         router.refresh();
       }
     } catch (err) {

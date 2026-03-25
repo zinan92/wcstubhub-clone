@@ -85,7 +85,7 @@ export default function CompanyProfilePage() {
           <div>
             <h3 className="text-lg font-semibold text-gray-900 mb-3">Our Quality Philosophy</h3>
             <p className="text-gray-700 leading-relaxed mb-3">
-              At SAE-A Trading, quality is not just a commitment—it's our foundation. We believe 
+              At SAE-A Trading, quality is not just a commitment—it&apos;s our foundation. We believe 
               that every product we deliver and every experience we create should exceed customer 
               expectations. Our quality philosophy is built on three core principles:
             </p>

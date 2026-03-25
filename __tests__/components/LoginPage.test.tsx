@@ -7,6 +7,9 @@ import LoginPage from '@/app/login/page';
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
   useRouter: vi.fn(),
+  useSearchParams: vi.fn(() => ({
+    get: vi.fn(() => null),
+  })),
 }));
 
 // Mock next-auth/react
