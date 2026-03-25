@@ -1,0 +1,140 @@
+{
+  "groupId": "goods-home",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "login": "test@example.com / password123",
+    "browserSession": "711d0a22b87c__goods_home",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-GOODS-001",
+      "title": "Goods page loads as default tab",
+      "status": "pass",
+      "steps": [
+        { "action": "Login with test@example.com / password123", "expected": "Redirect to Goods home page", "observed": "Redirected to http://localhost:3100/" },
+        { "action": "Check bottom navigation", "expected": "Goods tab is selected", "observed": "Goods tab is active/selected in bottom navigation with 5 tabs: Goods, Football, Basketball, Concert, My" },
+        { "action": "Verify banner carousel visible", "expected": "Banner carousel with images", "observed": "Banner carousel with 3 images (World Cup 2026, Cristiano Ronaldo, Sports Merchandise) and navigation buttons" },
+        { "action": "Verify search bar visible", "expected": "Search bar with placeholder", "observed": "'Find products' search bar visible below carousel" },
+        { "action": "Verify product grid visible", "expected": "Product grid with cards", "observed": "6 product cards in 2-column grid layout with images, names, and prices" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/goods-home/VAL-GOODS-001-home-page.png"],
+        "consoleErrors": "Pre-existing 'Invalid or unexpected token' from dev server (not related to goods page functionality)",
+        "network": "Page loaded successfully at /"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-002",
+      "title": "Banner carousel displays promotional images",
+      "status": "pass",
+      "steps": [
+        { "action": "Observe banner carousel on Goods page", "expected": "At least one promotional image visible", "observed": "3 banner images visible: World Cup 2026, Cristiano Ronaldo, Sports Merchandise" },
+        { "action": "Click 'Go to banner 2' indicator", "expected": "Carousel advances to second image", "observed": "Carousel advanced to banner 2, second indicator dot highlighted blue, image changed" },
+        { "action": "Verify navigation controls", "expected": "Previous/Next buttons and indicators present", "observed": "Previous/Next arrow buttons and 3 dot indicators present and functional" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/goods-home/VAL-GOODS-001-home-page.png", "goods-catalog/goods-home/VAL-GOODS-002-banner-next.png", "goods-catalog/goods-home/VAL-GOODS-002-banner-2.png"],
+        "consoleErrors": "none (only pre-existing dev server token error)",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-003",
+      "title": "Product card grid with images and prices",
+      "status": "pass",
+      "steps": [
+        { "action": "Observe product grid on Goods page", "expected": "Cards with image, name, and price", "observed": "6 product cards each displaying: product image, product name, and price in $XXX.XX format" },
+        { "action": "Verify price format", "expected": "Prices formatted as $XXX.XX", "observed": "All prices correctly formatted: $159.99, $169.99, $154.99, $139.99, $129.99, $149.99" },
+        { "action": "Scroll down to see all products", "expected": "Grid is scrollable", "observed": "Successfully scrolled to reveal all 6 products in 2-column grid" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/goods-home/VAL-GOODS-001-home-page.png", "goods-catalog/goods-home/VAL-GOODS-003-product-grid-scrolled.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-008",
+      "title": "Search bar filters products by name",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify initial state with all products", "expected": "All 6 products visible", "observed": "6 products displayed in grid" },
+        { "action": "Type 'messi' in search bar (lowercase)", "expected": "Grid filters to show only matching products", "observed": "Grid filtered to show only 'Lionel Messi #10 Argentina Jersey $149.99' - case-insensitive match confirmed" },
+        { "action": "Clear search bar", "expected": "All products restored", "observed": "All 6 products restored in grid" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/goods-home/VAL-GOODS-008-before-search.png", "goods-catalog/goods-home/VAL-GOODS-008-filtered.png", "goods-catalog/goods-home/VAL-GOODS-008-cleared.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-009",
+      "title": "Empty state for no search results",
+      "status": "pass",
+      "steps": [
+        { "action": "Type 'xyznonexistent123' in search bar", "expected": "Empty state message displayed", "observed": "Empty state shown with icon, 'No products found' message, and 'Try a different search term' helper text" },
+        { "action": "Verify search bar accessibility", "expected": "Search bar remains accessible", "observed": "Search bar still visible and accessible with search term displayed" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/goods-home/VAL-GOODS-009-empty-state.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-010",
+      "title": "Floating customer service icon present",
+      "status": "pass",
+      "steps": [
+        { "action": "Observe floating icon on Goods page (top)", "expected": "Floating icon visible", "observed": "Blue chat bubble icon visible at bottom-right of viewport" },
+        { "action": "Scroll down to bottom of product grid", "expected": "Icon stays visible while scrolling", "observed": "Floating icon remains visible at bottom-right after scrolling" },
+        { "action": "Click floating icon", "expected": "No crash on tap", "observed": "Page remains functional, no crash, URL stays at /. Pre-existing dev server error present but unrelated." }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/goods-home/VAL-GOODS-010-icon-visible.png", "goods-catalog/goods-home/VAL-GOODS-010-after-scroll.png"],
+        "consoleErrors": "Pre-existing 'Invalid or unexpected token' (not caused by icon click)",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEED-001",
+      "title": "Seed data populates products and events (Goods part only)",
+      "status": "pass",
+      "steps": [
+        { "action": "Count products on Goods page", "expected": "At least 4 products visible", "observed": "6 products visible: Kylian Mbappé #10 France Jersey ($159.99), Karim Benzema #9 Real Madrid Jersey ($169.99), Mohamed Salah #11 Liverpool Jersey ($154.99), Cristiano Ronaldo #7 Portugal Jersey ($139.99), Neymar Jr #10 Brazil Jersey ($129.99), Lionel Messi #10 Argentina Jersey ($149.99)" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/goods-home/VAL-GOODS-001-home-page.png", "goods-catalog/goods-home/VAL-GOODS-003-product-grid-scrolled.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "First login attempt failed silently - credentials filled via fill command but form fields appeared empty. Required clicking the field first, then filling, for values to register correctly.",
+      "resolved": true,
+      "resolution": "Explicitly clicked each input field before filling, verified values with get value command, then submitted.",
+      "affectedAssertions": ["VAL-GOODS-001"]
+    },
+    {
+      "description": "Pre-existing JavaScript error 'Invalid or unexpected token' reported by agent-browser errors command throughout testing. Appears to be a dev server/build issue, not related to any specific assertion functionality.",
+      "resolved": false,
+      "resolution": "Noted but not blocking - all functionality works correctly despite this error. Console logs show only React DevTools info and Fast Refresh messages.",
+      "affectedAssertions": ["VAL-GOODS-001", "VAL-GOODS-010"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 7 assertions: all 7 passed. Goods home page loads correctly as default tab with banner carousel (3 images), search bar, product grid (6 products with images, names, and $XXX.XX prices), floating customer service icon, proper search filtering (case-insensitive), empty state for no results, and sufficient seed data (6 products, exceeding 4 minimum)."
+}

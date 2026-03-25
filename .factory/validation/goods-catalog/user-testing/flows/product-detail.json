@@ -1,0 +1,95 @@
+{
+  "groupId": "product-detail",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "login": "test@example.com / password123",
+    "browserSession": "711d0a22b87c__product_detail",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-GOODS-004",
+      "title": "Product card click navigates to detail page",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to Goods home page after login", "expected": "Product grid with cards visible", "observed": "Product grid displayed with 6 product cards showing images, names, and prices" },
+        { "action": "Click on 'Kylian Mbappé #10 France Jersey' product card", "expected": "Navigate to product detail page with matching product name and image", "observed": "Navigated to /products/cmn5r7wn20005l0miiglpgntz with matching title 'Kylian Mbappé #10 France Jersey' and product image" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/product-detail/goods-page-initial.png", "goods-catalog/product-detail/VAL-GOODS-004-detail-page.png"],
+        "consoleErrors": "none",
+        "network": "GET /products/cmn5r7wn20005l0miiglpgntz -> page loaded successfully"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-005",
+      "title": "Product detail page displays all fields",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify product image is displayed", "expected": "Product image visible", "observed": "Product image 'Kylian Mbappé #10 France Jersey' displayed prominently at top" },
+        { "action": "Verify product title", "expected": "Title visible", "observed": "Title 'Kylian Mbappé #10 France Jersey' displayed as h2 heading" },
+        { "action": "Verify price in $XXX.XX format", "expected": "Price displayed as $XXX.XX", "observed": "Price displayed as '$159.99'" },
+        { "action": "Verify remaining quantity", "expected": "Remaining quantity shown", "observed": "'Remaining Quantity' label with '65 units' displayed" },
+        { "action": "Verify description", "expected": "Description text visible", "observed": "Description section with text 'France World Cup champion jersey with Mbappé #10. Official replica with embroidered badge.'" },
+        { "action": "Verify 'For sale' button", "expected": "'For sale' button present", "observed": "'For sale' button visible in bottom action bar" },
+        { "action": "Verify 'Purchase' button", "expected": "'Purchase' button present", "observed": "'Purchase' button visible in bottom action bar (blue)" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/product-detail/VAL-GOODS-005-full-detail-page.png"],
+        "consoleErrors": "none",
+        "network": "Page loaded with all product data"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-006",
+      "title": "Purchase button shows confirmation dialog",
+      "status": "pass",
+      "steps": [
+        { "action": "Click 'Purchase' button on product detail page", "expected": "Confirmation dialog/modal appears", "observed": "Modal appeared with title 'Success' and message 'Purchase request submitted successfully' with OK button" },
+        { "action": "Click 'OK' to dismiss dialog", "expected": "Dialog dismissed, user remains on detail page", "observed": "Dialog dismissed, URL remains /products/cmn5r7wn20005l0miiglpgntz, product detail page still visible" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/product-detail/VAL-GOODS-006-purchase-dialog.png", "goods-catalog/product-detail/VAL-GOODS-006-after-dismiss.png"],
+        "consoleErrors": "none",
+        "network": "No navigation occurred after dialog dismissal"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-007",
+      "title": "For Sale button shows confirmation dialog",
+      "status": "pass",
+      "steps": [
+        { "action": "Click 'For sale' button on product detail page", "expected": "Confirmation dialog/modal appears", "observed": "Modal appeared with title 'Success' and message 'Listing request submitted successfully' with OK button" },
+        { "action": "Click 'OK' to dismiss dialog", "expected": "Dialog dismissed, user remains on detail page", "observed": "Dialog dismissed, URL remains /products/cmn5r7wn20005l0miiglpgntz, product detail page still visible" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/product-detail/VAL-GOODS-007-forsale-dialog.png", "goods-catalog/product-detail/VAL-GOODS-007-after-dismiss.png"],
+        "consoleErrors": "none",
+        "network": "No navigation occurred after dialog dismissal"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-GOODS-011",
+      "title": "Back navigation from product detail",
+      "status": "pass",
+      "steps": [
+        { "action": "Click 'Go back' button on product detail page", "expected": "Navigate back to Goods listing page with product grid visible", "observed": "Navigated back to http://localhost:3100/ (Goods home page) with banner carousel, search bar, and product grid all visible" }
+      ],
+      "evidence": {
+        "screenshots": ["goods-catalog/product-detail/VAL-GOODS-011-back-to-goods.png"],
+        "consoleErrors": "none",
+        "network": "GET / -> page loaded successfully"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: 5 passed, 0 failed. All product detail page flows work correctly — card navigation, field display, Purchase dialog, For Sale dialog, and back navigation."
+}

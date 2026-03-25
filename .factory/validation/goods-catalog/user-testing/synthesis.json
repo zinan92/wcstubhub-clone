@@ -1,0 +1,29 @@
+{
+  "milestone": "goods-catalog",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-GOODS-001",
+    "VAL-GOODS-002",
+    "VAL-GOODS-003",
+    "VAL-GOODS-004",
+    "VAL-GOODS-005",
+    "VAL-GOODS-006",
+    "VAL-GOODS-007",
+    "VAL-GOODS-008",
+    "VAL-GOODS-009",
+    "VAL-GOODS-010",
+    "VAL-GOODS-011",
+    "VAL-SEED-001"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}
