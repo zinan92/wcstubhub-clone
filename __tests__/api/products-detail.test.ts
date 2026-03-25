@@ -31,7 +31,7 @@ describe('GET /api/products/[id]', () => {
 
   it('should return product details for valid ID', async () => {
     const request = {} as NextRequest;
-    const response = await GET(request, { params: { id: testProductId } });
+    const response = await GET(request, { params: Promise.resolve({ id: testProductId }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -47,7 +47,7 @@ describe('GET /api/products/[id]', () => {
 
   it('should return 404 for non-existent product ID', async () => {
     const request = {} as NextRequest;
-    const response = await GET(request, { params: { id: 'nonexistent123' } });
+    const response = await GET(request, { params: Promise.resolve({ id: 'nonexistent123' }) });
     const data = await response.json();
 
     expect(response.status).toBe(404);
@@ -56,7 +56,7 @@ describe('GET /api/products/[id]', () => {
 
   it('should include all required fields in response', async () => {
     const request = {} as NextRequest;
-    const response = await GET(request, { params: { id: testProductId } });
+    const response = await GET(request, { params: Promise.resolve({ id: testProductId }) });
     const data = await response.json();
 
     expect(response.status).toBe(200);

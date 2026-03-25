@@ -14,7 +14,7 @@ interface Product {
 }
 
 interface ProductDetailPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
@@ -23,11 +23,22 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [showForSaleDialog, setShowForSaleDialog] = useState(false);
+  const [productId, setProductId] = useState<string>('');
 
   useEffect(() => {
+    const initParams = async () => {
+      const { id } = await params;
+      setProductId(id);
+    };
+    initParams();
+  }, [params]);
+
+  useEffect(() => {
+    if (!productId) return;
+
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`/api/products/${params.id}`);
+        const response = await fetch(`/api/products/${productId}`);
         if (response.ok) {
           const data = await response.json();
           setProduct(data);
@@ -42,7 +53,7 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     };
 
     fetchProduct();
-  }, [params.id]);
+  }, [productId]);
 
   const handleBack = () => {
     router.back();

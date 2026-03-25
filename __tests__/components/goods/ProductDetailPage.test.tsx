@@ -32,7 +32,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('renders product details after loading', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     // Wait for product to load
     await waitFor(() => {
@@ -45,7 +45,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('displays product image with correct alt text', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
       const img = screen.getByAltText('Messi #10 Argentina Jersey');
@@ -55,7 +55,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('shows Purchase and For sale buttons', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Purchase')).toBeDefined();
@@ -64,7 +64,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('opens Purchase dialog when Purchase button clicked', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Purchase')).toBeDefined();
@@ -79,7 +79,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('opens For sale dialog when For sale button clicked', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('For sale')).toBeDefined();
@@ -94,7 +94,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('closes Purchase dialog when OK clicked', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Purchase')).toBeDefined();
@@ -117,7 +117,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('closes For sale dialog when OK clicked', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('For sale')).toBeDefined();
@@ -140,7 +140,7 @@ describe('ProductDetailPage', () => {
   });
 
   it('calls router.back() when back button clicked', async () => {
-    render(<ProductDetailPage params={{ id: 'prod123' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
       expect(screen.getByLabelText('Go back')).toBeDefined();
@@ -158,7 +158,7 @@ describe('ProductDetailPage', () => {
       json: async () => ({ error: 'Product not found' }),
     });
 
-    render(<ProductDetailPage params={{ id: 'invalid' }} />);
+    render(<ProductDetailPage params={Promise.resolve({ id: 'invalid' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Product not found')).toBeDefined();
