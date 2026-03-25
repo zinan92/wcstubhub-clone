@@ -1,6 +1,6 @@
 {
   "milestone": "design-system",
-  "round": 1,
+  "round": 2,
   "status": "pass",
   "validatorsRun": {
     "test": { "passed": true, "command": "npx vitest run", "exitCode": 0 },
@@ -14,7 +14,13 @@
     "failedFeatures": []
   },
   "blockingIssues": [],
-  "appliedUpdates": [],
+  "appliedUpdates": [
+    {
+      "target": "services.yaml",
+      "description": "Fixed test command: removed --maxWorkers=4 flag which causes RangeError (options.minThreads and options.maxThreads must not conflict) with tinypool in vitest 2.1.9. Command changed from 'npx vitest run --maxWorkers=4' to 'npx vitest run'.",
+      "sourceFeature": "scrutiny-validator-design-system"
+    }
+  ],
   "suggestedGuidanceUpdates": [
     {
       "target": "AGENTS.md",
@@ -31,13 +37,17 @@
   ],
   "rejectedObservations": [
     {
-      "observation": "AGENTS.md documents the Tailwind Design Tokens convention well, including 'NEVER use arbitrary hex values'. The worker followed this convention perfectly. No gap identified.",
+      "observation": "AGENTS.md already documents the motion/Tailwind design token conventions comprehensively. No gaps found.",
       "reason": "Not actionable — confirms conventions are already documented. No change needed."
     },
     {
-      "observation": "Feature description uses 'text-primary, bg-accent' without shade numbers, which doesn't match the implementation pattern.",
-      "reason": "Feature descriptions are one-time artifacts, not living documentation. Fixing this has no future impact."
+      "observation": "AGENTS.md correctly documents that shared UI components (Button, AnimatedModal, Toast, Skeleton) should be used.",
+      "reason": "Not actionable — confirms existing documentation is correct."
+    },
+    {
+      "observation": "The 'useToast must be used within ToastProvider' error message pattern is good practice but not in AGENTS.md.",
+      "reason": "Implementation detail — standard React context hook pattern. Not worth formalizing as a convention in AGENTS.md."
     }
   ],
-  "previousRound": null
+  "previousRound": ".factory/validation/design-system/scrutiny/synthesis-round1.json"
 }
