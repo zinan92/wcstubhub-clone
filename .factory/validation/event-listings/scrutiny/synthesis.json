@@ -1,0 +1,61 @@
+{
+  "milestone": "event-listings",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0, "details": "18 test files, 114 tests all passed" },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0, "details": "Warnings only: 3 instances of <img> vs <Image /> (non-blocking)" }
+  },
+  "reviewsSummary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: All client-side fetch calls should check response.ok before calling response.json(). When !response.ok, display a user-facing error state rather than silently showing empty results. Example: `if (!response.ok) { setError('Failed to load data'); return; }`",
+      "evidence": "All four event tab pages (football, basketball, concert, and their shared patterns) do `const data = await response.json()` without checking response.ok. A server error silently shows 'No [events] found' instead of an error message. Same pattern exists in goods page.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: Components that use browser-specific APIs (Date.toLocaleDateString, toLocaleTimeString, window, etc.) should either have the 'use client' directive or be documented as only usable from client component parents. Currently card components (MatchCard, BasketballCard, ConcertCard) lack 'use client' but do client-side Date formatting.",
+      "evidence": "components/basketball/BasketballCard.tsx, components/football/MatchCard.tsx, and components/concert/ConcertCard.tsx all use new Date().toLocaleDateString() without 'use client' directives. They work only because they're imported from client component parents.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: Extract shared UI patterns into reusable components when the same pattern appears in 2+ places. Specifically: (1) ConfirmationDialog component for Purchase/For sale success dialogs, (2) DetailPageHeader with back button, (3) ActionButtons bar with For sale + Purchase buttons. Currently these are duplicated between product detail and event detail pages.",
+      "evidence": "app/events/[id]/page.tsx:239-283 and app/products/[id]/page.tsx:130-173 contain nearly identical confirmation dialog markup. Both pages also duplicate the back button header and fixed action buttons bar.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "API route uses `const where: any = {}` instead of typed Prisma.EventWhereInput for building query filters",
+      "reason": "Pre-existing pattern from products route. Minor style preference, not a convention gap. Would require touching all existing API routes to fix."
+    },
+    {
+      "observation": "next.config.ts image domain configuration needs documentation",
+      "reason": "Already documented in the code itself and the domains (picsum.photos, i.pravatar.cc) are standard placeholder services used only for seed data."
+    },
+    {
+      "observation": "@testing-library/user-event was added as a new dev dependency",
+      "reason": "Legitimate standard testing utility. Already installed and working. No documentation gap — it's a companion to @testing-library/react."
+    },
+    {
+      "observation": "Concert page has role='status' on spinner while football/basketball pages don't",
+      "reason": "Minor accessibility inconsistency. Concert's approach is actually better practice. Not worth an AGENTS.md update — it's a cosmetic difference that doesn't affect functionality."
+    },
+    {
+      "observation": "Image component inconsistency: event detail uses next/image Image while product detail uses plain <img>",
+      "reason": "Both approaches have trade-offs and the lint already warns about <img>. This will naturally converge as more features are built. Not blocking."
+    }
+  ],
+  "previousRound": null
+}

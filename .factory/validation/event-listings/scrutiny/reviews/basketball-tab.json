@@ -1,0 +1,39 @@
+{
+  "featureId": "basketball-tab",
+  "reviewedAt": "2026-03-25T09:05:00.000Z",
+  "commitId": "f39245b41420bbe41cea3fcde507c796035029ec",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The Basketball tab implementation is solid and meets all required behaviors. The page correctly fetches from GET /api/events?type=basketball, displays NBA match cards in 'Team1 VS Team2' format, implements case-insensitive search filtering by team name, and shows an empty state when no matches are found. The code closely mirrors the Football tab structure (as required by the feature description), adapting appropriately for basketball (centered layout without flags, basketball emoji header). Tests are comprehensive with 15 test cases covering rendering, API integration, search filtering, empty state, loading state, and card formatting. Minor non-blocking observations: (1) The feature description mentions 'team logos/icons' but the implementation uses no team logos — this is acceptable given that the database schema has no logo fields for basketball teams and the Football tab similarly uses emoji flags rather than image logos; (2) The fetch call doesn't check response.ok before calling .json(), which could cause silent failures on HTTP error responses — this is consistent with the Football page's pattern so it's a pre-existing convention, not a regression; (3) The BasketballCard component lacks a 'use client' directive but works because it's only used within a client component parent — still, it performs client-side date formatting via new Date() and toLocaleDateString() which is a runtime operation.",
+    "issues": [
+      {
+        "file": "app/basketball/page.tsx",
+        "line": 32,
+        "severity": "non_blocking",
+        "description": "No response.ok check after fetch('/api/events?type=basketball'). If the API returns a non-2xx status, response.json() may throw or return an error object that gets set as the events array. This is consistent with the Football tab's pattern, so not a regression, but worth noting as a shared weakness."
+      },
+      {
+        "file": "components/basketball/BasketballCard.tsx",
+        "line": 1,
+        "severity": "non_blocking",
+        "description": "The component comment says 'Teams with basketball icon' (line 35) but no basketball icon/emoji is actually rendered alongside team names. The feature description mentions 'team logos/icons' — while no logo data exists in the schema, a generic basketball emoji (🏀) between or beside team names could satisfy the spec more literally. This is cosmetic and the section header already has the emoji."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "Both Football and Basketball pages fetch data without checking response.ok before calling .json(). This is a shared pattern/weakness across event tab pages. If this is intentional (e.g., the API always returns JSON even on errors), it should be documented. If not, both should be fixed.",
+      "evidence": "app/basketball/page.tsx:32 and app/football/page.tsx:32 both do `const data = await response.json()` without checking `response.ok` first."
+    },
+    {
+      "area": "conventions",
+      "observation": "The BasketballCard component does not have a 'use client' directive despite performing client-side operations (Date formatting with toLocaleDateString/toLocaleTimeString). It works because it's only rendered within a 'use client' parent (BasketballPage), but this is fragile — if the card were ever imported from a Server Component, it would fail or produce hydration mismatches. The FootballMatchCard has the same pattern. AGENTS.md says 'use client only when needed' which is ambiguous about this case.",
+      "evidence": "components/basketball/BasketballCard.tsx:1 — no 'use client' directive, but uses new Date().toLocaleDateString() at lines 24-28. Same pattern in components/football/MatchCard.tsx."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "The basketball-tab feature passes review. The implementation correctly builds a Basketball tab page with search bar, NBA banner image, Basketball section header with emoji, and NBA match cards showing team names in 'Team1 VS Team2' format with date, venue, and price. Cards are clickable links to /events/[id]. The code reuses the GET /api/events?type=basketball endpoint and SearchBar component. Search filters by team name (case-insensitive) and shows an empty state when no results match. The implementation follows the same well-structured pattern as the Football tab. 15 tests comprehensively cover all functionality. Two non-blocking issues noted: missing response.ok check (consistent with existing convention) and a stale comment about basketball icons that aren't rendered."
+}
