@@ -25,4 +25,76 @@ model User {
   inviteCode         String?  @unique
   avatarUrl          String?
   createdAt          DateTime @default(now())
+  orders             Order[]
+}
+
+model Product {
+  id            String   @id @default(cuid())
+  name          String
+  description   String
+  imageUrl      String
+  price         Float
+  category      String
+  stock         Int
+  remainingQty  Int
+  createdAt     DateTime @default(now())
+}
+
+enum EventType {
+  football
+  basketball
+  concert
+}
+
+model Event {
+  id              String    @id @default(cuid())
+  title           String
+  type            EventType
+  team1           String?
+  team2           String?
+  team1Flag       String?
+  team2Flag       String?
+  artistName      String?
+  artistImageUrl  String?
+  date            DateTime
+  venue           String
+  price           Float
+  description     String?
+  remainingQty    Int
+  createdAt       DateTime  @default(now())
+}
+
+enum ItemType {
+  product
+  event
+}
+
+enum OrderStatus {
+  to_be_paid
+  paid
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  itemType        ItemType
+  itemId          String
+  itemName        String
+  itemImageUrl    String
+  purchasePrice   Float
+  currentPrice    Float
+  quantity        Int
+  sharesHeld      Int
+  status          OrderStatus
+  orderNumber     String      @unique
+  transactionTime DateTime
+  createdAt       DateTime    @default(now())
+}
+
+model VipTier {
+  id        String @id @default(cuid())
+  level     Int    @unique
+  name      String
+  threshold Float
 }
