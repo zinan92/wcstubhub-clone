@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import Button from '@/components/ui/Button';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -168,13 +169,16 @@ export default function LoginPage() {
           )}
 
           {/* Login Button */}
-          <button
+          <Button
             type="submit"
+            variant="primary"
+            size="lg"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-primary-500 to-accent-500 text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+            loading={loading}
+            className="w-full"
           >
-            {loading ? 'Logging in...' : 'Login'}
-          </button>
+            Login
+          </Button>
         </form>
 
         {/* Register Link */}
