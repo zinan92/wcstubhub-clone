@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import SearchBar from '@/components/goods/SearchBar';
 import BasketballCard from '@/components/basketball/BasketballCard';
+import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 
 interface BasketballEvent {
   id: string;
@@ -89,8 +90,10 @@ export default function BasketballPage() {
       {/* Match Cards */}
       <div className="px-4">
         {isLoading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+          <div className="space-y-4">
+            {[...Array(4)].map((_, i) => (
+              <MatchCardSkeleton key={i} />
+            ))}
           </div>
         ) : filteredEvents.length === 0 ? (
           <div className="text-center py-12">

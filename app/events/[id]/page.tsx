@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import Image from 'next/image';
+import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 
 interface Event {
   id: string;
@@ -103,8 +104,10 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center pb-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      <div className="min-h-screen bg-white pb-20">
+        <div className="px-4 pt-16">
+          <MatchCardSkeleton />
+        </div>
       </div>
     );
   }

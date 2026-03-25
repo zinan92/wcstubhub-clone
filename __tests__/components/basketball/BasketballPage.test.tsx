@@ -132,13 +132,13 @@ describe('BasketballPage', () => {
     });
   });
 
-  it('displays loading spinner while fetching', () => {
+  it('displays loading skeleton while fetching', () => {
     (global.fetch as any).mockImplementation(() => new Promise(() => {}));
 
     render(<BasketballPage />);
     
-    const spinner = document.querySelector('.animate-spin');
-    expect(spinner).toBeDefined();
+    const skeleton = document.querySelector('[data-testid="match-card-skeleton"]');
+    expect(skeleton).toBeDefined();
   });
 
   it('filters basketball events by team name when searching', async () => {

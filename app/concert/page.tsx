@@ -5,6 +5,7 @@ import { Music } from 'lucide-react';
 import Image from 'next/image';
 import SearchBar from '@/components/goods/SearchBar';
 import ConcertCard from '@/components/concert/ConcertCard';
+import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 
 interface ConcertEvent {
   id: string;
@@ -90,11 +91,10 @@ export default function ConcertPage() {
       {/* Concert Cards */}
       <div className="px-4">
         {isLoading ? (
-          <div className="flex justify-center py-12">
-            <div 
-              className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"
-              role="status"
-            />
+          <div className="space-y-4">
+            {[...Array(4)].map((_, i) => (
+              <MatchCardSkeleton key={i} />
+            ))}
           </div>
         ) : filteredEvents.length === 0 ? (
           <div className="text-center py-12">

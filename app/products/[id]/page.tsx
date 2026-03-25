@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
+import { ProductCardSkeleton } from '@/components/ui/Skeleton';
 
 interface Product {
   id: string;
@@ -77,8 +78,10 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center pb-20">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      <div className="min-h-screen bg-white pb-20">
+        <div className="px-4 pt-16">
+          <ProductCardSkeleton />
+        </div>
       </div>
     );
   }

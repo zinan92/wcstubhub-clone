@@ -191,14 +191,15 @@ describe('ConcertPage', () => {
     });
   });
 
-  it('displays loading spinner while fetching', () => {
+  it('displays loading skeleton while fetching', () => {
     (global.fetch as any).mockReturnValueOnce(
       new Promise(() => {}) // Never resolves
     );
 
     render(<ConcertPage />);
 
-    expect(screen.getByRole('status', { hidden: true })).toBeInTheDocument();
+    // Should show skeleton loaders instead of spinner
+    expect(screen.getAllByTestId('match-card-skeleton')).toHaveLength(4);
   });
 
   it('shows only concert events (no football or basketball)', async () => {

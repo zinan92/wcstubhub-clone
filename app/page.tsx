@@ -6,6 +6,7 @@ import BannerCarousel from '@/components/goods/BannerCarousel';
 import SearchBar from '@/components/goods/SearchBar';
 import ProductGrid from '@/components/goods/ProductGrid';
 import FloatingCustomerService from '@/components/goods/FloatingCustomerService';
+import { ProductCardSkeleton } from '@/components/ui/Skeleton';
 
 interface Product {
   id: string;
@@ -77,8 +78,10 @@ export default function Home() {
       {/* Product Grid */}
       <div className="px-4">
         {isLoading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+          <div className="grid grid-cols-2 gap-4">
+            {[...Array(6)].map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
           </div>
         ) : (
           <ProductGrid products={filteredProducts} />
