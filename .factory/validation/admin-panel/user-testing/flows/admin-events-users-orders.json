@@ -1,0 +1,126 @@
+{
+  "groupId": "admin-events-users-orders",
+  "testedAt": "2026-03-25T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "adminLoginUrl": "http://localhost:3100/admin/login",
+    "adminCredentials": "admin@example.com / admin123",
+    "userCredentials": "test@example.com / password123",
+    "adminSession": "35272ef94ad1__admin_events",
+    "userSession": "35272ef94ad1__user_events"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-ADMIN-009",
+      "title": "Create event with valid data",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /admin/login and login as admin", "expected": "Redirect to admin dashboard", "observed": "Redirected to /admin/dashboard with stats visible" },
+        { "action": "Navigate to /admin/events", "expected": "Events management page with event list", "observed": "Events page showing 12 events with Create Event button" },
+        { "action": "Click Create Event button", "expected": "Create event form appears", "observed": "Form with title, type, date, venue, price, description fields appeared" },
+        { "action": "Select Football type", "expected": "Team name fields appear", "observed": "Team 1 name, Team 2 name, and flag URL fields appeared" },
+        { "action": "Fill form: title='Validator Test Match', type=football, team1='Brazil', team2='Germany', date='2026-06-15T18:00', venue='Test Stadium', price=55", "expected": "All fields populated", "observed": "All fields filled correctly" },
+        { "action": "Click Create button", "expected": "Event created and appears in list", "observed": "Event created, list now shows 13 events with 'Validator Test Match' visible at top" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-009-create-form.png",
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-009-event-in-list.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Event creation successful - event appeared in list after form submission"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-010",
+      "title": "Edit and delete events",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Edit button on 'Validator Test Match' event", "expected": "Edit form opens with pre-filled data", "observed": "Edit form opened with Football type selected, Save button visible" },
+        { "action": "Change venue to 'Updated Stadium' and click Save", "expected": "Event updated, venue changes in list", "observed": "Event updated, venue changed to 'Updated Stadium' in list" },
+        { "action": "Click Delete button on 'Validator Test Match'", "expected": "Delete confirmation dialog appears", "observed": "Confirmation dialog: 'Are you sure you want to delete Validator Test Match? This action cannot be undone.' with Cancel and Delete buttons" },
+        { "action": "Click Delete to confirm", "expected": "Event removed from list", "observed": "Event deleted, list reduced from 13 to 12 events" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-010-edit-form.png",
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-010-edit-saved.png",
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-010-delete-confirmation.png",
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-010-after-delete.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Edit and delete operations successful - changes reflected in event list"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-011",
+      "title": "View users list",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /admin/users via sidebar", "expected": "Users management page with user list", "observed": "User Management page displayed with 2 users" },
+        { "action": "Verify table columns", "expected": "Email, VIP level, account status visible", "observed": "Table shows: EMAIL, NAME, VIP LEVEL, ROLE, ACCOUNT STATUS, CREATED DATE columns" },
+        { "action": "Verify user data", "expected": "Registered users with correct info", "observed": "admin@example.com (VIP8, Admin) and test@example.com (VIP2, Active) displayed with avatars" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-011-users-list.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Users list loaded successfully"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-012",
+      "title": "View orders with filters",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /admin/orders via sidebar", "expected": "Orders management page with all orders", "observed": "Order Management page showing 2 orders with Status Filter dropdown set to 'All'" },
+        { "action": "Verify orders list shows all orders", "expected": "All orders visible with details", "observed": "2 orders visible: ORD-2026-001235 (Phoenix Suns VS Los Angeles Lakers, $145.00, To be paid) and ORD-2026-001234 (Lionel Messi #10, $299.98, Paid)" },
+        { "action": "Filter by 'Paid' status", "expected": "Only paid orders shown", "observed": "1 order shown: ORD-2026-001234 with 'Paid' status badge" },
+        { "action": "Filter by 'To be paid' status", "expected": "Only unpaid orders shown", "observed": "1 order shown: ORD-2026-001235 with 'To be paid' status badge" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-012-orders-list.png",
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-012-filtered-paid.png",
+          "admin-panel/admin-events-users-orders/VAL-ADMIN-012-filtered-tobepaid.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Orders list and filtering loaded successfully"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-005",
+      "title": "Admin creates event visible in correct tab",
+      "status": "pass",
+      "steps": [
+        { "action": "Admin creates football event 'Validator Cross Test Match' (TestTeamA vs TestTeamB)", "expected": "Event created successfully in admin panel", "observed": "Event created and visible in admin events list as Football type" },
+        { "action": "Login as regular user in second browser session (375x812 viewport)", "expected": "User logged in successfully", "observed": "Logged in as test@example.com, redirected to home page" },
+        { "action": "Navigate to /football tab", "expected": "Football event visible", "observed": "TestTeamA VS TestTeamB visible at bottom of football tab with correct details (Jul 20, 2026, Cross Test Arena, $75.00)" },
+        { "action": "Navigate to /basketball tab", "expected": "Football event NOT visible", "observed": "Only basketball games shown (Phoenix Suns, LA Lakers, etc.) - no TestTeamA/TestTeamB" },
+        { "action": "Navigate to /concert tab", "expected": "Football event NOT visible", "observed": "Only concert events shown (Taylor Swift, Ed Sheeran, The Weeknd) - no TestTeamA/TestTeamB" },
+        { "action": "Clean up: Admin deletes the test event", "expected": "Event removed", "observed": "Event deleted from admin panel after confirmation" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-events-users-orders/VAL-CROSS-005-admin-created.png",
+          "admin-panel/admin-events-users-orders/VAL-CROSS-005-football-has-event.png",
+          "admin-panel/admin-events-users-orders/VAL-CROSS-005-football-scrolled.png",
+          "admin-panel/admin-events-users-orders/VAL-CROSS-005-basketball-no-event.png",
+          "admin-panel/admin-events-users-orders/VAL-CROSS-005-concert-no-event.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Event creation and retrieval across tabs working correctly"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: 5 passed, 0 failed. All admin event CRUD operations (create, edit, delete), users list, orders with filtering, and cross-area event visibility work correctly."
+}

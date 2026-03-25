@@ -1,0 +1,109 @@
+{
+  "groupId": "admin-auth",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "adminLoginUrl": "http://localhost:3100/admin/login",
+    "adminDashboardUrl": "http://localhost:3100/admin/dashboard",
+    "adminCredentials": "admin@example.com / admin123",
+    "regularUserCredentials": "test@example.com / password123",
+    "browserSession": "35272ef94ad1__admin_auth"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-ADMIN-001",
+      "title": "Admin login with valid credentials",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /admin/login", "expected": "Admin login form displayed", "observed": "Admin login form displayed with Email, Password fields and Login button" },
+        { "action": "Fill email with admin@example.com and password with admin123", "expected": "Fields populated", "observed": "Fields populated correctly" },
+        { "action": "Click Login button", "expected": "Redirect to /admin/dashboard", "observed": "Redirected to /admin/dashboard" },
+        { "action": "Verify dashboard content", "expected": "Dashboard with stats visible", "observed": "Dashboard shows Total Users 2, Total Products 6, Total Events 13, Total Orders 2 with sidebar navigation" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-auth/VAL-ADMIN-001-login-form.png",
+          "admin-panel/admin-auth/VAL-ADMIN-001-admin-dashboard.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/callback/credentials -> 200 (NextAuth), redirect to /admin/dashboard"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-002",
+      "title": "Admin login fails with invalid credentials",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear cookies and navigate to /admin/login", "expected": "Admin login form displayed", "observed": "Admin login form displayed" },
+        { "action": "Fill email with admin@example.com and wrong password 'wrongpassword'", "expected": "Fields populated", "observed": "Fields populated" },
+        { "action": "Click Login button", "expected": "Error message displayed, stay on login page", "observed": "Error message 'Invalid email or password' displayed in red alert box, remained on /admin/login" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-auth/VAL-ADMIN-002-error-message.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/callback/credentials -> 401 (authentication failed)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-003",
+      "title": "Non-admin user denied admin access",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear cookies and navigate to /login", "expected": "Regular user login form displayed", "observed": "Regular user login form with Phone/Email tabs displayed" },
+        { "action": "Login as test@example.com with password123", "expected": "Redirect to home page", "observed": "Redirected to / (Goods home page)" },
+        { "action": "Navigate to /admin/dashboard", "expected": "Access denied - redirect to home or 403", "observed": "Redirected to / (home page). Regular user cannot access admin routes." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-auth/VAL-ADMIN-003-access-denied.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /admin/dashboard -> redirect to /"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-004",
+      "title": "Dashboard displays overview stats",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear cookies and login as admin", "expected": "Redirect to admin dashboard", "observed": "Redirected to /admin/dashboard" },
+        { "action": "Verify dashboard stats", "expected": "Total Users, Products, Events, Orders displayed matching database", "observed": "Total Users: 2, Total Products: 6, Total Events: 13, Total Orders: 2 - all match database counts (verified via sqlite3 query)" },
+        { "action": "Verify Quick Actions section", "expected": "Quick action links present", "observed": "Quick Actions section with Manage Products, Manage Events, View Users, View Orders links" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-auth/VAL-ADMIN-004-dashboard-stats.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/admin/* -> 200 (dashboard data loaded)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-013",
+      "title": "Admin logout",
+      "status": "pass",
+      "steps": [
+        { "action": "While logged in as admin on dashboard, click Logout button", "expected": "Redirect to admin login page", "observed": "Redirected to /admin/login" },
+        { "action": "Try to navigate to /admin/dashboard after logout", "expected": "Cannot access, redirect to admin login", "observed": "Redirected to /admin/login - admin session fully cleared" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-auth/VAL-ADMIN-013-admin-login-after-logout.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/signout -> 200, redirect to /admin/login"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. Admin login works with valid credentials (VAL-ADMIN-001), shows error for invalid credentials (VAL-ADMIN-002), denies access to non-admin users (VAL-ADMIN-003), displays correct dashboard stats matching database (VAL-ADMIN-004), and logout properly clears session (VAL-ADMIN-013)."
+}

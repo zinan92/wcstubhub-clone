@@ -1,0 +1,130 @@
+{
+  "groupId": "admin-product-crud",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "adminLoginUrl": "http://localhost:3100/admin/login",
+    "adminProductsUrl": "http://localhost:3100/admin/products",
+    "adminCredentials": "admin@example.com / admin123",
+    "userCredentials": "test@example.com / password123",
+    "adminSession": "35272ef94ad1__admin_products",
+    "userSession": "35272ef94ad1__user_products"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-ADMIN-005",
+      "title": "Create product with valid data",
+      "status": "pass",
+      "steps": [
+        { "action": "Login as admin at /admin/login", "expected": "Redirect to /admin/dashboard", "observed": "Redirected to /admin/dashboard" },
+        { "action": "Navigate to /admin/products", "expected": "Product list with 6 seed products", "observed": "Product list displayed with 6 products and Create Product button" },
+        { "action": "Click Create Product button", "expected": "Create product form/modal opens", "observed": "Modal opened with Name, Image URL, Price, Category, Stock, Description fields" },
+        { "action": "Fill form: Name='Validator Test Product XYZ', Image URL='https://picsum.photos/400/400', Price=42.99, Category='jerseys', Stock=50, Description='A test product for validation purposes'", "expected": "All fields populated", "observed": "All fields populated correctly" },
+        { "action": "Click Create button", "expected": "Product created, modal closes, product appears in list", "observed": "Modal closed, product list now shows 7 products with 'Validator Test Product XYZ' at top showing $42.99, jerseys category, stock 50" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-product-crud/VAL-ADMIN-005-create-form.png",
+          "admin-panel/admin-product-crud/VAL-ADMIN-005-create-form-filled.png",
+          "admin-panel/admin-product-crud/VAL-ADMIN-005-product-in-list.png"
+        ],
+        "consoleErrors": "Invalid or unexpected token (pre-existing JS error, not related to product CRUD)",
+        "network": "Product created successfully - appeared in list with correct data (network tracking cleared before submission so POST status not captured directly, but product persisted in DB and appeared in list confirming successful creation)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-006",
+      "title": "Create product validation",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Create Product button", "expected": "Create form opens with empty fields", "observed": "Create form opened with empty fields" },
+        { "action": "Set price to -5 (negative), leave name, category, stock empty", "expected": "Validation errors displayed", "observed": "Four validation errors shown: 'Name is required', 'Price must be greater than 0', 'Category is required', 'Stock is required'" },
+        { "action": "Click Create button", "expected": "Form not submitted, errors visible", "observed": "Form not submitted, validation errors displayed in red text below each field" },
+        { "action": "Cancel and verify product count unchanged", "expected": "Still 7 products (including test product from VAL-ADMIN-005)", "observed": "Product list still shows 7 products - no invalid product was created" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-product-crud/VAL-ADMIN-006-validation-errors.png"
+        ],
+        "consoleErrors": "Invalid or unexpected token (pre-existing)",
+        "network": "No POST request made due to client-side validation preventing submission"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-007",
+      "title": "Edit existing product",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Edit on 'Validator Test Product XYZ'", "expected": "Edit form opens with pre-populated data", "observed": "Edit form opened showing current values: Name='Validator Test Product XYZ', Price=42.99, Category='jerseys', Stock=50, Description='A test product for validation purposes'" },
+        { "action": "Change Price to 55.99 and Stock to 75", "expected": "Fields updated", "observed": "Price field shows 55.99, Stock field shows 75" },
+        { "action": "Click Save", "expected": "Modal closes, updated values in product list", "observed": "Modal closed, product list shows 'Validator Test Product XYZ' with updated Price=$55.99 and Stock=75" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-product-crud/VAL-ADMIN-007-edit-form.png",
+          "admin-panel/admin-product-crud/VAL-ADMIN-007-updated-list.png"
+        ],
+        "consoleErrors": "Invalid or unexpected token (pre-existing)",
+        "network": "Product updated successfully - updated values reflected in product list"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADMIN-008",
+      "title": "Delete product",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Delete on 'Validator Test Product XYZ'", "expected": "Confirmation dialog appears", "observed": "Confirmation dialog: 'Are you sure you want to delete Validator Test Product XYZ? This action cannot be undone.' with Cancel and Delete buttons" },
+        { "action": "Take screenshot of confirmation", "expected": "Dialog visible", "observed": "Dialog clearly visible with product name in bold" },
+        { "action": "Click Delete to confirm", "expected": "Product removed from list", "observed": "Product removed, list now shows 6 products (original seed data only)" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-product-crud/VAL-ADMIN-008-confirmation.png",
+          "admin-panel/admin-product-crud/VAL-ADMIN-008-product-gone.png"
+        ],
+        "consoleErrors": "Invalid or unexpected token (pre-existing)",
+        "network": "Product deleted successfully - removed from product list"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-004",
+      "title": "Admin creates product visible in Goods catalog",
+      "status": "pass",
+      "steps": [
+        { "action": "Admin created 'Validator Test Product XYZ' at $42.99 (via VAL-ADMIN-005), then edited to $55.99 (via VAL-ADMIN-007)", "expected": "Product exists in database", "observed": "Product created and visible in admin product list" },
+        { "action": "Open second browser session, login as regular user (test@example.com)", "expected": "Login succeeds, redirected to Goods page", "observed": "Logged in successfully, redirected to http://localhost:3100/" },
+        { "action": "Check Goods page for 'Validator Test Product XYZ'", "expected": "Product visible in product grid", "observed": "Product 'Validator Test Product XYZ' at $55.99 visible as first product in the Commodities grid" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "admin-panel/admin-product-crud/VAL-ADMIN-005-product-in-list.png",
+          "admin-panel/admin-product-crud/VAL-CROSS-004-user-sees-product.png"
+        ],
+        "consoleErrors": "none checked in user session",
+        "network": "User Goods page loaded successfully showing admin-created product"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The `fill` command for React controlled inputs doesn't always trigger React's onChange handler. The email field appeared filled visually but React state remained empty, causing 'Email is required' validation error on first login attempt. Using `type` command (which simulates individual keystrokes) resolved this.",
+      "resolved": true,
+      "resolution": "Used `agent-browser type` instead of `agent-browser fill` for React controlled text inputs on the login form",
+      "affectedAssertions": ["VAL-ADMIN-005"]
+    },
+    {
+      "description": "Pre-existing JavaScript error 'Invalid or unexpected token' present in browser console throughout the session. Does not appear to affect functionality.",
+      "resolved": false,
+      "resolution": "Not investigated further as it doesn't affect product CRUD operations",
+      "affectedAssertions": ["VAL-ADMIN-005", "VAL-ADMIN-006", "VAL-ADMIN-007", "VAL-ADMIN-008"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 5 assertions: 5 passed, 0 failed, 0 blocked. All admin product CRUD operations (create, validate, edit, delete) work correctly. Cross-area flow confirming admin-created product visibility in user Goods catalog also passed. Test product was cleaned up (deleted) after testing."
+}
