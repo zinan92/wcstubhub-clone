@@ -1,7 +1,7 @@
 {
   "milestone": "goods-catalog",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "validatorsRun": {
     "test": {
       "passed": true,
@@ -10,42 +10,61 @@
       "summary": "10 test files, 58 tests passed"
     },
     "typecheck": {
-      "passed": false,
+      "passed": true,
       "command": "pnpm typecheck",
-      "exitCode": 2,
-      "summary": "3 TypeScript errors in .next/types/ - Next.js 15 async params not awaited in app/api/products/[id]/route.ts and app/products/[id]/page.tsx. The params type must be Promise<{id: string}> and awaited before use."
+      "exitCode": 0,
+      "summary": "0 errors — Next.js 15 async params fix resolved all prior typecheck failures"
     },
     "lint": {
       "passed": true,
       "command": "pnpm lint",
       "exitCode": 0,
-      "summary": "3 warnings (no-img-element in ProductCard, BannerCarousel, product detail page) - non-blocking"
+      "summary": "3 warnings (no-img-element in ProductCard, BannerCarousel, product detail page) — non-blocking"
     }
   },
   "reviewsSummary": {
-    "total": 0,
-    "passed": 0,
+    "total": 3,
+    "passed": 3,
     "failed": 0,
-    "failedFeatures": [],
-    "note": "Feature reviews not performed due to typecheck failure"
+    "failedFeatures": []
   },
-  "blockingIssues": [
-    {
-      "featureId": "product-detail-page",
-      "severity": "blocking",
-      "description": "TypeScript errors: Next.js 15 requires params to be typed as Promise<{id: string}> and awaited. Both app/api/products/[id]/route.ts and app/products/[id]/page.tsx use synchronous params destructuring ({params}: {params: {id: string}}) which is incompatible with Next.js 15's async params API. The route handler GET function and page component need to await params before accessing id.",
-      "suggestedFix": "In app/products/[id]/page.tsx: change type to params: Promise<{id: string}> and use 'const {id} = await params'. In app/api/products/[id]/route.ts: same pattern - type params as Promise and await before accessing id."
-    }
-  ],
+  "blockingIssues": [],
   "appliedUpdates": [],
   "suggestedGuidanceUpdates": [
     {
       "target": "AGENTS.md",
-      "suggestion": "Add convention: In Next.js 15, dynamic route params are async. All page.tsx and route.ts files with [param] segments must type params as Promise<{param: type}> and await them. Example: const { id } = await params;",
-      "evidence": "product-detail-page feature typed params synchronously in both page.tsx and route.ts, causing 3 typecheck errors. This is a Next.js 15 breaking change that will affect all future dynamic routes (events/[id], admin routes, etc.).",
+      "suggestion": "Add convention for shared type definitions: 'Define shared TypeScript interfaces in the types/ directory. For Prisma model types used in client components, create a types/models.ts file rather than duplicating interfaces in each component.' Currently Product type is defined identically in 3 files.",
+      "evidence": "goods-home-page review found identical Product interface in app/page.tsx, components/goods/ProductCard.tsx, and components/goods/ProductGrid.tsx. This will worsen as more model types are needed for events, orders, etc.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Expand the Next.js 15 async params convention to cover client components: 'For client components receiving params as props, use useEffect to unwrap the Promise: useEffect(() => { params.then(p => setId(p.id)); }, [params]). Alternatively, use React.use(params) if the component can handle Suspense boundaries.'",
+      "evidence": "fix-nextjs15-async-params worker had to figure out the client component pattern independently. AGENTS.md only documents the server-side 'const { id } = await params' pattern. Both product-detail-page and fix reviews flagged this gap.",
       "isSystemic": true
     }
   ],
-  "rejectedObservations": [],
-  "previousRound": null
+  "rejectedObservations": [
+    {
+      "observation": "Convention for <img> vs next/image should be documented in AGENTS.md",
+      "reason": "The use of plain <img> tags is a pragmatic choice for external placeholder URLs (picsum.photos). Once real images are used, this convention may change. Documenting it now would prematurely codify a placeholder-era workaround. Lint warnings already flag this."
+    },
+    {
+      "observation": "AGENTS.md should document which API routes require auth vs public",
+      "reason": "The current middleware pattern protects all non-auth routes, which is the correct default. Documenting specific route auth scope is premature — when public endpoints are needed, the middleware matcher should be updated and documented at that time."
+    },
+    {
+      "observation": "AGENTS.md already has Next.js 15 async params convention",
+      "reason": "duplicate — already documented, confirmed by fix-nextjs15-async-params review"
+    },
+    {
+      "observation": "Fullstack-worker skill procedure was followed correctly (no gaps)",
+      "reason": "No action needed — positive observation, no changes required"
+    },
+    {
+      "observation": "Fix worker skill procedure was followed correctly (no gaps)",
+      "reason": "No action needed — positive observation, no changes required"
+    }
+  ],
+  "previousRound": ".factory/validation/goods-catalog/scrutiny/synthesis.json (round 1, status: fail)"
 }

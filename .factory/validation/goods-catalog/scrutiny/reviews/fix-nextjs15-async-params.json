@@ -1,0 +1,38 @@
+{
+  "featureId": "fix-nextjs15-async-params",
+  "reviewedAt": "2026-03-25T08:10:00.000Z",
+  "commitId": "f4b9e8b14a4652e70d5c96bed84da28cbc306bca",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The fix correctly addresses the Next.js 15 async params typecheck errors in both the API route handler and the page component. The API route change is minimal and idiomatic — params typed as Promise<{id: string}> and awaited before destructuring. The page component uses a two-useEffect pattern: one to unwrap the Promise into state, another to fetch when the product ID is available. While React.use() would be more idiomatic for Next.js 15 client components, the current approach is functionally correct, type-safe, and all tests pass. Test files were properly updated to use Promise.resolve() for params, matching the new type signatures.",
+    "issues": [
+      {
+        "file": "app/products/[id]/page.tsx",
+        "line": 31,
+        "severity": "non_blocking",
+        "description": "The two-useEffect pattern (one to unwrap params Promise, one to fetch data) introduces an extra render cycle with an empty productId state. A more idiomatic Next.js 15 approach would be to use React.use(params) to synchronously unwrap the Promise, or to make this a Server Component that awaits params directly. However, the current approach is functionally correct and type-safe."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "AGENTS.md already includes the Next.js 15 async params convention ('In Next.js 15, dynamic route params are async Promises. Type as Promise<{param: type}> and await before use'). This was likely added by the scrutiny validator after round 1. The convention is clear and sufficient for future dynamic routes.",
+      "evidence": "AGENTS.md contains: 'In Next.js 15, dynamic route params are async Promises. Type as `Promise<{param: type}>` and `await` before use: `const { id } = await params`'"
+    },
+    {
+      "area": "conventions",
+      "observation": "The worker used a useEffect + useState pattern to unwrap the Promise in the client component, but the AGENTS.md convention only shows the server-side pattern (const { id } = await params). For client components that receive params as a prop, the convention should also mention either React.use(params) or the useEffect unwrap pattern as the recommended approach, to avoid future workers needing to figure this out independently.",
+      "evidence": "app/products/[id]/page.tsx lines 31-36 use useEffect to unwrap params, while AGENTS.md only documents the 'const { id } = await params' pattern which only works in async server components or async route handlers."
+    },
+    {
+      "area": "skills",
+      "observation": "Worker followed the skill procedure: read feature description, checked shared state, implemented the fix, ran typecheck and tests, attempted manual verification with agent-browser (though couldn't get past auth). skillFeedback.followedProcedure is true with no deviations.",
+      "evidence": "Transcript shows sequential execution: read context files → identified typecheck errors → edited source files → edited test files → ran pnpm typecheck (exit 0) → ran vitest (58 tests pass) → attempted browser verification → committed."
+    }
+  ],
+  "addressesFailureFrom": ".factory/validation/goods-catalog/scrutiny/synthesis.json",
+  "summary": "The fix adequately addresses the original round 1 typecheck failure. The worker correctly updated both app/api/products/[id]/route.ts and app/products/[id]/page.tsx to use the Next.js 15 async params pattern (Promise<{id: string}> + await). All 12 affected test cases across 2 test files were updated to use Promise.resolve(). TypeScript compilation passes with 0 errors and all 58 tests pass. The only non-blocking observation is that the client component uses a two-useEffect unwrap pattern instead of the more idiomatic React.use(), but this is functionally correct. PASS."
+}
