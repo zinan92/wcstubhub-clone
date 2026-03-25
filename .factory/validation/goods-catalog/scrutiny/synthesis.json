@@ -1,0 +1,51 @@
+{
+  "milestone": "goods-catalog",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "npx vitest run",
+      "exitCode": 0,
+      "summary": "10 test files, 58 tests passed"
+    },
+    "typecheck": {
+      "passed": false,
+      "command": "pnpm typecheck",
+      "exitCode": 2,
+      "summary": "3 TypeScript errors in .next/types/ - Next.js 15 async params not awaited in app/api/products/[id]/route.ts and app/products/[id]/page.tsx. The params type must be Promise<{id: string}> and awaited before use."
+    },
+    "lint": {
+      "passed": true,
+      "command": "pnpm lint",
+      "exitCode": 0,
+      "summary": "3 warnings (no-img-element in ProductCard, BannerCarousel, product detail page) - non-blocking"
+    }
+  },
+  "reviewsSummary": {
+    "total": 0,
+    "passed": 0,
+    "failed": 0,
+    "failedFeatures": [],
+    "note": "Feature reviews not performed due to typecheck failure"
+  },
+  "blockingIssues": [
+    {
+      "featureId": "product-detail-page",
+      "severity": "blocking",
+      "description": "TypeScript errors: Next.js 15 requires params to be typed as Promise<{id: string}> and awaited. Both app/api/products/[id]/route.ts and app/products/[id]/page.tsx use synchronous params destructuring ({params}: {params: {id: string}}) which is incompatible with Next.js 15's async params API. The route handler GET function and page component need to await params before accessing id.",
+      "suggestedFix": "In app/products/[id]/page.tsx: change type to params: Promise<{id: string}> and use 'const {id} = await params'. In app/api/products/[id]/route.ts: same pattern - type params as Promise and await before accessing id."
+    }
+  ],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: In Next.js 15, dynamic route params are async. All page.tsx and route.ts files with [param] segments must type params as Promise<{param: type}> and await them. Example: const { id } = await params;",
+      "evidence": "product-detail-page feature typed params synchronously in both page.tsx and route.ts, causing 3 typecheck errors. This is a Next.js 15 breaking change that will affect all future dynamic routes (events/[id], admin routes, etc.).",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [],
+  "previousRound": null
+}
