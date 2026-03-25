@@ -1,0 +1,43 @@
+### VAL-UX-001: Bottom Tab Bar Frosted Glass / Elevated Styling
+The bottom tab navigation bar (`BottomTabNavigation.tsx`) must NOT use a plain white background with a simple top border. It must have either a frosted glass effect (CSS `backdrop-filter: blur(...)` with a semi-transparent background) or an elevated appearance (box-shadow with no visible top border), giving a modern, premium feel. At 375px viewport width, the bar must be visually distinct from the page content behind it.
+Evidence: Screenshot of the bottom tab bar at 375px viewport width. Inspect computed styles: confirm `backdrop-filter` is applied with blur ≥ 10px OR `box-shadow` is present. Confirm `bg-white` and `border-t border-gray-200` are replaced with translucent/elevated equivalents.
+
+### VAL-UX-002: Active Tab Animated Indicator
+The currently active tab in the bottom navigation must display an animated indicator beyond a simple color change. Acceptable implementations: an animated underline/pill that slides to the active tab position, a scale/bounce animation on the active icon, or a morphing background highlight with a CSS transition/animation. The indicator transition must be smooth (duration ≥ 200ms) and triggered on every tab switch.
+Evidence: Screen recording of switching between all 5 tabs (Goods → Football → Basketball → Concert → My). Verify the active indicator animates between positions rather than snapping instantly. Inspect CSS: confirm `transition` or `@keyframes` animation is applied to the indicator element with duration ≥ 200ms.
+
+### VAL-UX-003: Page Content Entrance Animation on Route Change
+When navigating between the 5 main tabs or entering any page, the page content must animate in with a fade, slide-up, or combined fade+slide entrance. Content must NOT appear instantaneously. The entrance animation duration must be between 200ms and 500ms. This applies to all tab routes (`/`, `/football`, `/basketball`, `/concert`, `/my`) and detail pages (`/products/[id]`, `/events/[id]`).
+Evidence: Screen recording of navigating between tabs and into detail pages at 375px viewport width. Content should visibly transition in. Inspect the wrapping element for `animation`, `transition`, or a library-based animation (e.g., Framer Motion `motion.div` with `initial`/`animate` props). Confirm animation duration is 200–500ms.
+
+### VAL-UX-004: Skeleton Loaders Replace Spinners on Data-Fetching Pages
+All data-fetching pages (Goods `/`, Football `/football`, Basketball `/basketball`, Concert `/concert`, My `/my`) must show skeleton placeholder UI while data is loading, NOT a spinning circle. Skeletons must mimic the shape of the actual content (e.g., rectangular placeholders for cards, circular placeholders for avatars). The current `animate-spin rounded-full` spinner pattern in `app/page.tsx` and equivalent patterns in other pages must be replaced.
+Evidence: Throttle network to Slow 3G in DevTools. Navigate to each of the 5 tabs. Screenshot the loading state of each. Confirm skeleton shapes are visible (pulsing gray rectangles/circles) and NO spinner elements are rendered. Search codebase: `rg "animate-spin"` should return zero results in page/component files (excluding node_modules).
+
+### VAL-UX-005: Modal Dialogs Slide-Up Animation
+All modal dialogs in the app (e.g., confirmation dialogs, customer service modal, any action sheets) must animate in by sliding up from the bottom of the viewport and animate out by sliding back down. The animation must include a semi-transparent backdrop overlay that fades in/out. Animation duration must be 200–400ms with an easing curve (not linear).
+Evidence: Screen recording of opening and closing each modal dialog at 375px viewport width. Confirm the modal panel translates from `translateY(100%)` to `translateY(0)` on open, and reverses on close. Confirm backdrop fades in with opacity transition. Inspect CSS: verify `transform`, `transition`, and `ease` or `cubic-bezier` timing function.
+
+### VAL-UX-006: Staggered Card Animation on List Pages
+On list/grid pages (Goods product grid, Football event list, Basketball event list, Concert event list), individual cards must appear with a staggered entrance animation when the page loads or data arrives. Each card should animate in sequentially with a small delay offset (30–100ms per card), creating a cascade/waterfall effect. Cards must NOT all appear simultaneously.
+Evidence: Screen recording of each list page loading at 375px viewport width (use network throttling if needed to observe stagger). Confirm cards appear one-by-one or in small groups with visible sequential delay. Inspect: each card element should have an incremented `animation-delay` or use a stagger utility (e.g., Framer Motion `staggerChildren`).
+
+### VAL-UX-007: Toast Notifications for Key User Actions
+Toast notifications must appear for the following actions at minimum: successful login, successful logout, successful registration, and order placement. Toasts must appear at the top or bottom of the viewport, display a brief message, and auto-dismiss after 2–4 seconds. Toasts must animate in (slide or fade) and animate out (slide or fade). They must not block user interaction with the page.
+Evidence: Perform login with test credentials (`test@example.com` / `password123`), then logout. Screenshot or record each toast. Confirm toast text is descriptive (e.g., "Login successful"), toast has entrance/exit animation, and auto-dismisses within 2–4 seconds. Verify toast does not cover interactive elements or uses pointer-events: none after dismissal.
+
+### VAL-UX-008: Visible Press/Active States on Interactive Elements
+All interactive elements (buttons, tab items, cards, links, form inputs) must show a visible pressed/active state when tapped. This can be a scale reduction (e.g., `scale(0.97)`), opacity change, background color shift, or ripple effect. The state must be visible for the duration of the press and revert smoothly on release. Plain browser default `:active` styles (e.g., blue flash on iOS) are NOT acceptable as the sole indicator.
+Evidence: At 375px viewport width, tap/click on: (1) each bottom tab, (2) a product card, (3) the login button, (4) a navigation link. Screenshot or record each press state. Inspect CSS: confirm custom `:active` or `active:` Tailwind classes are applied (e.g., `active:scale-95`, `active:bg-gray-100`). Verify transitions are smooth (transition duration ≥ 100ms).
+
+### VAL-UX-009: Minimum 44px Touch Targets
+All tappable elements (buttons, links, tab bar items, card tap areas, form inputs, icon buttons) must have a minimum touch target size of 44×44px (per Apple HIG and WCAG 2.5.5). This applies to the rendered interactive area, not just the visible element. Padding or min-height/min-width may be used to meet this requirement.
+Evidence: Using browser DevTools at 375px viewport, inspect the computed dimensions of: (1) each bottom tab item, (2) the search bar, (3) product cards' tappable area, (4) login/register buttons, (5) the floating customer service icon, (6) any icon-only buttons. All must show `height ≥ 44px` AND `width ≥ 44px` for the interactive element or its clickable wrapper.
+
+### VAL-UX-010: Friendly Empty State Messaging
+When a list page has no data to display (e.g., no products, no events in a category, no orders), the page must show a friendly empty state with: (1) an illustrative icon or image, (2) a descriptive heading (e.g., "No events yet"), and (3) optional secondary text or a call-to-action. The page must NOT show a blank white area, a raw "No data" string, or an empty container.
+Evidence: Navigate to each list page with empty data (clear seed data or use a category with no items). Screenshot each empty state at 375px viewport width. Confirm an icon/illustration, heading text, and optional subtext are rendered. Verify the empty state is vertically centered or positioned prominently.
+
+### VAL-UX-011: Smooth Scroll Behavior Throughout the App
+All scrollable areas in the app must use smooth scrolling. The root HTML or body must have `scroll-behavior: smooth` applied. On iOS/mobile, momentum scrolling must be enabled (`-webkit-overflow-scrolling: touch` or equivalent). Programmatic scrolls (e.g., scroll-to-top) must use smooth behavior. There must be no janky, abrupt, or stuttering scroll behavior on any page at 375px viewport width.
+Evidence: At 375px viewport width, scroll through the Goods page (long product list), then tap a "back to top" or navigate to trigger programmatic scroll. Confirm scrolling is fluid with momentum. Inspect CSS: `scroll-behavior: smooth` must be present on `html` or applicable scroll containers. Test on iOS Safari or Chrome mobile emulation — no rubber-banding issues or scroll lock.

@@ -1,5 +1,15 @@
 # Architecture
 
+## Visual Overhaul Architecture Decisions
+
+- **Animation library**: `motion` package (Framer Motion v12+), imported from `"motion/react"`
+- **LazyMotion**: Wraps app tree with `domAnimation` features for bundle optimization. Use `m` components (not `motion`) inside LazyMotion.
+- **Page transitions**: Use `app/template.tsx` with enter-only animations (fade + slide-up). No exit animations (FrozenRouter pattern too fragile).
+- **Shared UI components**: `components/ui/` directory for Button, AnimatedModal, Toast, Skeleton
+- **Design tokens**: All colors, shadows, radius defined in tailwind.config.ts. NO arbitrary hex values in components.
+- **Font**: Inter via next/font/google, applied to root element
+- **Images**: All use Next.js `<Image>` component. For flags: emoji flags or flagcdn.com.
+
 Architectural decisions, patterns discovered, and conventions.
 
 **What belongs here:** Architectural patterns, component structure decisions, state management approach.

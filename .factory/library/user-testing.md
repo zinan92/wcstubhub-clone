@@ -68,4 +68,14 @@ Use `agent-browser` skill (invoke via Skill tool at session start). Set viewport
 - **Headroom:** ~10GB available * 0.7 = 7GB usable
 - **Per agent-browser instance:** ~300MB RAM
 - **Dev server:** ~200MB RAM (shared across all validators)
-- **Max concurrent validators:** 5 (5 * 300MB + 200MB = 1.7GB, well within 7GB)
+- **Max concurrent validators:** 2 (conservative due to observed high memory pressure - 7.2GB in compressor during dry run. If background processes are reduced, can go to 3-4.)
+
+## Visual Overhaul Validation Notes
+
+This mission is a VISUAL overhaul. Validation focuses on:
+- **Visual quality:** Screenshots at 375px viewport. Check styling, layout, colors, shadows, typography.
+- **Animation presence:** Verify animations trigger (page transitions, modal slide-up, staggered cards, press feedback).
+- **Content correctness:** Product images show jerseys (not landscapes), banners show sports content, flags on match cards.
+- **No functional regression:** Login, navigation, data fetching, modals all work as before.
+- **No horizontal overflow:** At 375px, no page should scroll horizontally.
+- **Design token compliance:** No hard-coded hex colors in components (verified via grep).
