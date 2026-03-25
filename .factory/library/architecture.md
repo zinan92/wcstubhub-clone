@@ -25,5 +25,5 @@ Architectural decisions, patterns discovered, and conventions.
 
 ## Auth Patterns
 
-- **SessionProvider**: As of the foundation-auth milestone, the app does NOT wrap the layout in a NextAuth `SessionProvider`. The `signIn()` function works via direct API calls, and middleware handles server-side route protection. If future features need client-side session access via `useSession()`, a `SessionProvider` must be added to the layout.
+- **SessionProvider**: The `LayoutWrapper` component wraps the app in a NextAuth `SessionProvider`, enabling client-side `useSession()` hooks throughout the application. Multiple pages (login, my/page, my/orders, my/vip, my/personal) rely on `useSession()` for auth state. The `signIn()` function works via direct API calls, and middleware handles server-side route protection.
 - **API validation**: Input validation in API routes (e.g., `/api/auth/register`) is currently hand-written (no schema validation library like zod). The email/phone format validation is permissive — Prisma unique constraints provide a safety net.

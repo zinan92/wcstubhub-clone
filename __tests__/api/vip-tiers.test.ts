@@ -5,7 +5,7 @@ import { GET } from '@/app/api/vip-tiers/route';
 const mockFindMany = vi.fn();
 
 vi.mock('@/lib/prisma', () => ({
-  default: {
+  prisma: {
     vipTier: {
       findMany: () => mockFindMany(),
     },
