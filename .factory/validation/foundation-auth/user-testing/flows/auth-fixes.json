@@ -1,0 +1,61 @@
+{
+  "groupId": "auth-fixes",
+  "milestone": "foundation-auth",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "loginPage": "http://localhost:3100/login",
+    "testUserEmail": "test@example.com",
+    "testUserPhone": "1234567890",
+    "testUserPassword": "password123",
+    "browserSession": "cd07e8bd7ba1",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-AUTH-004": {
+      "status": "pass",
+      "title": "Successful login with valid phone credentials",
+      "observation": "Clicked Phone tab on login page. Form label changed to 'Phone Number' with 'Enter your phone number' placeholder. Entered phone number 1234567890 and password password123, clicked Login. User was authenticated and redirected to home page (http://localhost:3100/) showing Goods tab with bottom navigation (Goods, Football, Basketball, Concert, My).",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login form displayed", "observed": "Login form displayed with Email tab active" },
+        { "action": "Click Phone tab", "expected": "Phone input shown", "observed": "Form label changed to 'Phone Number', placeholder changed to 'Enter your phone number'" },
+        { "action": "Fill phone 1234567890 and password password123", "expected": "Fields populated", "observed": "Fields populated correctly" },
+        { "action": "Click Login", "expected": "Redirect to home page", "observed": "Redirected to http://localhost:3100/ (Goods home page with bottom tabs)" }
+      ],
+      "evidence": [
+        "foundation-auth/auth-fixes/VAL-AUTH-004-after-phone-click.png",
+        "foundation-auth/auth-fixes/VAL-AUTH-004-post-login.png"
+      ]
+    },
+    "VAL-AUTH-011": {
+      "status": "pass",
+      "title": "Logged-in user accessing login redirects away",
+      "observation": "While logged in from phone login test, navigated directly to http://localhost:3100/login. The page initially loaded at /login but was immediately redirected to http://localhost:3100/ (home page). Login form was not rendered; Goods home page with bottom tabs was displayed instead.",
+      "steps": [
+        { "action": "Navigate to /login while authenticated", "expected": "Redirect to home page", "observed": "Redirected to http://localhost:3100/ - Goods home page displayed, login form not rendered" }
+      ],
+      "evidence": [
+        "foundation-auth/auth-fixes/VAL-AUTH-011-home-page.png"
+      ]
+    },
+    "VAL-AUTH-012": {
+      "status": "pass",
+      "title": "Logout clears session and redirects",
+      "observation": "Navigated to My tab, found and clicked 'Log out' button. User was redirected to /login page. Then navigated to protected route /my - was redirected to /login?callbackUrl=%2Fmy, confirming session was fully cleared and auth gate is enforced.",
+      "steps": [
+        { "action": "Navigate to My tab", "expected": "My Profile page with Log out button", "observed": "My Profile page displayed with 'Log out' button visible" },
+        { "action": "Click Log out", "expected": "Redirect to /login", "observed": "Redirected to http://localhost:3100/login with login form displayed" },
+        { "action": "Navigate to /my (protected route)", "expected": "Redirect to /login", "observed": "Redirected to http://localhost:3100/login?callbackUrl=%2Fmy - session fully cleared" }
+      ],
+      "evidence": [
+        "foundation-auth/auth-fixes/VAL-AUTH-012-my-page.png",
+        "foundation-auth/auth-fixes/VAL-AUTH-012-login-after-logout.png"
+      ],
+      "consoleErrors": "Pre-existing 'Invalid or unexpected token' error present on all pages - not related to logout flow"
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 3 assertions: all 3 passed. VAL-AUTH-004 (phone login) works correctly with redirect to home. VAL-AUTH-011 (authenticated user redirect from /login) redirects to home page as expected. VAL-AUTH-012 (logout) clears session and redirects to login, with protected routes properly gated."
+}

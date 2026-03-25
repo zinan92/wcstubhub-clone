@@ -1,0 +1,60 @@
+{
+  "milestone": "foundation-auth",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 20,
+    "passed": 15,
+    "failed": 2,
+    "blocked": 3
+  },
+  "passedAssertions": [
+    "VAL-AUTH-001",
+    "VAL-AUTH-002",
+    "VAL-AUTH-003",
+    "VAL-AUTH-005",
+    "VAL-AUTH-006",
+    "VAL-AUTH-007",
+    "VAL-AUTH-008",
+    "VAL-AUTH-009",
+    "VAL-AUTH-010",
+    "VAL-AUTH-013",
+    "VAL-AUTH-014",
+    "VAL-CROSS-002",
+    "VAL-MOBILE-001",
+    "VAL-MOBILE-002",
+    "VAL-SEED-002"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-AUTH-011",
+      "reason": "Authenticated users are not redirected away from /login. The login page renders fully even with an active session. The middleware or login page component does not check for existing authentication to redirect away."
+    },
+    {
+      "id": "VAL-AUTH-012",
+      "reason": "My page is a bare placeholder ('User profile coming soon...') with no logout button. No signOut/logout functionality is implemented anywhere in the user-facing UI."
+    }
+  ],
+  "blockedAssertions": [
+    {
+      "id": "VAL-AUTH-004",
+      "blockedBy": "Test user has no phone number in seed data. Auth system supports phone login but the seed script does not populate the phone field for the test user."
+    },
+    {
+      "id": "VAL-SEED-001",
+      "blockedBy": "Seed data exists in database (6 products, 12 events) but UI pages (Goods, Football, Basketball, Concert) are all placeholders showing 'coming soon'. These catalog pages are in later milestones (goods-catalog, event-listings)."
+    },
+    {
+      "id": "VAL-SEED-003",
+      "blockedBy": "Orders exist in database (2 orders for test user) but My page is placeholder and /my/orders returns 404. Order record page is in later milestone (user-profile)."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "user-testing.md",
+      "description": "Added Flow Validator Guidance: Web Browser section with isolation rules, testing patterns, and evidence collection instructions",
+      "source": "setup"
+    }
+  ],
+  "previousRound": null
+}
