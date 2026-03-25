@@ -1,0 +1,72 @@
+{
+  "milestone": "foundation-auth",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0 },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Added 'Layout Conventions' section documenting pb-20 bottom padding requirement for all user-facing pages with bottom tab bar, and LayoutWrapper conditional behavior.",
+      "sourceFeature": "bottom-tab-layout"
+    },
+    {
+      "target": "library",
+      "description": "Added 'Auth Patterns' section documenting missing SessionProvider (not needed yet but required for future useSession() usage) and hand-written API validation pattern.",
+      "sourceFeature": "auth-system"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: 'API input validation should use a schema validation library (e.g., zod) for consistent, robust validation across all routes.' Currently register route uses manual checks with weak email/phone format validation.",
+      "evidence": "Feature auth-system: app/api/auth/register/route.ts uses emailOrPhone.includes('@') for email validation and permissive phone regex. Multiple reviewers flagged this as a non-blocking concern.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: 'All user-facing pages that display within the bottom tab layout must include pb-20 (padding-bottom: 5rem) to prevent content overlap with the fixed bottom tab navigation bar.'",
+      "evidence": "Feature bottom-tab-layout: all 5 page files use className='min-h-screen p-4 pb-20'. This pattern is critical but undocumented in AGENTS.md.",
+      "isSystemic": true
+    },
+    {
+      "target": "skills",
+      "suggestion": "The fullstack-worker skill should clarify that TDD (step 4) and agent-browser verification (step 8) may be skipped for scaffolding and schema-only features that have no testable API/UI behavior. Currently workers mark followedProcedure: true despite skipping these steps.",
+      "evidence": "Features project-scaffolding and database-schema-and-seed both skipped TDD and browser verification. Workers justified the skips but the skill doesn't explicitly allow them for non-behavioral features.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "Dev script in package.json doesn't hardcode port 3100, relies on PORT env var from services.yaml.",
+      "reason": "Already handled by services.yaml. The PORT=3100 prefix in services.yaml is the canonical way to set the port. Not a gap worth documenting."
+    },
+    {
+      "observation": "Manual viewport meta tag instead of Next.js 14+ viewport metadata API export.",
+      "reason": "Works correctly as-is. Minor code style preference, not worth applying or recommending."
+    },
+    {
+      "observation": "AGENTS.md seed data example product names (Messi #10, FC Barcelona) don't match actual seed data (national team jerseys).",
+      "reason": "Trivial cosmetic discrepancy. The seed data meets all quantitative requirements (6+ products, realistic names, $99-$299 range). Not worth updating AGENTS.md."
+    },
+    {
+      "observation": "Worker modified home page content from scaffolding text to placeholder during bottom-tab-layout feature.",
+      "reason": "Expected behavior — placeholder content will be replaced by the goods-home-page feature in the next milestone."
+    },
+    {
+      "observation": "Package.json dependencies were re-sorted alphabetically during bottom-tab-layout commit.",
+      "reason": "Trivial formatting change, not actionable or worth documenting."
+    }
+  ],
+  "previousRound": null
+}
