@@ -14,11 +14,19 @@ export default withAuth(
 
     // Admin route protection: check if user has admin role
     if (pathname.startsWith('/admin')) {
+      // Allow /admin/login without authentication
+      if (pathname === '/admin/login') {
+        // If already authenticated as admin, redirect to dashboard
+        if (token && token.role === 'admin') {
+          return NextResponse.redirect(new URL('/admin/dashboard', req.url));
+        }
+        // Otherwise allow access to login page
+        return NextResponse.next();
+      }
+      
       if (!token) {
-        // Not authenticated - redirect to login with callbackUrl
-        const loginUrl = new URL('/login', req.url);
-        loginUrl.searchParams.set('callbackUrl', pathname);
-        return NextResponse.redirect(loginUrl);
+        // Not authenticated - redirect to admin login
+        return NextResponse.redirect(new URL('/admin/login', req.url));
       }
       
       // Check if user has admin role
@@ -37,7 +45,7 @@ export default withAuth(
         const { pathname } = req.nextUrl;
 
         // Allow access to login and register pages without authentication
-        if (pathname === '/login' || pathname === '/register') {
+        if (pathname === '/login' || pathname === '/register' || pathname === '/admin/login') {
           return true;
         }
 
