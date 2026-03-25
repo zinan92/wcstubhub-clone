@@ -1,0 +1,89 @@
+{
+  "groupId": "auth-registration-logout",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "6f03c2efb731__g3",
+    "viewport": "375x812",
+    "registrationEmail": "newuser_g3_test@example.com",
+    "duplicateEmail": "test@example.com"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-AUTH-008",
+      "title": "Registration page renders and creates account",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login form with Register now link", "observed": "Login form displayed with Register now link visible" },
+        { "action": "Click Register now link", "expected": "Navigate to /register with registration form", "observed": "Navigated to /register, form displayed with Email or Phone, Password, Confirm Password fields and Register button" },
+        { "action": "Fill form with newuser_g3_test@example.com / TestPass123", "expected": "Fields populated", "observed": "All three fields populated correctly" },
+        { "action": "Click Register button", "expected": "Account created, redirect to login or auto-login", "observed": "Account created, auto-logged in and redirected to home page (http://localhost:3100/)" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/auth-registration-logout/VAL-AUTH-008-login-page.png",
+          "foundation-auth/auth-registration-logout/VAL-AUTH-008-register-page.png",
+          "foundation-auth/auth-registration-logout/VAL-AUTH-008-register-form-filled.png",
+          "foundation-auth/auth-registration-logout/VAL-AUTH-008-post-register-home.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/register -> account created, auto-login redirect to /"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-009",
+      "title": "Registration fails with duplicate account",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear cookies to start fresh unauthenticated session", "expected": "Cookies cleared", "observed": "Cookies cleared successfully" },
+        { "action": "Navigate to /register", "expected": "Registration form displayed", "observed": "Registration form displayed" },
+        { "action": "Fill form with test@example.com / password123 (existing account)", "expected": "Fields populated", "observed": "All fields populated correctly" },
+        { "action": "Click Register button", "expected": "Error message shown, stay on register page", "observed": "Error message 'Account already exists with this email or phone' displayed in red, user remains on /register" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/auth-registration-logout/VAL-AUTH-009-duplicate-error.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/register -> 409 (duplicate detected)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-012",
+      "title": "Logout clears session and redirects",
+      "status": "fail",
+      "steps": [
+        { "action": "Login with test@example.com / password123", "expected": "Logged in, redirected to home", "observed": "Logged in successfully, redirected to /" },
+        { "action": "Navigate to My tab via bottom navigation", "expected": "My page displayed with user profile and Logout button", "observed": "My page displays only 'My Profile' heading and 'User profile coming soon...' placeholder text. No logout button present." },
+        { "action": "Look for Logout button", "expected": "Logout button visible on My page", "observed": "No logout button exists anywhere on the My page or in the entire codebase. The My page (app/my/page.tsx) is a bare placeholder with no user info or logout functionality." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/auth-registration-logout/VAL-AUTH-012-my-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A - no logout endpoint called"
+      },
+      "issues": "The My page is a bare placeholder ('User profile coming soon...') with no logout button. No signOut/logout functionality is implemented anywhere in the codebase. The validation contract requires a Logout button on the My page that clears the session and redirects to login."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "After successful registration (VAL-AUTH-008), the user is auto-logged in and redirected to home page instead of being redirected to login page. The validation contract says 'redirects to login or auto-logs in' so this is acceptable behavior.",
+      "resolved": true,
+      "resolution": "Auto-login after registration is an acceptable alternative per the contract wording.",
+      "affectedAssertions": ["VAL-AUTH-008"]
+    },
+    {
+      "description": "To test VAL-AUTH-009 (duplicate registration), had to clear cookies first since the previously registered user was auto-logged in and the app redirects authenticated users away from /register.",
+      "resolved": true,
+      "resolution": "Cleared cookies via agent-browser cookies clear to access /register as unauthenticated user.",
+      "affectedAssertions": ["VAL-AUTH-009"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 3 assertions: 2 passed (VAL-AUTH-008 registration, VAL-AUTH-009 duplicate error), 1 failed (VAL-AUTH-012 logout - My page is a placeholder with no logout button implemented)."
+}

@@ -1,0 +1,80 @@
+{
+  "groupId": "mobile-layout-tabs",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "6f03c2efb731__g4",
+    "viewport": "375x812",
+    "credentials": "test@example.com / password123"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-MOBILE-001",
+      "title": "App renders correctly at mobile viewport",
+      "status": "pass",
+      "steps": [
+        { "action": "Login with test@example.com / password123", "expected": "Redirect to Goods home", "observed": "Redirected to http://localhost:3100/" },
+        { "action": "Check Goods page at 375x812 viewport", "expected": "No horizontal scrollbar, content fits viewport", "observed": "scrollWidth=375, clientWidth=375, no horizontal scrollbar" },
+        { "action": "Screenshot Goods page", "expected": "Content fits viewport, bottom tabs visible", "observed": "Content fits within 375px viewport, bottom tab bar with all 5 tabs visible at bottom" },
+        { "action": "Navigate to My Profile page", "expected": "No horizontal scrollbar, content fits viewport", "observed": "scrollWidth=375, clientWidth=375, no horizontal scrollbar" },
+        { "action": "Screenshot My Profile page", "expected": "Content fits viewport, bottom tabs visible", "observed": "Content fits viewport, bottom tab bar fully visible and usable" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/mobile-layout-tabs/VAL-MOBILE-001-goods-page.png",
+          "foundation-auth/mobile-layout-tabs/VAL-MOBILE-001-profile-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MOBILE-002",
+      "title": "Bottom tab navigation fixed at screen bottom",
+      "status": "pass",
+      "steps": [
+        { "action": "Inspect nav element CSS properties", "expected": "position: fixed, bottom: 0px", "observed": "position: fixed, bottom: 0px, left: 0px, right: 0px, z-index: 50, class: 'fixed bottom-0 left-0 right-0 w-full bg-white border-t border-gray-200 z-50'" },
+        { "action": "Scroll page content down 500px", "expected": "Bottom tab bar remains visible at bottom", "observed": "Bottom tab bar stayed fixed at bottom after scrolling" },
+        { "action": "Screenshot after scrolling", "expected": "Tabs visible at bottom of viewport", "observed": "All 5 tabs visible at bottom of screenshot after scroll" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/mobile-layout-tabs/VAL-MOBILE-002-scrolled-with-tabs.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-002",
+      "title": "Bottom tab navigation cycles all 5 tabs",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Goods tab", "expected": "Goods page renders with correct content", "observed": "Goods page renders with 'Goods' heading and 'Product catalog coming soon...' placeholder. URL: /" },
+        { "action": "Click Football tab", "expected": "Football page renders with correct content", "observed": "Football page renders with 'Football' heading and 'Football matches coming soon...' placeholder. URL: /football. Football tab highlighted." },
+        { "action": "Click Basketball tab", "expected": "Basketball page renders with correct content", "observed": "Basketball page renders with 'Basketball' heading and 'Basketball games coming soon...' placeholder. URL: /basketball. Basketball tab highlighted." },
+        { "action": "Click Concert tab", "expected": "Concert page renders with correct content", "observed": "Concert page renders with 'Concert' heading and 'Concert events coming soon...' placeholder. URL: /concert. Concert tab highlighted." },
+        { "action": "Click My tab", "expected": "My Profile page renders with correct content", "observed": "My Profile page renders with 'My Profile' heading and 'User profile coming soon...' placeholder. URL: /my. My tab highlighted." },
+        { "action": "Cycle in reverse order: Concert -> Goods -> Basketball -> Football -> My", "expected": "All tabs navigate correctly in any order", "observed": "All tabs navigated correctly in reverse order. URLs matched expected routes. No errors." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/mobile-layout-tabs/VAL-CROSS-002-goods-tab.png",
+          "foundation-auth/mobile-layout-tabs/VAL-CROSS-002-football-tab.png",
+          "foundation-auth/mobile-layout-tabs/VAL-CROSS-002-basketball-tab.png",
+          "foundation-auth/mobile-layout-tabs/VAL-CROSS-002-concert-tab.png",
+          "foundation-auth/mobile-layout-tabs/VAL-CROSS-002-my-tab.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 3 assertions: 3 passed, 0 failed. All pages render correctly at 375x812 mobile viewport without horizontal scrollbar. Bottom tab navigation is fixed at the bottom (position: fixed, bottom: 0px, z-index: 50) and remains visible while scrolling. All 5 tabs (Goods, Football, Basketball, Concert, My) cycle correctly in any order with proper content and no console errors. Tabs currently show placeholder content which is expected for this milestone."
+}

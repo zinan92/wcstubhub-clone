@@ -30,6 +30,38 @@ Testing surface, required testing skills/tools, resource cost classification per
 - Floating customer service icon is non-functional placeholder
 - Purchase/For Sale buttons show confirmation dialogs (mock actions)
 
+## Flow Validator Guidance: Web Browser
+
+### Testing Tool
+Use `agent-browser` skill (invoke via Skill tool at session start). Set viewport to **375x812** for mobile-first pages. Use default viewport for admin pages.
+
+### App URL
+- Base URL: `http://localhost:3100`
+- Login page: `http://localhost:3100/login`
+- Register page: `http://localhost:3100/register`
+
+### Auth Credentials
+- Test user: `test@example.com` / `password123`
+- Admin user: `admin@example.com` / `admin123`
+
+### Isolation Rules
+- Each subagent MUST use its own browser session (via `--session` flag).
+- Subagents share the same dev server and database — this is expected.
+- Auth state is per-browser-session (NextAuth cookies), so subagents don't interfere on auth.
+- **Do not** delete or modify seed data records. Only create new records if needed.
+- **Do not** modify any server-side code or configuration files.
+- If a test needs to register a new user, use a unique email not used by other groups (e.g., `testgroup3_<random>@example.com`).
+
+### Evidence Collection
+- Take screenshots for key steps and save to the evidence directory provided.
+- Note any console errors visible in the browser.
+- For network assertions, observe redirects and page content after actions.
+
+### Common Patterns
+- Login flow: Navigate to `/login`, enter credentials, click Login button, verify redirect to `/` (Goods page).
+- Unauthenticated access: Navigate directly to a protected route (e.g., `/my`) without logging in first, verify redirect to `/login`.
+- Tab navigation: After login, the bottom tab bar has 5 tabs: Goods, Football, Basketball, Concert, My.
+
 ## Validation Concurrency
 
 - **Machine:** 16GB RAM, 10 CPU cores, ~6GB baseline usage

@@ -1,0 +1,103 @@
+{
+  "groupId": "seed-data",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "6f03c2efb731__g5",
+    "viewport": "375x812",
+    "testUser": "test@example.com / password123",
+    "adminUser": "admin@example.com / admin123"
+  },
+  "toolsUsed": ["agent-browser", "sqlite3"],
+  "assertions": [
+    {
+      "id": "VAL-SEED-001",
+      "title": "Seed data populates products and events",
+      "status": "blocked",
+      "steps": [
+        { "action": "Login as test@example.com", "expected": "Redirect to home", "observed": "Redirected to / (Goods page)" },
+        { "action": "Check Goods page for product cards", "expected": "At least 4 products displayed", "observed": "Goods page shows placeholder: 'Product catalog coming soon...' - no product cards rendered" },
+        { "action": "Navigate to Football tab", "expected": "At least 2 match cards", "observed": "Football page shows placeholder: 'Football matches coming soon...' - no match cards rendered" },
+        { "action": "Navigate to Basketball tab", "expected": "At least 2 game cards", "observed": "Basketball page shows placeholder: 'Basketball games coming soon...' - no game cards rendered" },
+        { "action": "Navigate to Concert tab", "expected": "At least 2 event cards", "observed": "Concert page shows placeholder: 'Concert events coming soon...' - no event cards rendered" },
+        { "action": "Verify seed data in database directly via sqlite3", "expected": "Products and events exist in DB", "observed": "Confirmed: 6 products, 4 football events, 4 basketball events, 4 concert events in database" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/seed-data/VAL-SEED-001-goods-placeholder.png",
+          "foundation-auth/seed-data/VAL-SEED-001-football-placeholder.png",
+          "foundation-auth/seed-data/VAL-SEED-001-basketball-placeholder.png",
+          "foundation-auth/seed-data/VAL-SEED-001-concert-placeholder.png"
+        ],
+        "consoleErrors": "none",
+        "network": "All pages loaded successfully (200)"
+      },
+      "issues": "UI pages for Goods, Football, Basketball, and Concert are all placeholder pages showing 'coming soon' messages. The seed data exists in the database (verified via sqlite3: 6 products, 4 football, 4 basketball, 4 concert events) but the catalog/listing UI to display this data has not been implemented yet in the foundation-auth milestone. These UI pages are part of later milestones (goods-catalog, event-listings)."
+    },
+    {
+      "id": "VAL-SEED-002",
+      "title": "Seed data creates test user and admin accounts",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login form displayed", "observed": "Login form displayed with Email/Phone tabs, email input, password input, Login button" },
+        { "action": "Fill email test@example.com and password password123", "expected": "Fields populated", "observed": "Fields populated correctly" },
+        { "action": "Click Login", "expected": "Redirect to home page", "observed": "Redirected to http://localhost:3100/ (Goods home page)" },
+        { "action": "Sign out via /api/auth/signout", "expected": "Session cleared, redirect to login", "observed": "Signed out, redirected to /login" },
+        { "action": "Fill email admin@example.com and password admin123", "expected": "Fields populated", "observed": "Fields populated correctly" },
+        { "action": "Click Login", "expected": "Redirect to home page", "observed": "Redirected to http://localhost:3100/ (home page)" },
+        { "action": "Sign out", "expected": "Session cleared", "observed": "Signed out, redirected to /login" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/seed-data/VAL-SEED-002-test-user-login-success.png",
+          "foundation-auth/seed-data/VAL-SEED-002-admin-login-success.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/callback/credentials -> redirect to / (both test and admin users)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEED-003",
+      "title": "Seed data creates orders for test user",
+      "status": "blocked",
+      "steps": [
+        { "action": "Login as test@example.com", "expected": "Login succeeds", "observed": "Login succeeded, redirected to home" },
+        { "action": "Navigate to My tab", "expected": "Profile page with Order Record menu item", "observed": "My page shows placeholder: 'User profile coming soon...' - no menu items or order record link" },
+        { "action": "Navigate directly to /my/orders", "expected": "Order record page with at least 1 order", "observed": "404: This page could not be found" },
+        { "action": "Verify orders in database via sqlite3", "expected": "Orders exist for test user", "observed": "Confirmed: 2 orders for test user (1 'paid', 1 'to_be_paid') in database" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "foundation-auth/seed-data/VAL-SEED-002-my-page-placeholder.png",
+          "foundation-auth/seed-data/VAL-SEED-003-orders-page-404.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /my/orders -> 404"
+      },
+      "issues": "My profile page and Order Record page are not implemented yet (placeholder pages). The seed data contains 2 orders for the test user (verified via sqlite3), but the UI pages to display orders are part of a later milestone (user-profile). The /my/orders route returns 404."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "No logout button on My page - had to use NextAuth's /api/auth/signout endpoint directly to sign out",
+      "resolved": true,
+      "resolution": "Navigated to /api/auth/signout and clicked the 'Sign out' button on the NextAuth default signout page",
+      "affectedAssertions": ["VAL-SEED-002"]
+    },
+    {
+      "description": "All content pages (Goods, Football, Basketball, Concert, My) are placeholder pages showing 'coming soon' messages - no actual product/event/profile data is rendered despite seed data existing in the database",
+      "resolved": false,
+      "resolution": "UI implementation is expected in later milestones; verified data exists via direct database queries",
+      "affectedAssertions": ["VAL-SEED-001", "VAL-SEED-003"]
+    }
+  ],
+  "blockers": [
+    {
+      "description": "Goods catalog, event listing, and profile/order pages are all placeholder implementations showing 'coming soon' messages. Seed data exists in the database (6 products, 12 events, 2 orders) but cannot be verified through the UI because the display pages have not been built yet - they are part of later milestones.",
+      "affectedAssertions": ["VAL-SEED-001", "VAL-SEED-003"],
+      "quickFixAttempted": "Verified seed data directly via sqlite3 database queries to confirm data was seeded correctly"
+    }
+  ],
+  "summary": "Tested 3 assertions: 1 passed (VAL-SEED-002: both test and admin users can login with seed credentials), 2 blocked (VAL-SEED-001 and VAL-SEED-003: seed data exists in database but UI pages to display products, events, and orders are placeholder pages not yet implemented in the foundation-auth milestone)."
+}

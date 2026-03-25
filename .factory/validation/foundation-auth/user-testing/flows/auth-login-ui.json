@@ -1,0 +1,100 @@
+{
+  "groupId": "auth-login-ui",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "6f03c2efb731__g1",
+    "viewport": "375x812",
+    "loginRequired": false
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-AUTH-001",
+      "title": "Login page renders with SAE-A Trading branding",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login page displayed", "observed": "Login page displayed with title 'WCStubHub Clone - SAE-A Trading'" },
+        { "action": "Check for SAE-A Trading brand", "expected": "Brand name visible", "observed": "'SAE-A Trading' displayed prominently in blue/cyan gradient header with subtitle 'Sports Merchandise & Event Tickets'" },
+        { "action": "Check Phone/Email tab selectors", "expected": "Tab selectors visible", "observed": "Phone and Email tab buttons visible, Email tab active by default" },
+        { "action": "Check password input", "expected": "Password field present", "observed": "Password input field with placeholder 'Enter your password' present" },
+        { "action": "Check Login button", "expected": "Login button visible", "observed": "Login button visible with cyan/blue gradient background" },
+        { "action": "Check Register now link", "expected": "Register now link visible", "observed": "'No account? Register now' text with clickable link visible" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-ui/VAL-AUTH-001-login-page.png"],
+        "consoleErrors": "none",
+        "network": "N/A - static page render"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-002",
+      "title": "Phone/Email tab switching on login page",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Phone tab", "expected": "Phone input field displayed", "observed": "Phone Number input field displayed with placeholder 'Enter your phone number'" },
+        { "action": "Verify active tab styling", "expected": "Phone tab visually distinguished", "observed": "Phone tab text is blue with active underline indicator" },
+        { "action": "Click Email tab", "expected": "Email input field displayed", "observed": "Email Address input field displayed with placeholder 'Enter your email'" },
+        { "action": "Verify only one input visible", "expected": "Only email input visible, not phone", "observed": "Only Email Address input shown, Phone Number input hidden" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-ui/VAL-AUTH-002-phone-tab.png", "foundation-auth/auth-login-ui/VAL-AUTH-002-email-tab.png"],
+        "consoleErrors": "none",
+        "network": "N/A - client-side tab switching"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-006",
+      "title": "Login form validation for empty fields",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Login with empty email and password", "expected": "Validation error shown for email", "observed": "'Email is required' error displayed in red text" },
+        { "action": "Fill email, leave password empty, click Login", "expected": "Validation error shown for password", "observed": "'Password is required' error displayed in red text" },
+        { "action": "Verify no network request", "expected": "No API call made", "observed": "Page remained on /login, no network request observed" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-ui/VAL-AUTH-006-empty-validation.png", "foundation-auth/auth-login-ui/VAL-AUTH-006-password-validation.png"],
+        "consoleErrors": "none",
+        "network": "No network requests made during validation"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-007",
+      "title": "Password visibility toggle",
+      "status": "pass",
+      "steps": [
+        { "action": "Type password in field", "expected": "Password masked (dots)", "observed": "Password input type='password', characters masked" },
+        { "action": "Click 'Show password' toggle button", "expected": "Password revealed as plain text", "observed": "Password field changed to type='text', 'testpass123' visible in plain text. Button label changed to 'Hide password'" },
+        { "action": "Click 'Hide password' toggle button", "expected": "Password re-masked", "observed": "Password field changed back to type='password', characters masked again. Button label reverted to 'Show password'" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-ui/VAL-AUTH-007-password-masked.png", "foundation-auth/auth-login-ui/VAL-AUTH-007-password-revealed.png"],
+        "consoleErrors": "none",
+        "network": "N/A - client-side toggle"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-013",
+      "title": "Language selector present and defaults to English",
+      "status": "pass",
+      "steps": [
+        { "action": "Check for language selector on login page", "expected": "Language selector visible", "observed": "Language combobox (select element) visible below the login form" },
+        { "action": "Check default value", "expected": "Default is 'English'", "observed": "Default value is 'en' displaying as 'English'" },
+        { "action": "Check interactivity", "expected": "Selector is clickable/interactive", "observed": "is enabled = true, combobox is interactive" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-ui/VAL-AUTH-013-language-selector.png"],
+        "consoleErrors": "none",
+        "network": "N/A - static element"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. Login page correctly renders SAE-A Trading branding, Phone/Email tab switching works with visual distinction, form validation shows inline errors for empty fields without network requests, password visibility toggle works bidirectionally, and language selector defaults to English and is interactive."
+}

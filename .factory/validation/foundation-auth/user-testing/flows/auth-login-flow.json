@@ -1,0 +1,117 @@
+{
+  "groupId": "auth-login-flow",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "6f03c2efb731__g2",
+    "viewport": "375x812",
+    "testUser": "test@example.com"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-AUTH-003",
+      "title": "Successful login with valid email credentials",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login form displayed", "observed": "Login form displayed with Email tab active" },
+        { "action": "Fill email field with test@example.com", "expected": "Email field populated", "observed": "Email field populated" },
+        { "action": "Fill password field with password123", "expected": "Password field populated", "observed": "Password field populated (masked)" },
+        { "action": "Click Login button", "expected": "Redirect to Goods home page", "observed": "Redirected to http://localhost:3100/ (Goods home page)" },
+        { "action": "Check cookies", "expected": "Session token cookie set", "observed": "next-auth.session-token cookie present" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-flow/VAL-AUTH-003-post-login.png"],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/callback/credentials -> redirect to /"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-004",
+      "title": "Successful login with valid phone credentials",
+      "status": "blocked",
+      "steps": [
+        { "action": "Check seed data for test user phone number", "expected": "Phone number exists in seed data", "observed": "Test user phone field is null — no phone credential in seed data" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "N/A",
+        "network": "N/A"
+      },
+      "issues": "Test user (test@example.com) has no phone number set in seed data. The auth system supports phone login (credentials provider queries by phone), but there is no phone credential to test with. Seed script does not populate the phone field."
+    },
+    {
+      "id": "VAL-AUTH-005",
+      "title": "Login fails with incorrect password",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login form displayed", "observed": "Login form displayed" },
+        { "action": "Fill email with test@example.com", "expected": "Email field populated", "observed": "Email field populated" },
+        { "action": "Fill password with wrongpassword", "expected": "Password field populated", "observed": "Password field populated" },
+        { "action": "Click Login button", "expected": "Error message displayed, remain on login page", "observed": "Error message 'Invalid email/phone or password' displayed, URL remains /login" },
+        { "action": "Check cookies", "expected": "No session token", "observed": "No next-auth.session-token cookie set (only csrf-token present)" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-flow/VAL-AUTH-005-error-visible.png"],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/callback/credentials -> returned error"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-010",
+      "title": "Protected routes redirect unauthenticated users to login",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my without session (unauthenticated)", "expected": "Redirect to /login", "observed": "Redirected to /login?callbackUrl=%2Fmy" },
+        { "action": "Check page content", "expected": "Login form displayed, no protected content visible", "observed": "Login form fully rendered, no My page content visible" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-flow/VAL-AUTH-010-redirect-to-login.png"],
+        "consoleErrors": "none",
+        "network": "GET /my -> 307 redirect to /login"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-AUTH-011",
+      "title": "Logged-in user accessing login redirects away",
+      "status": "fail",
+      "steps": [
+        { "action": "Login with test@example.com / password123", "expected": "Authenticated session established", "observed": "Authenticated, redirected to Goods home page" },
+        { "action": "Navigate to /login while authenticated", "expected": "Redirect to home page, login form not rendered", "observed": "Login page fully rendered at /login, no redirect occurred" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-flow/VAL-AUTH-011-login-page-while-authenticated.png"],
+        "consoleErrors": "none",
+        "network": "GET /login -> 200 (login page served to authenticated user)"
+      },
+      "issues": "Authenticated users are not redirected away from /login. The login page renders fully with the login form even when a valid session token exists. The middleware or login page component does not check for existing authentication to redirect away."
+    },
+    {
+      "id": "VAL-AUTH-014",
+      "title": "Session persistence across page refresh",
+      "status": "pass",
+      "steps": [
+        { "action": "Login with test@example.com / password123", "expected": "Authenticated, on Goods home page", "observed": "Authenticated, on http://localhost:3100/" },
+        { "action": "Reload the page", "expected": "Remain on Goods home page, session persists", "observed": "Page reloaded, URL remains http://localhost:3100/, Goods page content displayed" }
+      ],
+      "evidence": {
+        "screenshots": ["foundation-auth/auth-login-flow/VAL-AUTH-014-post-refresh.png"],
+        "consoleErrors": "none",
+        "network": "GET / -> 200 (authenticated page served after refresh)"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [
+    {
+      "description": "Test user has no phone number in seed data, preventing phone login testing (VAL-AUTH-004)",
+      "affectedAssertions": ["VAL-AUTH-004"],
+      "quickFixAttempted": "Checked database directly - phone field is null for test@example.com. Seed script does not set phone field."
+    }
+  ],
+  "summary": "Tested 6 assertions: 4 passed (VAL-AUTH-003, VAL-AUTH-005, VAL-AUTH-010, VAL-AUTH-014), 1 failed (VAL-AUTH-011: authenticated users not redirected away from /login), 1 blocked (VAL-AUTH-004: no phone credential in seed data)"
+}
