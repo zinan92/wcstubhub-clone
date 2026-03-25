@@ -1,0 +1,60 @@
+{
+  "group": "group-search",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "assertions": {
+    "VAL-EVENTS-005": {
+      "status": "pass",
+      "notes": "Football search filters correctly. Typed 'Jordan' in Find matches search box, only 'Jordan VS Argentina' match displayed. Cleared search field, all 4 matches restored (Jordan VS Argentina, Algeria VS Austria, Brazil VS Germany, Spain VS France). No console errors.",
+      "evidence": [
+        "event-listings/group-search/VAL-EVENTS-005-filtered.png",
+        "event-listings/group-search/VAL-EVENTS-005-cleared.png"
+      ],
+      "steps": [
+        { "action": "Navigate to /football", "expected": "Football tab with search and match cards", "observed": "Football tab displayed with 4 match cards and 'Find matches' search input" },
+        { "action": "Type 'Jordan' in search", "expected": "Only matches containing 'Jordan' shown", "observed": "Only 'Jordan VS Argentina' match card displayed" },
+        { "action": "Clear search field", "expected": "All matches restored", "observed": "All 4 match cards restored" }
+      ]
+    },
+    "VAL-EVENTS-006": {
+      "status": "pass",
+      "notes": "Basketball search filters correctly. Typed 'Lakers' in Find matches search box, only 2 games with Lakers displayed (Suns VS Lakers, Lakers VS Spurs). Cleared search field, all 4 games restored. No console errors.",
+      "evidence": [
+        "event-listings/group-search/VAL-EVENTS-006-filtered.png",
+        "event-listings/group-search/VAL-EVENTS-006-cleared.png"
+      ],
+      "steps": [
+        { "action": "Navigate to /basketball", "expected": "Basketball tab with search and match cards", "observed": "Basketball tab displayed with 4 match cards and 'Find matches' search input" },
+        { "action": "Type 'Lakers' in search", "expected": "Only matches containing 'Lakers' shown", "observed": "2 match cards displayed: Suns VS Lakers and Lakers VS Spurs" },
+        { "action": "Clear search field", "expected": "All matches restored", "observed": "All 4 match cards restored" }
+      ]
+    },
+    "VAL-EVENTS-007": {
+      "status": "pass",
+      "notes": "Concert search filters correctly. Typed 'Taylor' in 'Find a star or performance' search box, only Taylor Swift event displayed. Cleared search field, all 4 concert events restored (Taylor Swift, Ed Sheeran, The Weeknd, Beyoncé). No console errors.",
+      "evidence": [
+        "event-listings/group-search/VAL-EVENTS-007-filtered.png",
+        "event-listings/group-search/VAL-EVENTS-007-cleared.png"
+      ],
+      "steps": [
+        { "action": "Navigate to /concert", "expected": "Concert tab with search and event cards", "observed": "Concert tab displayed with 4 event cards and 'Find a star or performance' search input" },
+        { "action": "Type 'Taylor' in search", "expected": "Only events containing 'Taylor' shown", "observed": "Only 'Taylor Swift: The Eras Tour' event card displayed" },
+        { "action": "Clear search field", "expected": "All events restored", "observed": "All 4 concert event cards restored" }
+      ]
+    },
+    "VAL-EVENTS-011": {
+      "status": "pass",
+      "notes": "Empty state correctly displayed when searching for non-matching term. Typed 'xyznonexistent' in Football tab search, 'No matches found' message displayed with no stale cards visible. No console errors.",
+      "evidence": [
+        "event-listings/group-search/VAL-EVENTS-011-empty-state.png"
+      ],
+      "steps": [
+        { "action": "Navigate to /football", "expected": "Football tab with match cards", "observed": "Football tab with 4 match cards" },
+        { "action": "Type 'xyznonexistent' in search", "expected": "Empty state message, no stale cards", "observed": "'No matches found' paragraph displayed, no match cards visible" }
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "toolsUsed": ["agent-browser"],
+  "summary": "Tested 4 assertions: all 4 passed. Football, Basketball, and Concert search filters correctly filter event cards by team/artist name, clearing restores full list. Empty state shows 'No matches found' with no stale cards."
+}

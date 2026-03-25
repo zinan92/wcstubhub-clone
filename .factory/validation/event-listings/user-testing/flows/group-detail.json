@@ -1,0 +1,59 @@
+{
+  "group": "group-detail",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "credentials": "test@example.com / password123",
+    "browserSession": "c0b53d9a95fc__detail",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-EVENTS-008": {
+      "status": "pass",
+      "notes": "Clicked 'Jordan VS Argentina' football match card from /football. Successfully navigated to /events/cmn5t5yii0008l0sjkrq80rs5. Detail page displays matching event info: team names (Jordan VS Argentina), country flags, date, venue, and price.",
+      "steps": [
+        { "action": "Navigate to /football", "expected": "Football tab with match cards", "observed": "Football tab displayed with 4 match cards" },
+        { "action": "Click 'Jordan VS Argentina' card", "expected": "Navigate to event detail page", "observed": "Navigated to /events/cmn5t5yii0008l0sjkrq80rs5" },
+        { "action": "Verify detail page content", "expected": "Matching event info displayed", "observed": "Page shows Jordan VS Argentina with flags, date (Jun 16, 2026), venue (King Abdullah II Stadium, Amman), price ($89.99)" }
+      ],
+      "evidence": [
+        "event-listings/group-detail/VAL-EVENTS-008-detail-page.png"
+      ],
+      "consoleErrors": "none"
+    },
+    "VAL-EVENTS-009": {
+      "status": "pass",
+      "notes": "Event detail page displays all required information: event title ('Jordan VS Argentina'), date/time ('Jun 16, 2026 · 02:00 AM'), venue ('King Abdullah II Stadium, Amman'), ticket price ('$89.99'), remaining quantity ('2500 tickets'), description, and both 'For sale' and 'Purchase' buttons.",
+      "steps": [
+        { "action": "Verify event title", "expected": "Event title visible", "observed": "'Jordan VS Argentina' displayed with country flags" },
+        { "action": "Verify date/time", "expected": "Date and time shown", "observed": "'Jun 16, 2026 · 02:00 AM' displayed" },
+        { "action": "Verify venue", "expected": "Venue info shown", "observed": "'King Abdullah II Stadium, Amman' displayed" },
+        { "action": "Verify ticket price", "expected": "Price shown in $XXX.XX format", "observed": "'$89.99' displayed in blue text" },
+        { "action": "Verify action buttons", "expected": "'For sale' and 'Purchase' buttons present", "observed": "Both buttons visible at bottom of page" }
+      ],
+      "evidence": [
+        "event-listings/group-detail/VAL-EVENTS-009-event-detail.png"
+      ],
+      "consoleErrors": "none"
+    },
+    "VAL-EVENTS-010": {
+      "status": "pass",
+      "notes": "Clicking 'Purchase' shows confirmation dialog ('Success - Purchase request submitted successfully') with OK button. After dismissal, user remains on detail page. Clicking 'For sale' shows confirmation dialog ('Success - Listing request submitted successfully') with OK button. After dismissal, user remains on detail page.",
+      "steps": [
+        { "action": "Click 'Purchase' button", "expected": "Confirmation dialog appears", "observed": "Dialog shown: 'Success - Purchase request submitted successfully' with OK button" },
+        { "action": "Click OK to dismiss", "expected": "User remains on detail page", "observed": "URL still /events/cmn5t5yii0008l0sjkrq80rs5, detail page content intact" },
+        { "action": "Click 'For sale' button", "expected": "Confirmation dialog appears", "observed": "Dialog shown: 'Success - Listing request submitted successfully' with OK button" },
+        { "action": "Click OK to dismiss", "expected": "User remains on detail page", "observed": "URL still /events/cmn5t5yii0008l0sjkrq80rs5, detail page content intact" }
+      ],
+      "evidence": [
+        "event-listings/group-detail/VAL-EVENTS-010-purchase-dialog.png",
+        "event-listings/group-detail/VAL-EVENTS-010-sale-dialog.png"
+      ],
+      "consoleErrors": "none"
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 3 assertions: all 3 passed. Event card navigation (VAL-EVENTS-008), event detail completeness (VAL-EVENTS-009), and Purchase/For Sale confirmation dialogs (VAL-EVENTS-010) all work correctly. No console errors, no frictions or blockers."
+}

@@ -1,0 +1,73 @@
+{
+  "group": "group-tabs-content",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "assertions": {
+    "VAL-EVENTS-001": {
+      "status": "pass",
+      "notes": "Tapping Football, Basketball, and Concert bottom tabs switches content to the correct category each time. The active tab is visually highlighted with blue text and icon. Each tab renders its own category heading, banner, and event cards.",
+      "steps": [
+        { "action": "Login and navigate to Goods home", "expected": "Bottom tabs visible", "observed": "5 bottom tabs visible: Goods, Football, Basketball, Concert, My" },
+        { "action": "Tap Football tab", "expected": "Football content displayed, tab highlighted", "observed": "Football tab highlighted blue, shows Football heading and match cards with country flags" },
+        { "action": "Tap Basketball tab", "expected": "Basketball content displayed, tab highlighted", "observed": "Basketball tab highlighted blue, shows Basketball heading and NBA match cards" },
+        { "action": "Tap Concert tab", "expected": "Concert content displayed, tab highlighted", "observed": "Concert tab highlighted blue, shows Concert heading and artist event cards" }
+      ],
+      "evidence": [
+        "event-listings/group-tabs-content/VAL-EVENTS-001-football-active.png",
+        "event-listings/group-tabs-content/VAL-EVENTS-001-basketball-active.png",
+        "event-listings/group-tabs-content/VAL-EVENTS-001-concert-active.png"
+      ]
+    },
+    "VAL-EVENTS-002": {
+      "status": "pass",
+      "notes": "Football tab displays a landscape banner image, 'Find matches' search bar, and match cards with country flags and team names (Jordan VS Argentina, Algeria VS Austria, Brazil VS Germany, Spain VS France). Each card shows date, time, venue, and price.",
+      "steps": [
+        { "action": "Navigate to Football tab", "expected": "Banner, search, and match cards visible", "observed": "Banner image shown at top, 'Find matches' search input visible, 4 match cards displayed" },
+        { "action": "Verify match card content", "expected": "Country flags, team names, date/venue", "observed": "Cards show country flag emojis (🇯🇴🇦🇷🇩🇿🇦🇹🇧🇷🇩🇪🇪🇸🇫🇷), team names in 'X VS Y' format, dates, venues, and prices" }
+      ],
+      "evidence": [
+        "event-listings/group-tabs-content/VAL-EVENTS-002-football-tab.png"
+      ]
+    },
+    "VAL-EVENTS-003": {
+      "status": "pass",
+      "notes": "Basketball tab displays a banner image and match cards with NBA team names (Phoenix Suns VS Los Angeles Lakers, Lakers VS Spurs, Warriors VS Celtics, Bucks VS Nets). Each card shows date, venue, and price.",
+      "steps": [
+        { "action": "Navigate to Basketball tab", "expected": "Banner and NBA match cards visible", "observed": "Banner image shown, Basketball heading with basketball emoji, 4 NBA match cards displayed" },
+        { "action": "Verify match card content", "expected": "NBA team names, date/venue", "observed": "Cards show team names in 'X VS Y' format (Suns VS Lakers, etc.), dates, venues, and prices" }
+      ],
+      "evidence": [
+        "event-listings/group-tabs-content/VAL-EVENTS-003-basketball-tab.png"
+      ]
+    },
+    "VAL-EVENTS-004": {
+      "status": "pass",
+      "notes": "Concert tab displays event cards with artist photos (Taylor Swift, Ed Sheeran, The Weeknd, Beyoncé), event names, dates, venues, and prices. 'Find a star or performance' search bar is visible at top.",
+      "steps": [
+        { "action": "Navigate to Concert tab", "expected": "Search bar and artist event cards visible", "observed": "'Find a star or performance' search input visible, Concert heading with music note emoji, 4 artist event cards with photos displayed" },
+        { "action": "Verify event card content", "expected": "Artist photos, event name, date, venue", "observed": "Cards show artist thumbnail photos, artist name, event title, date, venue, and price" }
+      ],
+      "evidence": [
+        "event-listings/group-tabs-content/VAL-EVENTS-004-concert-tab.png"
+      ]
+    },
+    "VAL-EVENTS-012": {
+      "status": "pass",
+      "notes": "After rapid tab switching (Football→Basketball→Concert→Football→Concert→Basketball), each tab still shows only its own events. Football shows only country VS country matches, Basketball shows only NBA games, Concert shows only artist events. No data leakage detected.",
+      "steps": [
+        { "action": "Rapid switch: Football→Basketball→Concert→Football→Concert→Basketball", "expected": "No data leakage", "observed": "All 6 rapid clicks completed without error" },
+        { "action": "Verify Basketball tab after rapid switching", "expected": "Only basketball events", "observed": "Only NBA match cards visible (Suns VS Lakers, etc.), no football or concert data" },
+        { "action": "Verify Football tab after rapid switching", "expected": "Only football events", "observed": "Only football match cards visible (Jordan VS Argentina, etc.), no basketball or concert data" },
+        { "action": "Verify Concert tab after rapid switching", "expected": "Only concert events", "observed": "Only artist event cards visible (Taylor Swift, Ed Sheeran, etc.), no football or basketball data" }
+      ],
+      "evidence": [
+        "event-listings/group-tabs-content/VAL-EVENTS-012-football-after-rapid.png",
+        "event-listings/group-tabs-content/VAL-EVENTS-012-basketball-after-rapid.png",
+        "event-listings/group-tabs-content/VAL-EVENTS-012-concert-after-rapid.png"
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "toolsUsed": ["agent-browser"],
+  "summary": "Tested 5 assertions: all 5 passed. Tab navigation correctly switches event categories with visual highlighting (VAL-EVENTS-001). Football tab shows country flag matches (VAL-EVENTS-002). Basketball tab shows NBA match cards (VAL-EVENTS-003). Concert tab shows artist event cards with photos (VAL-EVENTS-004). No cross-contamination after rapid tab switching (VAL-EVENTS-012). No console errors detected."
+}

@@ -1,0 +1,29 @@
+{
+  "milestone": "event-listings",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 12,
+    "passed": 12,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-EVENTS-001",
+    "VAL-EVENTS-002",
+    "VAL-EVENTS-003",
+    "VAL-EVENTS-004",
+    "VAL-EVENTS-005",
+    "VAL-EVENTS-006",
+    "VAL-EVENTS-007",
+    "VAL-EVENTS-008",
+    "VAL-EVENTS-009",
+    "VAL-EVENTS-010",
+    "VAL-EVENTS-011",
+    "VAL-EVENTS-012"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}
