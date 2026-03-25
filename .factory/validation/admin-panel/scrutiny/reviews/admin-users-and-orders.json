@@ -1,0 +1,56 @@
+{
+  "featureId": "admin-users-and-orders",
+  "reviewedAt": "2026-03-25T13:25:00.000Z",
+  "commitId": "e380a30",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Solid implementation of admin user and order management. Both API routes (GET /api/admin/users, GET /api/admin/orders) properly verify admin authentication and role before returning data. The users endpoint correctly excludes the password field via Prisma select. The orders endpoint supports status filtering with proper enum validation. UI pages are well-structured with loading/error states, proper table layouts matching the spec columns, and a functional status filter dropdown for orders. The users page is correctly read-only with no edit/delete actions. 14 tests cover auth (401/403), data integrity, filtering, and sorting. Code follows established patterns from other admin routes (products, events).",
+    "issues": [
+      {
+        "file": "app/admin/users/page.tsx",
+        "line": 65,
+        "severity": "non_blocking",
+        "description": "The getAccountStatus() function derives 'account status' from the user's role field (admin -> 'Admin', others -> 'Active'). Since the User model has no explicit accountStatus field, this is always 'Active' or 'Admin' — effectively duplicating the role column. The spec requests 'account status' as a column, but the schema doesn't support a real account status (e.g., active/suspended/banned). This is a reasonable compromise given the schema limitations, but the column provides no additional information beyond the role."
+      },
+      {
+        "file": "app/admin/users/page.tsx",
+        "line": 132,
+        "severity": "non_blocking",
+        "description": "Uses raw <img> tag instead of Next.js <Image> component for user avatars. Consistent with existing admin page patterns throughout the project, so this is a pre-existing convention rather than a new issue."
+      },
+      {
+        "file": "app/admin/orders/page.tsx",
+        "line": 168,
+        "severity": "non_blocking",
+        "description": "Uses raw <img> tag for order item images. Same as above — consistent with existing admin patterns."
+      },
+      {
+        "file": "app/api/admin/orders/route.ts",
+        "line": 38,
+        "severity": "non_blocking",
+        "description": "Invalid status filter values (e.g., ?status=invalid_value) are silently ignored and treated as 'all'. While not a security issue, returning a 400 error for unrecognized status values would be more explicit. However, this permissive behavior is arguably acceptable for a filter parameter."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "All admin API routes follow the same auth pattern: getServerSession(authOptions) -> check session exists (401) -> check role === 'admin' (403). This pattern is repeated verbatim in every admin route (users, orders, products, events, stats). AGENTS.md mentions admin uses 'role: admin check' but doesn't document this specific auth guard pattern. A shared admin auth helper could reduce duplication, and documenting the exact pattern would help future workers.",
+      "evidence": "Identical auth check blocks in app/api/admin/users/route.ts:8-23, app/api/admin/orders/route.ts:9-24, app/api/admin/products/route.ts:8-23, app/api/admin/events/route.ts, app/api/admin/stats/route.ts"
+    },
+    {
+      "area": "conventions",
+      "observation": "Admin test files follow a consistent pattern: mock next-auth's getServerSession, test admin access (200), unauthenticated (401), non-admin (403). This testing pattern is not documented but is consistently followed across all admin endpoint tests.",
+      "evidence": "__tests__/api/admin/users.test.ts, __tests__/api/admin/orders.test.ts, __tests__/api/admin/products.test.ts all follow the same vi.mock('next-auth') + session mocking pattern with real database integration"
+    },
+    {
+      "area": "conventions",
+      "observation": "The User model has no explicit accountStatus field, yet the feature spec requires an 'account status' column. The worker created a derived getAccountStatus() function that maps role to status. This schema gap between what the spec expects and what the model provides should be noted for future features that may need real account status tracking.",
+      "evidence": "prisma/schema.prisma User model (lines 13-29) has no accountStatus field. app/admin/users/page.tsx:65 derives status from role."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature passes review. The implementation correctly delivers admin user management (read-only table with all specified columns) and admin order management (table with status filter dropdown supporting All/To be paid/Paid). Both API endpoints enforce admin authentication and role verification. 14 new tests provide good coverage of auth, filtering, sorting, and data integrity. All code follows established project patterns. The only notable gap is the 'account status' column being derived from role rather than a dedicated field, but this is a schema limitation, not an implementation error. No blocking issues found."
+}
