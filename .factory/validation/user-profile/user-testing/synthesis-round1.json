@@ -1,11 +1,11 @@
 {
   "milestone": "user-profile",
-  "round": 2,
-  "status": "pass",
+  "round": 1,
+  "status": "fail",
   "assertionsSummary": {
     "total": 17,
-    "passed": 17,
-    "failed": 0,
+    "passed": 16,
+    "failed": 1,
     "blocked": 0
   },
   "passedAssertions": [
@@ -19,7 +19,6 @@
     "VAL-PROFILE-008",
     "VAL-PROFILE-009",
     "VAL-PROFILE-010",
-    "VAL-CROSS-001",
     "VAL-CROSS-003",
     "VAL-CROSS-006",
     "VAL-CROSS-007",
@@ -27,8 +26,10 @@
     "VAL-CROSS-009",
     "VAL-SEED-003"
   ],
-  "failedAssertions": [],
+  "failedAssertions": [
+    { "id": "VAL-CROSS-001", "reason": "After login from a redirected protected route, user lands on the callback URL (e.g., /my) instead of the Goods home page (/) as specified. NextAuth callbackUrl mechanism redirects to the originally requested page rather than always redirecting to /." }
+  ],
   "blockedAssertions": [],
   "appliedUpdates": [],
-  "previousRound": ".factory/validation/user-profile/user-testing/synthesis-round1.json"
+  "previousRound": null
 }

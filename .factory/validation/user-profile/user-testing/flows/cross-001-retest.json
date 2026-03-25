@@ -1,0 +1,41 @@
+{
+  "groupId": "cross-001-retest",
+  "testedAt": "2026-03-25T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "credentials": "test@example.com / password123",
+    "browserSession": "9b32cb04b9d1__cross001",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-CROSS-001": {
+      "status": "pass",
+      "details": "Both parts of the assertion passed. Part 1: Navigating to /my without authentication redirected to /login?callbackUrl=%2Fmy. After logging in with test@example.com/password123, user landed on /my (the originally requested page). Part 2: Navigating directly to /login (no callbackUrl) and logging in redirected user to / (Goods home page) as expected.",
+      "steps": [
+        { "action": "Clear cookies and navigate to /my (unauthenticated)", "expected": "Redirect to /login with callbackUrl=%2Fmy", "observed": "Redirected to http://localhost:3100/login?callbackUrl=%2Fmy" },
+        { "action": "Fill email: test@example.com, password: password123, click Login", "expected": "Login succeeds and redirect to /my", "observed": "Login succeeded, redirected to http://localhost:3100/my (My profile page with menu items visible)" },
+        { "action": "Clear cookies and navigate directly to /login (no callbackUrl)", "expected": "Login page shown at /login without callbackUrl", "observed": "Login page shown at http://localhost:3100/login" },
+        { "action": "Fill email: test@example.com, password: password123, click Login", "expected": "Login succeeds and redirect to / (Goods home page)", "observed": "Login succeeded, redirected to http://localhost:3100/ (Goods home page with banner carousel and product search)" }
+      ],
+      "evidence": [
+        "user-profile/cross-001-retest/VAL-CROSS-001-redirect-to-login.png",
+        "user-profile/cross-001-retest/VAL-CROSS-001-post-login-destination-my.png",
+        "user-profile/cross-001-retest/VAL-CROSS-001-direct-login-no-callback.png",
+        "user-profile/cross-001-retest/VAL-CROSS-001-post-login-no-callback-home.png"
+      ],
+      "consoleErrors": "Pre-existing 'Invalid or unexpected token' error (not related to redirect flow)",
+      "issues": null
+    }
+  },
+  "frictions": [
+    {
+      "description": "On first attempt, form fields appeared to clear after initial fill (possibly due to React re-render with useSession status change). Required re-snapshotting to get correct refs before filling again. Second attempt with fresh cookies worked smoothly with a 5-second wait after login click.",
+      "resolved": true,
+      "resolution": "Used fresh cookie clear, immediate fill after snapshot, and 5-second wait after login click for reliable redirect detection.",
+      "affectedAssertions": ["VAL-CROSS-001"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested VAL-CROSS-001 (both parts): PASS. Part 1: Unauthenticated /my access redirects to /login?callbackUrl=%2Fmy, and after login user lands on /my. Part 2: Direct /login access (no callbackUrl) redirects to / (Goods home) after login."
+}
