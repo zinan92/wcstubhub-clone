@@ -1,0 +1,112 @@
+{
+  "groupId": "list-cards-and-orders",
+  "testedAt": "2026-03-26T04:26:51.868735+00:00",
+  "isolation": {
+    "surface": "web browser",
+    "appUrl": "http://localhost:3100",
+    "browserSession": "945d4e276c36__u2",
+    "viewport": "375x812",
+    "credentials": "test@example.com / password123",
+    "missionDir": "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-VIS-006",
+      "title": "Basketball match cards distinctive design",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Log in as seeded test user and navigate to /basketball",
+          "expected": "Basketball page loads with distinctive card design",
+          "observed": "Basketball page loaded successfully at mobile viewport"
+        },
+        {
+          "action": "Inspect first basketball event cards visually and via computed styles",
+          "expected": "Cards use a distinctive color scheme and are visually differentiated from football cards",
+          "observed": "Cards displayed basketball content but top-level link boxes had borderRadius 0px, boxShadow none, and background none despite 343px-wide card regions"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/list-cards-and-orders/VAL-VIS-006-basketball-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/events?type=basketball -> fetched successfully"
+      },
+      "issues": "Basketball event rows loaded, but the tested card containers lacked visible rounded corners, shadow, and background treatment, so the page did not demonstrate the distinctive polished card design required by the assertion."
+    },
+    {
+      "id": "VAL-VIS-007",
+      "title": "Concert cards with visual treatment on imagery",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Navigate to /concert after login",
+          "expected": "Concert page loads with image-backed concert cards",
+          "observed": "Concert page loaded successfully at mobile viewport"
+        },
+        {
+          "action": "Inspect concert cards visually and via computed styles",
+          "expected": "Cards show imagery with overlay/color treatment for readable text plus rounded corners and consistent sizing",
+          "observed": "Cards rendered artist/event text and emoji content, but tested top-level card boxes had borderRadius 0px, boxShadow none, and background none"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/list-cards-and-orders/VAL-VIS-007-concert-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/events?type=concert -> fetched successfully"
+      },
+      "issues": "The concert listing did not expose image-backed cards with gradient or overlay treatment at the validated container level, so the required polished visual treatment and readability treatment were not confirmed."
+    },
+    {
+      "id": "VAL-VIS-009",
+      "title": "Order record page tab design and order cards",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open /my/orders after login",
+          "expected": "Order records page shows highlighted active tab and populated purchase cards when seeded data exists",
+          "observed": "Purchase tab was active with bg-primary-500 text-white styling, and purchase records displayed"
+        },
+        {
+          "action": "Review purchase order cards",
+          "expected": "Cards show thumbnail, title, price, status badge, rounded corners, and spacing",
+          "observed": "Purchase tab showed cards for 'Phoenix Suns VS Los Angeles Lakers' and 'Argentina Home Jersey 2026' with image thumbnail present, price text, status labels, and consistent card spacing in screenshot"
+        },
+        {
+          "action": "Switch to For Sale tab",
+          "expected": "Second tab highlights correctly and shows seeded orders when available or a clear empty state otherwise",
+          "observed": "For Sale tab became active with highlighted styling and showed a clear empty state message 'No orders yet / Your orders will appear here'"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/list-cards-and-orders/VAL-VIS-009-orders-default.png",
+          "page-polish/list-cards-and-orders/VAL-VIS-009-orders-for-sale.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/user/orders?type=purchase -> fetched successfully; For Sale tab rendered empty state with no console-visible request failure"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The browser text extraction on Next.js pages included streamed __next_f payload text after visible page content, which added noise during validation.",
+      "resolved": true,
+      "resolution": "Used screenshots plus targeted DOM/style inspection to isolate visible UI evidence.",
+      "affectedAssertions": [
+        "VAL-VIS-006",
+        "VAL-VIS-007",
+        "VAL-VIS-009"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 3 assertions: 1 passed (VAL-VIS-009) and 2 failed (VAL-VIS-006, VAL-VIS-007) because basketball and concert list cards did not present the required polished card container styling and image treatment at the validated mobile surface."
+}

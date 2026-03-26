@@ -1,0 +1,154 @@
+{
+  "groupId": "event-detail",
+  "testedAt": "2026-03-26T00:00:00Z",
+  "isolation": {
+    "surface": "web browser",
+    "appUrl": "http://localhost:3100",
+    "browserSession": "945d4e276c36__u1",
+    "viewport": "375x812",
+    "credentials": "test@example.com / password123"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertions": [
+    {
+      "id": "VAL-CROSS-004",
+      "title": "Mobile viewport (375px) no horizontal overflow",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open football listing at 375x812 after login",
+          "expected": "No horizontal overflow on listing page",
+          "observed": "documentElement.scrollWidth === clientWidth === 375 on /football"
+        },
+        {
+          "action": "Open football event detail page",
+          "expected": "No horizontal overflow on detail page",
+          "observed": "documentElement.scrollWidth === clientWidth === 375 on /events/cmn6yv2yf0008l03g2z0hln23"
+        },
+        {
+          "action": "Open success modal from For sale and Purchase actions",
+          "expected": "Modal remains contained within viewport",
+          "observed": "Both success dialogs rendered with scrollWidth 375 and no clipping at 375px"
+        },
+        {
+          "action": "Open basketball listing and basketball event detail page",
+          "expected": "No horizontal overflow on alternate event route",
+          "observed": "documentElement.scrollWidth === clientWidth === 375 on /basketball and /events/cmn6yv2yg000cl03gjs9ny2te"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/event-detail/football-list-loaded.png",
+          "page-polish/event-detail/football-event-detail.png",
+          "page-polish/event-detail/event-detail-for-sale-modal.png",
+          "page-polish/event-detail/event-detail-purchase-modal.png",
+          "page-polish/event-detail/basketball-list-loaded.png",
+          "page-polish/event-detail/basketball-event-detail.png"
+        ],
+        "consoleErrors": "Browser errors reported a recurring 'Invalid or unexpected token' message that was present before and after interactions; no overflow-specific console issue observed.",
+        "network": "GET /api/events?type=football, GET /api/events/{id}, GET /api/events?type=basketball all succeeded during tested flows"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-006",
+      "title": "No functional regression",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Authenticate from redirected login using provided credentials",
+          "expected": "Successful login redirects back to requested event route",
+          "observed": "Login on /login?callbackUrl=%2Ffootball redirected to /football after POST /api/auth/callback/credentials and subsequent session fetches"
+        },
+        {
+          "action": "Navigate from football listing to event detail",
+          "expected": "Event detail fetches and renders",
+          "observed": "Reached /events/cmn6yv2yf0008l03g2z0hln23 with event content after GET /api/events/cmn6yv2yf0008l03g2z0hln23"
+        },
+        {
+          "action": "Use For sale action on event detail",
+          "expected": "Action completes without breakage",
+          "observed": "Success dialog 'Listing request submitted successfully' displayed with OK dismissal"
+        },
+        {
+          "action": "Use Purchase action on event detail",
+          "expected": "Action completes without breakage",
+          "observed": "Success dialog 'Purchase request submitted successfully' displayed with OK dismissal"
+        },
+        {
+          "action": "Switch to basketball and open another event detail",
+          "expected": "Navigation and data fetching continue working",
+          "observed": "Bottom tab navigation reached /basketball and opened /events/cmn6yv2yg000cl03gjs9ny2te successfully"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/event-detail/post-login-home.png",
+          "page-polish/event-detail/football-list-loaded.png",
+          "page-polish/event-detail/football-event-detail.png",
+          "page-polish/event-detail/event-detail-for-sale-modal.png",
+          "page-polish/event-detail/event-detail-purchase-modal.png",
+          "page-polish/event-detail/basketball-event-detail.png"
+        ],
+        "consoleErrors": "A persistent browser error 'Invalid or unexpected token' appeared on pages before and after the tested flow, but it did not block login, navigation, event fetching, or modal actions during this assignment.",
+        "network": "Observed POST /api/auth/callback/credentials, repeated GET /api/auth/session, GET /api/events?type=football, GET /api/events?type=basketball, and GET /api/events/{id} during successful flows"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-012",
+      "title": "Event detail pages polished layout",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open football event detail from live listing",
+          "expected": "Prominent title, secondary date/venue, clear hierarchy, full-width hero area, consistent action buttons",
+          "observed": "Page shows 'Event Details' heading, large VS hero with teams, separate date and venue rows, price/availability sections, and paired 64px-tall CTA buttons"
+        },
+        {
+          "action": "Open basketball event detail from live listing",
+          "expected": "Same polished structure on another event type",
+          "observed": "Basketball detail uses matching layout, spacing, typography order, and CTA treatment as football detail"
+        },
+        {
+          "action": "Inspect CTA sizing and spacing",
+          "expected": "Buttons consistent with product detail style and sections have generous spacing",
+          "observed": "For sale and Purchase buttons measured about 64px tall with wide rounded treatment; screenshot shows clear section separation exceeding 16px between content groups"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/event-detail/football-event-detail.png",
+          "page-polish/event-detail/basketball-event-detail.png"
+        ],
+        "consoleErrors": "Same persistent 'Invalid or unexpected token' browser error present, but detail layouts rendered fully.",
+        "network": "GET /api/events/cmn6yv2yf0008l03g2z0hln23 and GET /api/events/cmn6yv2yg000cl03gjs9ny2te returned detail data used by the rendered pages"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The referenced guidance file /Users/wendy/.factory/library/user-testing.md was not present, so only mission AGENTS guidance and the validation contract were available.",
+      "resolved": false,
+      "resolution": "Proceeded using mission-specific instructions and the provided task constraints.",
+      "affectedAssertions": [
+        "VAL-CROSS-004",
+        "VAL-CROSS-006",
+        "VAL-VIS-012"
+      ]
+    },
+    {
+      "description": "Login interactions were flaky on the first attempts because the previous validation error state remained and the initial submit happened with empty fields.",
+      "resolved": true,
+      "resolution": "Re-filled both inputs, verified their DOM values, and resubmitted successfully.",
+      "affectedAssertions": [
+        "VAL-CROSS-006"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 3 assertions for event detail flow: 3 passed. Mobile event list/detail pages stayed within 375px viewport, login/navigation/detail actions worked without functional regression, and football/basketball event detail pages showed a polished hierarchy with consistent CTA styling. A persistent browser error 'Invalid or unexpected token' was observed but did not block the assigned flows."
+}

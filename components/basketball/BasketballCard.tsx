@@ -30,11 +30,13 @@ export default function BasketballCard({
   });
 
   return (
-    <Link href={`/events/${id}`}>
-      <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900 rounded-xl shadow-elevated p-6 mb-4 hover:shadow-card transition-all overflow-hidden active:scale-[0.98] border-2 border-orange-500/30">
-        {/* Basketball decorative elements - more prominent */}
-        <div className="absolute top-3 right-3 text-6xl opacity-30">🏀</div>
-        <div className="absolute bottom-3 left-3 text-5xl opacity-25">🏀</div>
+    <Link 
+      href={`/events/${id}`}
+      className="block relative bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900 rounded-xl shadow-elevated p-6 mb-4 hover:shadow-card transition-all overflow-hidden active:scale-[0.98] border-2 border-orange-500/30"
+    >
+      {/* Basketball decorative elements - more prominent */}
+      <div className="absolute top-3 right-3 text-6xl opacity-30">🏀</div>
+      <div className="absolute bottom-3 left-3 text-5xl opacity-25">🏀</div>
         
         {/* Enhanced glow accent for dark theme visibility */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-24 bg-orange-500/20 rounded-full blur-2xl"></div>
@@ -86,10 +88,9 @@ export default function BasketballCard({
           📍 {venue}
         </div>
 
-        {/* Price */}
-        <div className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent text-center relative z-10">
-          ${price.toFixed(2)}
-        </div>
+      {/* Price */}
+      <div className="text-2xl font-bold bg-gradient-to-r from-orange-400 to-red-400 bg-clip-text text-transparent text-center relative z-10">
+        ${price.toFixed(2)}
       </div>
     </Link>
   );

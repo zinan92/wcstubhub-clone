@@ -37,15 +37,17 @@ export default function ConcertCard({
   };
 
   return (
-    <Link href={`/events/${id}`}>
-      <div className="relative rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all active:scale-[0.98]">
-        {/* Music note decorative elements - more visible */}
-        <div className="absolute top-2 right-2 text-6xl opacity-20 z-0">🎵</div>
-        <div className="absolute bottom-2 left-2 text-5xl opacity-20 z-0">🎤</div>
-        <div className="absolute top-1/2 left-1/4 text-4xl opacity-10 transform -rotate-12 z-0">🎸</div>
+    <Link 
+      href={`/events/${id}`}
+      className="block relative rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all active:scale-[0.98]"
+    >
+      {/* Music note decorative elements - more visible */}
+      <div className="absolute top-2 right-2 text-6xl opacity-20 z-0">🎵</div>
+      <div className="absolute bottom-2 left-2 text-5xl opacity-20 z-0">🎤</div>
+      <div className="absolute top-1/2 left-1/4 text-4xl opacity-10 transform -rotate-12 z-0">🎸</div>
 
-        {/* Gradient header section with artist info - enhanced for WCAG AA contrast and visual prominence */}
-        <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-6 text-white min-h-[200px] flex items-center justify-center">
+      {/* Gradient header section with artist info - enhanced for WCAG AA contrast and visual prominence */}
+      <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-6 text-white min-h-[200px] flex items-center justify-center">
           {/* Enhanced gradient overlay with music emojis backdrop */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-purple-900/20 to-black/40"></div>
           
@@ -99,7 +101,6 @@ export default function ConcertCard({
             <span className="text-xs text-white bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1.5 rounded-full font-semibold shadow-soft">Concert</span>
           </div>
         </div>
-      </div>
     </Link>
   );
 }
