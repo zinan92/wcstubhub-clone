@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
+import AnimatedModal from '@/components/ui/AnimatedModal';
 
 interface Event {
   id: string;
@@ -436,9 +437,8 @@ export default function AdminEventsPage() {
       </div>
 
       {/* Create/Edit Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <AnimatedModal isOpen={showModal} onClose={closeModal}>
+        <div className="max-h-[80vh] overflow-y-auto">
             <div className="p-6 border-b border-gray-200">
               <h2 className="text-2xl font-bold text-gray-900">
                 {modalMode === 'create' ? 'Create Event' : 'Edit Event'}
@@ -684,14 +684,13 @@ export default function AdminEventsPage() {
                 </button>
               </div>
             </form>
-          </div>
         </div>
-      )}
+      </AnimatedModal>
 
       {/* Delete Confirmation Modal */}
-      {showDeleteConfirm && eventToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+      <AnimatedModal isOpen={showDeleteConfirm && !!eventToDelete} onClose={closeDeleteConfirm}>
+        {eventToDelete && (
+          <div>
             <div className="p-6">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Delete Event</h2>
               <p className="text-gray-700 mb-6">
@@ -713,8 +712,8 @@ export default function AdminEventsPage() {
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </AnimatedModal>
     </div>
   );
 }

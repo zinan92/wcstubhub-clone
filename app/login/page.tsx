@@ -5,11 +5,13 @@ import { signIn, useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
+import { useToast } from '@/components/ui/Toast';
 
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
+  const { showToast } = useToast();
   const [activeTab, setActiveTab] = useState<'email' | 'phone'>('email');
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -56,7 +58,8 @@ export default function LoginPage() {
         setError('Invalid email/phone or password');
         setLoading(false);
       } else {
-        // Successful login - redirect to callbackUrl or home
+        // Successful login - show success toast and redirect
+        showToast('Login successful!', 'success');
         router.push(callbackUrl);
         router.refresh();
       }

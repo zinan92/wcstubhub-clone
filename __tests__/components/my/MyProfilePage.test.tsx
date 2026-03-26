@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { useSession, signOut } from 'next-auth/react';
 import MyPage from '@/app/my/page';
+import { ToastProvider } from '@/components/ui/Toast';
 
 // Mock next-auth/react
 vi.mock('next-auth/react', () => ({
@@ -48,7 +49,11 @@ describe('MyProfilePage', () => {
   });
 
   it('displays user email and VIP level', async () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       expect(screen.getByText('test@example.com')).toBeInTheDocument();
@@ -57,7 +62,11 @@ describe('MyProfilePage', () => {
   });
 
   it('displays invite code and credit points', async () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       expect(screen.getByText(/ABC123/)).toBeInTheDocument();
@@ -66,7 +75,11 @@ describe('MyProfilePage', () => {
   });
 
   it('displays balance dashboard with formatted values', async () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       // Balance formatted as currency
@@ -79,7 +92,11 @@ describe('MyProfilePage', () => {
   });
 
   it('renders all menu items with navigation', async () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       expect(screen.getByText('Order record')).toBeInTheDocument();
@@ -94,7 +111,11 @@ describe('MyProfilePage', () => {
   });
 
   it('renders logout button', async () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       const logoutButton = screen.getByRole('button', { name: /log out/i });
@@ -103,7 +124,11 @@ describe('MyProfilePage', () => {
   });
 
   it('calls signOut with correct redirect on logout click', async () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       const logoutButton = screen.getByRole('button', { name: /log out/i });
@@ -114,7 +139,11 @@ describe('MyProfilePage', () => {
   });
 
   it('displays loading state initially', () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     // Should show some loading indicator or skeleton
     expect(screen.queryByText('test@example.com')).not.toBeInTheDocument();
@@ -124,7 +153,11 @@ describe('MyProfilePage', () => {
     // Mock fetch error
     (global.fetch as any).mockRejectedValue(new Error('Failed to fetch'));
     
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       // Should handle error without crashing - shows error message
@@ -133,7 +166,11 @@ describe('MyProfilePage', () => {
   });
 
   it('menu items have correct href attributes', async () => {
-    render(<MyPage />);
+    render(
+      <ToastProvider>
+        <MyPage />
+      </ToastProvider>
+    );
     
     await waitFor(() => {
       const orderRecordLink = screen.getByRole('link', { name: /order record/i });

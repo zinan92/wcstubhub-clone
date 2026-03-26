@@ -6,6 +6,7 @@ import { AnimatePresence, m } from 'motion/react';
 import SearchBar from '@/components/goods/SearchBar';
 import MatchCard from '@/components/football/MatchCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
+import EmptyState from '@/components/ui/EmptyState';
 
 interface FootballEvent {
   id: string;
@@ -112,9 +113,12 @@ export default function FootballPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="text-center py-12"
             >
-              <p className="text-gray-500">No matches found</p>
+              <EmptyState
+                icon={Trophy}
+                heading="No matches found"
+                subtext="Try a different search term"
+              />
             </m.div>
           ) : (
             <m.div

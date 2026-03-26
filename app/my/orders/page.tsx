@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Package } from 'lucide-react';
 import Image from 'next/image';
+import EmptyState from '@/components/ui/EmptyState';
 
 interface Order {
   id: string;
@@ -238,12 +239,11 @@ export default function OrderRecordPage() {
           </div>
         ) : (
           // Empty State
-          <div className="text-center py-16">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gray-100 mb-4">
-              <Package className="w-10 h-10 text-gray-400" />
-            </div>
-            <p className="text-gray-500 text-base">No data yet</p>
-          </div>
+          <EmptyState
+            icon={Package}
+            heading="No orders yet"
+            subtext="Your orders will appear here"
+          />
         )}
       </div>
     </main>

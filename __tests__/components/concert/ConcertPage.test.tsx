@@ -159,6 +159,7 @@ describe('ConcertPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText(/No concerts found/i)).toBeInTheDocument();
+      expect(screen.getByText('Try a different search term')).toBeInTheDocument();
       expect(screen.queryAllByText(/Taylor Swift/i).length).toBe(0);
     });
   });

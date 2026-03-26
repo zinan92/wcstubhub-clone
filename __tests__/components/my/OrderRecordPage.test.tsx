@@ -176,7 +176,7 @@ describe('OrderRecordPage', () => {
     fireEvent.click(forSaleTab);
 
     await waitFor(() => {
-      expect(screen.getByText('No data yet')).toBeInTheDocument();
+      expect(screen.getByText('No orders yet')).toBeInTheDocument();
     });
   });
 
@@ -239,7 +239,7 @@ describe('OrderRecordPage', () => {
     // Switch to For sale
     fireEvent.click(screen.getByText('For sale'));
     await waitFor(() => {
-      expect(screen.getByText('No data yet')).toBeInTheDocument();
+      expect(screen.getByText('No orders yet')).toBeInTheDocument();
     });
 
     // Switch back to Purchase
@@ -265,7 +265,7 @@ describe('OrderRecordPage', () => {
     render(<OrderRecordPage />);
 
     await waitFor(() => {
-      expect(screen.getByText('No data yet')).toBeInTheDocument();
+      expect(screen.getByText('No orders yet')).toBeInTheDocument();
     });
   });
 });

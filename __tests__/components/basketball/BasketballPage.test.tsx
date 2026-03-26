@@ -183,6 +183,7 @@ describe('BasketballPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('No matches found')).toBeDefined();
+      expect(screen.getByText('Try a different search term')).toBeDefined();
     });
   });
 

@@ -6,6 +6,7 @@ import { AnimatePresence, m } from 'motion/react';
 import SearchBar from '@/components/goods/SearchBar';
 import ConcertCard from '@/components/concert/ConcertCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
+import EmptyState from '@/components/ui/EmptyState';
 
 interface ConcertEvent {
   id: string;
@@ -110,9 +111,12 @@ export default function ConcertPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="text-center py-12"
             >
-              <p className="text-gray-500">No concerts found</p>
+              <EmptyState
+                icon={Music}
+                heading="No concerts found"
+                subtext="Try a different search term"
+              />
             </m.div>
           ) : (
             <m.div

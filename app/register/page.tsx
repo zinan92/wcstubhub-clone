@@ -4,9 +4,11 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import { useToast } from '@/components/ui/Toast';
 
 export default function RegisterPage() {
   const router = useRouter();
+  const { showToast } = useToast();
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -62,6 +64,9 @@ export default function RegisterPage() {
         setLoading(false);
         return;
       }
+
+      // Show success toast
+      showToast('Registration successful!', 'success');
 
       // Auto-login after successful registration
       const signInResult = await signIn('credentials', {

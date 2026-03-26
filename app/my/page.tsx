@@ -17,6 +17,7 @@ import {
   FileText,
 } from 'lucide-react';
 import DefaultAvatar from '@/components/ui/DefaultAvatar';
+import { useToast } from '@/components/ui/Toast';
 
 interface UserProfile {
   id: string;
@@ -32,6 +33,7 @@ interface UserProfile {
 
 export default function MyPage() {
   const { data: session } = useSession();
+  const { showToast } = useToast();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -58,6 +60,7 @@ export default function MyPage() {
   }, [session]);
 
   const handleLogout = async () => {
+    showToast('Logged out successfully', 'info');
     await signOut({ callbackUrl: '/login' });
   };
 

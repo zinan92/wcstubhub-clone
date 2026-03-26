@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { ProductCardSkeleton } from '@/components/ui/Skeleton';
+import AnimatedModal from '@/components/ui/AnimatedModal';
 
 interface Product {
   id: string;
@@ -176,44 +177,40 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       </div>
 
       {/* Purchase Confirmation Dialog */}
-      {showPurchaseDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-              Success
-            </h3>
-            <p className="text-gray-700 mb-6 text-center">
-              Purchase request submitted successfully
-            </p>
-            <button
-              onClick={closePurchaseDialog}
-              className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
-            >
-              OK
-            </button>
-          </div>
+      <AnimatedModal isOpen={showPurchaseDialog} onClose={closePurchaseDialog}>
+        <div className="p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
+            Success
+          </h3>
+          <p className="text-gray-700 mb-6 text-center">
+            Purchase request submitted successfully
+          </p>
+          <button
+            onClick={closePurchaseDialog}
+            className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          >
+            OK
+          </button>
         </div>
-      )}
+      </AnimatedModal>
 
       {/* For Sale Confirmation Dialog */}
-      {showForSaleDialog && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-              Success
-            </h3>
-            <p className="text-gray-700 mb-6 text-center">
-              Listing request submitted successfully
-            </p>
-            <button
-              onClick={closeForSaleDialog}
-              className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
-            >
-              OK
-            </button>
-          </div>
+      <AnimatedModal isOpen={showForSaleDialog} onClose={closeForSaleDialog}>
+        <div className="p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
+            Success
+          </h3>
+          <p className="text-gray-700 mb-6 text-center">
+            Listing request submitted successfully
+          </p>
+          <button
+            onClick={closeForSaleDialog}
+            className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+          >
+            OK
+          </button>
         </div>
-      )}
+      </AnimatedModal>
     </div>
   );
 }
