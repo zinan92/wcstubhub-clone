@@ -15,6 +15,8 @@ import {
   Languages,
   ChevronRight,
   FileText,
+  Ticket,
+  Tag,
 } from 'lucide-react';
 import DefaultAvatar from '@/components/ui/DefaultAvatar';
 import { useToast } from '@/components/ui/Toast';
@@ -75,9 +77,11 @@ export default function MyPage() {
   };
 
   const menuItems = [
-    { label: 'Order record', href: '/my/orders', icon: FileText, color: 'text-blue-500', bgColor: 'bg-blue-100' },
-    { label: 'Personal information', href: '/my/personal', icon: User, color: 'text-green-500', bgColor: 'bg-green-100' },
-    { label: 'Bank card binding', href: '/my/bank-card', icon: CreditCard, color: 'text-purple-500', bgColor: 'bg-purple-100' },
+    { label: 'My Tickets', href: '/my/tickets', icon: Ticket, color: 'text-blue-500', bgColor: 'bg-blue-100' },
+    { label: 'My Listings', href: '/my/listings', icon: Tag, color: 'text-green-500', bgColor: 'bg-green-100' },
+    { label: 'Order record', href: '/my/orders', icon: FileText, color: 'text-purple-500', bgColor: 'bg-purple-100' },
+    { label: 'Personal information', href: '/my/personal', icon: User, color: 'text-teal-500', bgColor: 'bg-teal-100' },
+    { label: 'Bank card binding', href: '/my/bank-card', icon: CreditCard, color: 'text-pink-500', bgColor: 'bg-pink-100' },
     { label: 'Security center', href: '/my/security', icon: ShieldCheck, color: 'text-red-500', bgColor: 'bg-red-100' },
     { label: 'Notification', href: '/my/notification', icon: Bell, color: 'text-yellow-500', bgColor: 'bg-yellow-100' },
     { label: 'VIP', href: '/my/vip', icon: Star, color: 'text-amber-500', bgColor: 'bg-amber-100' },
