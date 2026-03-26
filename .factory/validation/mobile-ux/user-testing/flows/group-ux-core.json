@@ -1,0 +1,158 @@
+{
+  "groupId": "group-ux-core",
+  "testedAt": "2026-03-26T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "9c8da9d14d8c__ux1",
+    "credentials": "test@example.com / password123",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser", "grep"],
+  "assertions": [
+    {
+      "id": "VAL-UX-001",
+      "title": "Bottom tab bar frosted glass / elevated styling",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to home page after login", "expected": "Bottom tab bar visible", "observed": "Bottom tab bar visible with 5 tabs" },
+        { "action": "Inspect tab bar computed styles", "expected": "backdrop-filter blur or box-shadow present", "observed": "backdrop-filter: blur(24px), background: rgba(255,255,255,0.8), border-t border-gray-200/50" },
+        { "action": "Screenshot tab bar at 375px", "expected": "Frosted glass or elevated appearance", "observed": "Frosted glass effect with translucent white background and blur" }
+      ],
+      "evidence": {
+        "screenshots": ["mobile-ux/group-ux-core/VAL-UX-001-tab-bar.png"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "BottomTabNavigation.tsx: class='bg-white/80 backdrop-blur-xl border-t border-gray-200/50'"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-UX-002",
+      "title": "Active tab animated indicator",
+      "status": "pass",
+      "steps": [
+        { "action": "Observe active tab on Goods page", "expected": "Animated indicator visible", "observed": "Primary-colored bar at top of active tab with layoutId animation" },
+        { "action": "Switch through all 5 tabs", "expected": "Indicator animates between positions", "observed": "Indicator smoothly transitions using spring animation (stiffness: 380, damping: 30)" },
+        { "action": "Check transition duration", "expected": "Duration >= 200ms", "observed": "Active icon scales with duration: 0.2 (200ms), indicator uses spring animation" }
+      ],
+      "evidence": {
+        "screenshots": ["mobile-ux/group-ux-core/VAL-UX-001-tab-bar.png"],
+        "recordings": ["mobile-ux/group-ux-core/VAL-UX-002-tab-switching.webm"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "BottomTabNavigation.tsx: layoutId='activeTabIndicator' with spring transition, m.div animate={{ scale: active ? 1 : 0.9 }} transition={{ duration: 0.2 }}"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-UX-003",
+      "title": "Page content entrance animation on route change",
+      "status": "pass",
+      "steps": [
+        { "action": "Review app/template.tsx", "expected": "Page content wrapped with animation", "observed": "m.div with initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}" },
+        { "action": "Navigate between tabs", "expected": "Content fades/slides in on each route change", "observed": "Content fades in with slide-up effect, duration: 0.3 (300ms), easeOut" },
+        { "action": "Check animation applies to all routes", "expected": "All tab routes and detail pages", "observed": "template.tsx applies to all routes automatically via Next.js template pattern" }
+      ],
+      "evidence": {
+        "screenshots": ["mobile-ux/group-ux-core/VAL-UX-003-page-transition.png"],
+        "recordings": ["mobile-ux/group-ux-core/VAL-UX-002-tab-switching.webm"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "app/template.tsx: m.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, ease: 'easeOut' }}"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-UX-004",
+      "title": "Skeleton loaders replace spinners",
+      "status": "pass",
+      "steps": [
+        { "action": "grep for animate-spin in app/ and components/", "expected": "Zero results", "observed": "Zero results — no spinner elements" },
+        { "action": "Check skeleton component exists", "expected": "Skeleton components in components/ui/", "observed": "components/ui/Skeleton.tsx with Skeleton, ProductCardSkeleton, MatchCardSkeleton" },
+        { "action": "Check skeleton usage across pages", "expected": "Used in all data-fetching pages", "observed": "Imported in app/page.tsx, football/page.tsx, basketball/page.tsx, concert/page.tsx, products/[id]/page.tsx, events/[id]/page.tsx" }
+      ],
+      "evidence": {
+        "screenshots": ["mobile-ux/group-ux-core/VAL-UX-004-goods-loaded.png"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "rg 'animate-spin' --glob '*.tsx' app/ components/ = 0 results. Skeleton imports found in 6 page files."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-UX-005",
+      "title": "Modal dialogs slide-up animation",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to product detail page", "expected": "Product detail with Purchase/For Sale buttons", "observed": "Product detail page with Go back, For sale, Purchase buttons" },
+        { "action": "Click Purchase button", "expected": "Modal slides up from bottom with backdrop fade", "observed": "Modal appeared with slide-up animation, backdrop faded in" },
+        { "action": "Review AnimatedModal source code", "expected": "translateY animation 200-400ms with easing", "observed": "Panel: initial={{ y: '100%' }} animate={{ y: 0 }} with spring (damping: 25, stiffness: 300). Backdrop: opacity 0→1, duration: 0.2" },
+        { "action": "Click OK to close modal", "expected": "Modal slides down, backdrop fades out", "observed": "Modal dismissed with exit animation (y: '100%', opacity: 0)" }
+      ],
+      "evidence": {
+        "screenshots": ["mobile-ux/group-ux-core/VAL-UX-005-modal-open.png"],
+        "recordings": ["mobile-ux/group-ux-core/VAL-UX-005-modal-animation.webm"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "components/ui/AnimatedModal.tsx: Panel y:'100%'→0 (spring), Backdrop opacity:0→1 (0.2s), AnimatePresence for exit"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-UX-011",
+      "title": "Smooth scroll behavior",
+      "status": "pass",
+      "steps": [
+        { "action": "grep for scroll-behavior in globals.css", "expected": "scroll-behavior: smooth on html", "observed": "Line 11: scroll-behavior: smooth;" },
+        { "action": "Inspect computed style in browser", "expected": "scrollBehavior: smooth", "observed": "window.getComputedStyle(document.documentElement).scrollBehavior = 'smooth'" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "app/globals.css line 11: scroll-behavior: smooth; Browser computed style confirms scrollBehavior: 'smooth'"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-003",
+      "title": "Bottom tab navigation visual persistence",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate between all 5 tabs", "expected": "Active tab state persists correctly", "observed": "Active tab correctly shows 'My' when on /my, 'Goods' when on /, etc." },
+        { "action": "Check tab bar hidden on product detail", "expected": "No nav element on /products/*", "observed": "nav element not present on /products/cmn6t892u0006l0t76vysahcl" },
+        { "action": "Review LayoutWrapper.tsx for hiding logic", "expected": "Tab bar hidden on non-tab pages", "observed": "hideBottomTabs: /login, /register, /admin/*, /products/*, /events/*" },
+        { "action": "Rapid-switch test (5 switches in quick succession)", "expected": "Animations replay consistently", "observed": "All transitions completed smoothly during rapid switching" }
+      ],
+      "evidence": {
+        "screenshots": ["mobile-ux/group-ux-core/VAL-CROSS-003-no-tab-product.png", "mobile-ux/group-ux-core/VAL-CROSS-003-my-tab-active.png"],
+        "recordings": ["mobile-ux/group-ux-core/VAL-CROSS-003-tab-persistence.webm"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "LayoutWrapper.tsx: hideBottomTabs covers login, register, admin, products/*, events/*"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADD-005",
+      "title": "Skeleton to content smooth transition",
+      "status": "pass",
+      "steps": [
+        { "action": "Review app/page.tsx loading transition code", "expected": "AnimatePresence with cross-fade between skeleton and content", "observed": "AnimatePresence mode='wait' wraps skeleton (exit: opacity 0, duration 0.2) and content (initial: opacity 0, animate: opacity 1, duration 0.3)" },
+        { "action": "Navigate to Goods page", "expected": "Skeleton placeholders fade out, content fades in", "observed": "Smooth opacity transition from skeleton to content via AnimatePresence" },
+        { "action": "Navigate between pages to trigger re-loading", "expected": "No abrupt pop-in", "observed": "Consistent smooth transition on each navigation" }
+      ],
+      "evidence": {
+        "screenshots": ["mobile-ux/group-ux-core/VAL-ADD-005-content-loaded.png"],
+        "recordings": ["mobile-ux/group-ux-core/VAL-ADD-005-skeleton-transition.webm"],
+        "consoleErrors": "none",
+        "network": "N/A",
+        "codeEvidence": "app/page.tsx: AnimatePresence mode='wait', skeleton exit={{ opacity: 0 }} duration 0.2, content initial={{ opacity: 0 }} animate={{ opacity: 1 }} duration 0.3"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 8 assertions: 8 passed, 0 failed. All UX core features verified: frosted glass tab bar with backdrop-blur, animated tab indicator with layoutId spring animation, page entrance animations via template.tsx, skeleton loaders replacing all spinners, modal slide-up animations, smooth scroll behavior, tab navigation persistence with proper hiding on non-tab pages, and smooth skeleton-to-content transitions using AnimatePresence."
+}

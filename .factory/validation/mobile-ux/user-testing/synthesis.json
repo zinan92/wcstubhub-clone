@@ -1,0 +1,31 @@
+{
+  "milestone": "mobile-ux",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-UX-001",
+    "VAL-UX-002",
+    "VAL-UX-003",
+    "VAL-UX-004",
+    "VAL-UX-005",
+    "VAL-UX-006",
+    "VAL-UX-007",
+    "VAL-UX-008",
+    "VAL-UX-009",
+    "VAL-UX-010",
+    "VAL-UX-011",
+    "VAL-CROSS-003",
+    "VAL-ADD-003",
+    "VAL-ADD-005"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}
