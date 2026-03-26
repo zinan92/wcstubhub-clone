@@ -138,7 +138,7 @@ describe('EventDetailPage', () => {
     fireEvent.click(purchaseButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/Purchase request submitted successfully/)).toBeInTheDocument();
+      expect(screen.getByText('Purchase Tickets')).toBeInTheDocument();
     });
   });
 

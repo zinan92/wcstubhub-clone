@@ -86,64 +86,77 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // If ownedAssetId is provided, validate ownership and update quantity
-    if (ownedAssetId) {
-      const ownedAsset = await prisma.ownedAsset.findFirst({
-        where: {
-          id: ownedAssetId,
-          userId: user.id,
-        },
-      });
-
-      if (!ownedAsset) {
-        return NextResponse.json(
-          { error: 'Owned asset not found or does not belong to user' },
-          { status: 404 }
-        );
-      }
-
-      if (ownedAsset.quantityAvailable < quantity) {
-        return NextResponse.json(
-          { error: 'Insufficient quantity available for listing' },
-          { status: 400 }
-        );
-      }
-
-      // Update owned asset to mark quantity as listed
-      await prisma.ownedAsset.update({
-        where: { id: ownedAssetId },
-        data: {
-          quantityAvailable: ownedAsset.quantityAvailable - quantity,
-          status: ownedAsset.quantityAvailable - quantity === 0 ? 'listed' : ownedAsset.status,
-        },
-      });
-    }
-
     // Generate a reference number (e.g., LST-20260326-ABC123)
     const timestamp = new Date().toISOString().split('T')[0].replace(/-/g, '');
     const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
     const referenceNumber = `LST-${timestamp}-${randomSuffix}`;
 
-    // Create listing
-    const listing = await prisma.listing.create({
-      data: {
-        sellerId: user.id,
-        ownedAssetId: ownedAssetId || null,
-        itemType: itemType as 'product' | 'event',
-        itemId,
-        itemName,
-        itemImageUrl,
-        askPrice,
-        quantity,
-        status: 'active',
-        referenceNumber,
-        listedAt: new Date(),
-      },
+    // Use transaction to ensure atomicity when checking and updating quantity
+    const listing = await prisma.$transaction(async (tx) => {
+      // If ownedAssetId is provided, validate ownership and update quantity
+      if (ownedAssetId) {
+        const ownedAsset = await tx.ownedAsset.findFirst({
+          where: {
+            id: ownedAssetId,
+            userId: user.id,
+          },
+        });
+
+        if (!ownedAsset) {
+          throw new Error('Owned asset not found or does not belong to user');
+        }
+
+        if (ownedAsset.quantityAvailable < quantity) {
+          throw new Error('Insufficient quantity available for listing');
+        }
+
+        // Update owned asset to mark quantity as listed
+        await tx.ownedAsset.update({
+          where: { id: ownedAssetId },
+          data: {
+            quantityAvailable: ownedAsset.quantityAvailable - quantity,
+            status: ownedAsset.quantityAvailable - quantity === 0 ? 'listed' : ownedAsset.status,
+          },
+        });
+      }
+
+      // Create listing
+      return await tx.listing.create({
+        data: {
+          sellerId: user.id,
+          ownedAssetId: ownedAssetId || null,
+          itemType: itemType as 'product' | 'event',
+          itemId,
+          itemName,
+          itemImageUrl,
+          askPrice,
+          quantity,
+          status: 'active',
+          referenceNumber,
+          listedAt: new Date(),
+        },
+      });
     });
 
     return NextResponse.json(listing, { status: 201 });
   } catch (error) {
     console.error('Error creating listing:', error);
+    
+    // Handle custom business logic errors
+    if (error instanceof Error) {
+      if (error.message === 'Owned asset not found or does not belong to user') {
+        return NextResponse.json(
+          { error: error.message },
+          { status: 404 }
+        );
+      }
+      if (error.message === 'Insufficient quantity available for listing') {
+        return NextResponse.json(
+          { error: error.message },
+          { status: 400 }
+        );
+      }
+    }
     
     // Handle Prisma unique constraint violation
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === 'P2002') {

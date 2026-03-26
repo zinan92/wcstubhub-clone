@@ -21,6 +21,7 @@ vi.mock('@/lib/prisma', () => ({
       findFirst: vi.fn(),
       update: vi.fn(),
     },
+    $transaction: vi.fn(),
   },
 }));
 
@@ -162,7 +163,20 @@ describe('POST /api/user/listings', () => {
       user: { email: 'test@example.com' },
     } as any);
     vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any);
-    vi.mocked(prisma.listing.create).mockResolvedValue(mockListing as any);
+    
+    // Mock $transaction to execute the callback with a transaction object
+    vi.mocked(prisma.$transaction).mockImplementation(async (callback: any) => {
+      const tx = {
+        listing: {
+          create: vi.fn().mockResolvedValue(mockListing),
+        },
+        ownedAsset: {
+          findFirst: vi.fn(),
+          update: vi.fn(),
+        },
+      };
+      return callback(tx);
+    });
 
     const request = new NextRequest('http://localhost:3100/api/user/listings', {
       method: 'POST',

@@ -79,6 +79,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Validate purchase price
+    if (typeof purchasePrice !== 'number' || purchasePrice <= 0) {
+      return NextResponse.json(
+        { error: 'Purchase price must be greater than 0' },
+        { status: 400 }
+      );
+    }
+
     // Generate a reference number (e.g., OA-20260326-ABC123)
     const timestamp = new Date().toISOString().split('T')[0].replace(/-/g, '');
     const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();

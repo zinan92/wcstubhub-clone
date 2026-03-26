@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AnimatedModal from '@/components/ui/AnimatedModal';
 import Button from '@/components/ui/Button';
+import { useToast } from '@/components/ui/Toast';
 
 interface PurchaseFlowModalProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ export default function PurchaseFlowModal({
   itemType,
 }: PurchaseFlowModalProps) {
   const router = useRouter();
+  const { showToast } = useToast();
   const [currentStep, setCurrentStep] = useState<FlowStep>('quantity');
   const [quantity, setQuantity] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -68,7 +70,7 @@ export default function PurchaseFlowModal({
       setCurrentStep('success');
     } catch (error) {
       console.error('Error creating purchase:', error);
-      alert('Failed to complete purchase. Please try again.');
+      showToast('Failed to complete purchase. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }

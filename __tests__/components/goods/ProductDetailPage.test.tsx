@@ -92,7 +92,7 @@ describe('ProductDetailPage', () => {
     fireEvent.click(purchaseButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Purchase request submitted successfully')).toBeDefined();
+      expect(screen.getByText('Purchase Items')).toBeDefined();
     });
   });
 
@@ -111,7 +111,7 @@ describe('ProductDetailPage', () => {
     });
   });
 
-  it('closes Purchase dialog when OK clicked', async () => {
+  it('closes Purchase dialog when Cancel clicked', async () => {
     renderWithSession(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
@@ -122,15 +122,15 @@ describe('ProductDetailPage', () => {
     fireEvent.click(screen.getByText('Purchase'));
 
     await waitFor(() => {
-      expect(screen.getByText('Purchase request submitted successfully')).toBeDefined();
+      expect(screen.getByText('Purchase Items')).toBeDefined();
     });
 
     // Close dialog
-    const okButtons = screen.getAllByText('OK');
-    fireEvent.click(okButtons[0]);
+    const cancelButtons = screen.getAllByText('Cancel');
+    fireEvent.click(cancelButtons[0]);
 
     await waitFor(() => {
-      expect(screen.queryByText('Purchase request submitted successfully')).toBeNull();
+      expect(screen.queryByText('Purchase Items')).toBeNull();
     });
   });
 

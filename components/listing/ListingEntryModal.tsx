@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AnimatedModal from '@/components/ui/AnimatedModal';
 import Button from '@/components/ui/Button';
+import { useToast } from '@/components/ui/Toast';
 
 interface ListingEntryModalProps {
   isOpen: boolean;
@@ -29,6 +30,7 @@ export default function ListingEntryModal({
   itemType,
 }: ListingEntryModalProps) {
   const router = useRouter();
+  const { showToast } = useToast();
   const [currentStep, setCurrentStep] = useState<FlowStep>('quantity');
   const [quantity, setQuantity] = useState(1);
   const [askPrice, setAskPrice] = useState(itemPrice);
@@ -69,7 +71,7 @@ export default function ListingEntryModal({
       setCurrentStep('success');
     } catch (error) {
       console.error('Error creating listing:', error);
-      alert('Failed to create listing. Please try again.');
+      showToast('Failed to create listing. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
