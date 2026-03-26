@@ -1,0 +1,182 @@
+{
+  "groupId": "purchase-flow",
+  "testedAt": "2026-03-26T09:15:00.000Z",
+  "isolation": {
+    "browserSession": "69e1871237ae__purchase",
+    "appUrl": "http://localhost:3100",
+    "loginPage": "http://localhost:3100/login",
+    "authCredentials": "test@example.com / password123",
+    "viewport": "375x812"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-FLOW-001",
+      "title": "Guest purchase redirects to login with callback preservation",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear cookies and navigate to /products/product-stable-001", "expected": "Product detail page loads for guest user", "observed": "Product detail page loaded with Purchase and For sale buttons visible" },
+        { "action": "Click Purchase button as guest", "expected": "Redirect to /login?callbackUrl=<detail-route>", "observed": "Redirected to /login?callbackUrl=%2Fproducts%2Fproduct-stable-001%3Faction%3Dpurchase" },
+        { "action": "Verify login page displayed with callback in URL", "expected": "Login form shown with callbackUrl parameter in URL", "observed": "Login form displayed with Welcome Back heading, email/password fields, and callbackUrl preserved in URL" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-001-login-with-callback.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /products/product-stable-001 -> 200, client-side redirect to /login?callbackUrl=%2Fproducts%2Fproduct-stable-001%3Faction%3Dpurchase"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-FLOW-003",
+      "title": "Post-login callback resumes transaction entry point",
+      "status": "pass",
+      "steps": [
+        { "action": "On login page with callbackUrl, fill test@example.com / password123 and click Login", "expected": "Redirect back to /products/product-stable-001 with purchase intent", "observed": "Redirected to /products/product-stable-001 and purchase flow modal opened automatically" },
+        { "action": "Verify purchase modal opened with quantity step", "expected": "Purchase flow modal visible on the original detail page", "observed": "Purchase Items modal displayed with quantity selection for Argentina Home Jersey 2026 at $29.99" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-003-post-login-callback.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/callback/credentials -> 200, redirect to /products/product-stable-001?action=purchase"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-FLOW-004",
+      "title": "Purchase flow includes quantity, summary, and confirmation steps",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify quantity step visible in purchase modal", "expected": "Quantity selection with item name, price, max quantity, Cancel and Next buttons", "observed": "Quantity step shows: item name 'Argentina Home Jersey 2026', price $29.99, quantity input (max 85), Cancel and Next buttons" },
+        { "action": "Click Next to proceed to summary step", "expected": "Order Summary with item details, quantity, price, and total", "observed": "Order Summary shows: Item, Quantity (1), Price per unit ($29.99), Total ($29.99), Back and Continue buttons" },
+        { "action": "Click Continue to proceed to confirmation step", "expected": "Confirm Purchase with total and explicit confirmation button", "observed": "Confirm Purchase shows: Total $29.99, pseudo purchase disclaimer, Back and Confirm Purchase buttons" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-004-quantity-step.png",
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-004-summary-step.png",
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-004-confirm-step.png"
+        ],
+        "consoleErrors": "none",
+        "network": "No network requests during flow navigation (client-side state transitions)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-FLOW-006",
+      "title": "Confirmed purchase writes persisted data",
+      "status": "pass",
+      "steps": [
+        { "action": "Click Confirm Purchase button", "expected": "Purchase completes and writes to DB", "observed": "Purchase Complete! success state shown with 'Your items have been added to My Tickets' and View My Tickets button" },
+        { "action": "Verify API shows new owned asset record", "expected": "API returns new owned asset with user, item, quantity, price, status, and timestamp", "observed": "API /api/user/owned-assets returns record: userId=cmn78xhlt0000l0x18fqw8atp, itemType=product, itemId=product-stable-001, itemName=Argentina Home Jersey 2026, purchasePrice=29.99, quantity=1, status=confirmed, referenceNumber=OA-20260326-KK3Q10, purchasedAt=2026-03-26T09:10:03.346Z" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-006-purchase-success.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/user/owned-assets -> 200 (creates persisted owned asset record)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-FLOW-007",
+      "title": "Purchase success lands on correct account surface",
+      "status": "pass",
+      "steps": [
+        { "action": "Click View My Tickets button after purchase success", "expected": "Redirect to /my/tickets with new purchase visible", "observed": "Navigated to /my/tickets. Argentina Home Jersey 2026 appears at top with Confirmed status, $29.99 x 1, Ref # OA-20260326-KK3Q10" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-007-my-tickets-after-purchase.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /my/tickets -> 200, GET /api/user/owned-assets -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-FLOW-010",
+      "title": "Success state is persisted and not modal-only",
+      "status": "pass",
+      "steps": [
+        { "action": "Reload /my/tickets page", "expected": "Purchase record still visible after refresh", "observed": "After reload, Argentina Home Jersey 2026 still appears with same data: Confirmed, $29.99 x 1, Ref # OA-20260326-KK3Q10, Mar 26 2026" },
+        { "action": "Verify via API that record persists", "expected": "API returns the same owned asset record", "observed": "GET /api/user/owned-assets returns the same record with all fields intact (id, userId, itemType, itemId, itemName, purchasePrice, quantity, status, referenceNumber, purchasedAt)" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-010-after-refresh.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (returns persisted record after reload)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-FLOW-011",
+      "title": "Detail pages remain mobile-safe through pseudo transaction flows",
+      "status": "pass",
+      "steps": [
+        { "action": "Check scrollWidth === clientWidth on /my/tickets at 375px viewport", "expected": "375 === 375 (no horizontal overflow)", "observed": "375 === 375 : true" },
+        { "action": "Check scrollWidth === clientWidth on /products/product-stable-001 at 375px viewport", "expected": "375 === 375 (no horizontal overflow)", "observed": "375 === 375 : true" },
+        { "action": "Check scrollWidth === clientWidth on purchase flow quantity step at 375px viewport", "expected": "375 === 375 (no horizontal overflow)", "observed": "375 === 375 : true" },
+        { "action": "Check scrollWidth === clientWidth on purchase flow summary step at 375px viewport", "expected": "375 === 375 (no horizontal overflow)", "observed": "375 === 375 : true" },
+        { "action": "Check scrollWidth === clientWidth on purchase flow confirm step at 375px viewport", "expected": "375 === 375 (no horizontal overflow)", "observed": "375 === 375 : true" },
+        { "action": "Check scrollWidth === clientWidth on /events/event-stable-005 at 375px viewport", "expected": "375 === 375 (no horizontal overflow)", "observed": "375 === 375 : true" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-011-mobile-quantity.png",
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-011-mobile-summary.png",
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-011-mobile-confirm.png",
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-011-mobile-detail-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-007",
+      "title": "Purchase flow creates persisted owned assets",
+      "status": "pass",
+      "steps": [
+        { "action": "Complete purchase flow through UI (quantity -> summary -> confirm)", "expected": "Durable DB record created for owned asset", "observed": "POST /api/user/owned-assets creates persisted OwnedAsset record. Verified via API: id=cmn794pjn0001l0xqvw84dmrv, userId=cmn78xhlt0000l0x18fqw8atp, itemType=product, itemId=product-stable-001, quantity=1, purchasePrice=29.99" },
+        { "action": "Verify record appears on My Tickets page", "expected": "New owned asset visible in account surface", "observed": "Argentina Home Jersey 2026 appears on /my/tickets with Confirmed status and reference number OA-20260326-KK3Q10" },
+        { "action": "Verify record survives page reload", "expected": "Record still visible after browser refresh", "observed": "After reload of /my/tickets, record still present with identical data" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-007-my-tickets-after-purchase.png",
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-010-after-refresh.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/user/owned-assets -> 200, GET /api/user/owned-assets -> 200 (returns persisted record)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-008",
+      "title": "Purchase flow initializes a correct starting status",
+      "status": "pass",
+      "steps": [
+        { "action": "Complete purchase and check initial status", "expected": "New purchase has a clearly defined initial status", "observed": "New owned asset created with status='confirmed' - a clearly defined initial lifecycle status shown as green 'Confirmed' badge on My Tickets" },
+        { "action": "Verify status via API", "expected": "API returns status field with defined value", "observed": "API response shows status: 'confirmed' for the newly created owned asset record" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-transaction-flows/purchase-flow/VAL-FLOW-007-my-tickets-after-purchase.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (status field = 'confirmed')"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 9 assertions: 9 passed, 0 failed, 0 blocked. All purchase flow assertions validated successfully. Guest purchase redirects to login with callback preservation (VAL-FLOW-001). Post-login callback resumes the transaction (VAL-FLOW-003). Multi-step purchase flow with quantity/summary/confirm works correctly (VAL-FLOW-004). Purchase creates persisted DB records with 'confirmed' initial status (VAL-FLOW-006, VAL-MODEL-007, VAL-MODEL-008). Success redirects to My Tickets (VAL-FLOW-007). Data persists after page refresh (VAL-FLOW-010). All pages and flow steps are mobile-safe at 375px viewport with no horizontal overflow (VAL-FLOW-011)."
+}
