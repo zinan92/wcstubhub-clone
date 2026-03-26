@@ -1,23 +1,18 @@
 {
   "milestone": "guest-browsing-and-trust-foundation",
-  "round": 3,
-  "status": "fail",
+  "round": 4,
+  "status": "pass",
   "assertionsSummary": {
-    "total": 2,
+    "total": 1,
     "passed": 1,
     "failed": 0,
-    "blocked": 1
+    "blocked": 0
   },
   "passedAssertions": [
-    "VAL-TRUST-014"
+    "VAL-CROSS-008"
   ],
   "failedAssertions": [],
-  "blockedAssertions": [
-    {
-      "id": "VAL-CROSS-008",
-      "blockedBy": "The expected product detail callback target /products/cmn75io4y0006l0atloup346a currently resolves to a Product not found page after login, so the rerun could not verify whether guest sell intent resumes into a create-listing destination."
-    }
-  ],
+  "blockedAssertions": [],
   "appliedUpdates": [],
   "previousRound": "/Users/wendy/wcstubhub-clone/.factory/validation/guest-browsing-and-trust-foundation/user-testing/synthesis.json"
 }

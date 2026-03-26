@@ -1,0 +1,62 @@
+{
+  "groupId": "sell-resume-rerun",
+  "testedAt": "2026-03-26T00:00:00Z",
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "isolation": {
+    "baseUrl": "http://localhost:3100",
+    "browserSession": "1a880107230e__u1",
+    "viewport": "375x812",
+    "user": "test@example.com"
+  },
+  "assertionResults": [
+    {
+      "id": "VAL-CROSS-008",
+      "title": "Guest browse to login preserves create-listing destination",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open home page, then navigate directly to seeded product detail /products/product-stable-001 as guest",
+          "expected": "A valid detail page loads with a visible For sale CTA",
+          "observed": "Argentina Home Jersey 2026 detail page loaded and displayed a visible For sale button"
+        },
+        {
+          "action": "Tap For sale as guest",
+          "expected": "Redirect to /login with callbackUrl preserving the intended sell destination",
+          "observed": "Redirected to /login?callbackUrl=%2Fproducts%2Fproduct-stable-001%3Faction%3Dforsale"
+        },
+        {
+          "action": "Log in with test@example.com / password123",
+          "expected": "Post-login returns to the intended sell/listing destination or auto-opens listing-entry UI",
+          "observed": "Returned to /products/product-stable-001 and the Create Listing modal auto-opened with quantity and ask-price fields plus Cancel/Next controls"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/sell-resume-rerun/VAL-CROSS-008-home.png",
+          "guest-browsing-and-trust-foundation/sell-resume-rerun/VAL-CROSS-008-detail-before-login.png",
+          "guest-browsing-and-trust-foundation/sell-resume-rerun/VAL-CROSS-008-login-redirect.png",
+          "guest-browsing-and-trust-foundation/sell-resume-rerun/VAL-CROSS-008-post-login-state.png"
+        ],
+        "consoleErrors": "One browser error shown after login: 'Invalid or unexpected token'. Flow still completed and listing-entry UI opened.",
+        "network": "Observed redirect chain: /products/product-stable-001 -> /login?callbackUrl=%2Fproducts%2Fproduct-stable-001%3Faction%3Dforsale -> /products/product-stable-001 (listing-entry modal open)."
+      },
+      "issues": null,
+      "finalObservedUrl": "http://localhost:3100/products/product-stable-001",
+      "finalUiState": "Product detail page remained visible and a distinct Create Listing modal auto-opened with Quantity and Ask Price fields."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Home page did not expose product detail links in the initial mobile viewport snapshot, so I used current seeded data to navigate to a valid product detail route as allowed by the task.",
+      "resolved": true,
+      "resolution": "Opened /products/product-stable-001 from the seeded stable IDs and continued the guest sell flow.",
+      "affectedAssertions": [
+        "VAL-CROSS-008"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "VAL-CROSS-008 passed. Guest tapping For sale was redirected to login with a preserved sell callback, and after authenticating the app returned to /products/product-stable-001 with the Create Listing UI automatically opened rather than leaving the user on a plain detail page."
+}
