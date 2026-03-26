@@ -36,9 +36,9 @@ describe('BottomTabNavigation', () => {
     
     const { container } = render(<BottomTabNavigation />);
     
-    // Find the Goods link (should be active since pathname is '/')
-    const goodsLink = screen.getByText('Goods').closest('a');
-    expect(goodsLink).toHaveClass('text-primary-500');
+    // Find the Goods text (should be active since pathname is '/')
+    const goodsText = screen.getByText('Goods');
+    expect(goodsText).toHaveClass('text-primary-500');
   });
 
   it('shows inactive tabs in gray', () => {
@@ -47,8 +47,8 @@ describe('BottomTabNavigation', () => {
     const { container } = render(<BottomTabNavigation />);
     
     // Football tab should be inactive (gray)
-    const footballLink = screen.getByText('Football').closest('a');
-    expect(footballLink).toHaveClass('text-gray-500');
+    const footballText = screen.getByText('Football');
+    expect(footballText).toHaveClass('text-gray-500');
   });
 
   it('has correct navigation links for all tabs', () => {
@@ -87,8 +87,8 @@ describe('BottomTabNavigation', () => {
     
     render(<BottomTabNavigation />);
     
-    const footballLink = screen.getByText('Football').closest('a');
-    expect(footballLink).toHaveClass('text-primary-500');
+    const footballText = screen.getByText('Football');
+    expect(footballText).toHaveClass('text-primary-500');
   });
 
   it('highlights Basketball tab when on /basketball route', () => {
@@ -96,8 +96,8 @@ describe('BottomTabNavigation', () => {
     
     render(<BottomTabNavigation />);
     
-    const basketballLink = screen.getByText('Basketball').closest('a');
-    expect(basketballLink).toHaveClass('text-primary-500');
+    const basketballText = screen.getByText('Basketball');
+    expect(basketballText).toHaveClass('text-primary-500');
   });
 
   it('highlights Concert tab when on /concert route', () => {
@@ -105,8 +105,8 @@ describe('BottomTabNavigation', () => {
     
     render(<BottomTabNavigation />);
     
-    const concertLink = screen.getByText('Concert').closest('a');
-    expect(concertLink).toHaveClass('text-primary-500');
+    const concertText = screen.getByText('Concert');
+    expect(concertText).toHaveClass('text-primary-500');
   });
 
   it('highlights My tab when on /my route', () => {
@@ -114,7 +114,7 @@ describe('BottomTabNavigation', () => {
     
     render(<BottomTabNavigation />);
     
-    const myLink = screen.getByText('My').closest('a');
-    expect(myLink).toHaveClass('text-primary-500');
+    const myText = screen.getByText('My');
+    expect(myText).toHaveClass('text-primary-500');
   });
 });

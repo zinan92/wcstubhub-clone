@@ -9,11 +9,13 @@ import { ToastProvider } from './ui/Toast';
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   
-  // Don't show bottom tabs on login, register, or admin pages
+  // Don't show bottom tabs on login, register, admin, product detail, or event detail pages
   const hideBottomTabs = 
     pathname === '/login' || 
     pathname === '/register' || 
-    pathname.startsWith('/admin');
+    pathname.startsWith('/admin') ||
+    pathname.startsWith('/products/') ||
+    pathname.startsWith('/events/');
 
   return (
     <SessionProvider>
