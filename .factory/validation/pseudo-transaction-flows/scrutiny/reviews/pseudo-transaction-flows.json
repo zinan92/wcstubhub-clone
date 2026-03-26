@@ -1,0 +1,85 @@
+{
+  "featureId": "pseudo-transaction-flows",
+  "reviewedAt": "2026-03-26T09:15:00.000Z",
+  "commitId": "1570e756",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The implementation is architecturally sound and covers the core feature requirements well: multi-step purchase and for-sale flows with quantity/summary/confirm/success steps, persisted DB writes via well-structured API routes, guest-to-login redirect with callback URL preservation, and correct account surface destinations (My Tickets for purchases, My Listings for listings). The Prisma schema is clean with proper lifecycle enums. However, the worker failed to update 3 pre-existing component tests that broke due to the modal replacement (old tests expect 'Purchase request submitted successfully' text that no longer exists), and there are several non-blocking code quality and security concerns.",
+    "issues": [
+      {
+        "file": "__tests__/components/goods/ProductDetailPage.test.tsx",
+        "line": 74,
+        "severity": "blocking",
+        "description": "Test 'opens Purchase dialog when Purchase button clicked' expects text 'Purchase request submitted successfully' which no longer exists after PurchaseFlowModal replaced the old simple confirmation dialog. The test should expect the new flow's first step content (e.g., 'Purchase Items' or 'Select the quantity you want to purchase'). The worker's handoff claims 'All 307 tests passed' but these 3 tests are failing — the worker either did not run the full suite correctly or tests regressed post-commit."
+      },
+      {
+        "file": "__tests__/components/goods/ProductDetailPage.test.tsx",
+        "line": 87,
+        "severity": "blocking",
+        "description": "Test 'closes Purchase dialog when OK clicked' expects text 'Purchase request submitted successfully' and an 'OK' button that no longer exist. The new PurchaseFlowModal uses 'Cancel' to close at the quantity step, not 'OK'. This test must be rewritten to match the new multi-step flow behavior."
+      },
+      {
+        "file": "__tests__/components/events/EventDetailPage.test.tsx",
+        "line": 95,
+        "severity": "blocking",
+        "description": "Test 'shows Purchase dialog when button clicked' expects text 'Purchase request submitted successfully' which no longer exists. The new PurchaseFlowModal shows quantity selection as the first step. This test must be updated."
+      },
+      {
+        "file": "app/api/user/owned-assets/route.ts",
+        "line": 56,
+        "severity": "non_blocking",
+        "description": "No validation that purchasePrice is a positive number. A malicious client could send purchasePrice=0 or purchasePrice=-100 and the API would accept it. The listings route correctly validates askPrice > 0, but the owned-assets route lacks equivalent validation for purchasePrice. Should add: if (typeof purchasePrice !== 'number' || purchasePrice <= 0) return 400."
+      },
+      {
+        "file": "app/api/user/listings/route.ts",
+        "line": 88,
+        "severity": "non_blocking",
+        "description": "The ownedAsset quantity check and update (lines 88-116) is not wrapped in a Prisma transaction. Under concurrent requests, a race condition could allow over-listing: two simultaneous requests could both read quantityAvailable=2 and each list 2, resulting in 4 listed from 2 available. Should use prisma.$transaction() to atomically check-and-update."
+      },
+      {
+        "file": "components/purchase/PurchaseFlowModal.tsx",
+        "line": 68,
+        "severity": "non_blocking",
+        "description": "Error handling on purchase failure uses alert() which is a poor UX pattern. Consider using the project's existing Toast component (documented in architecture.md under 'Shared UI components: components/ui/'). Similarly for ListingEntryModal.tsx line 68."
+      },
+      {
+        "file": "components/purchase/PurchaseFlowModal.tsx",
+        "line": 120,
+        "severity": "non_blocking",
+        "description": "The quantity input uses parseInt which can produce NaN for non-numeric input, but the fallback || 1 handles it. However, negative values typed directly won't trigger the disabled state until after state update. The HTML min/max attributes provide browser-level validation but this could be more defensive."
+      },
+      {
+        "file": "app/api/user/owned-assets/route.ts",
+        "line": 85,
+        "severity": "non_blocking",
+        "description": "Reference number generation uses Math.random() which is not cryptographically secure and has a small collision risk. While the unique constraint on referenceNumber prevents duplicates (with a 409 handler), a UUID or crypto.randomUUID() would be more robust. Same issue exists in listings route.ts line 119."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "Worker replaced modal behavior on product/event detail pages (from simple success dialog to multi-step PurchaseFlowModal) but did not update the pre-existing component tests that assert on the old modal text. AGENTS.md Testing & Validation Guidance says 'Browser validation is mandatory' but does not explicitly state 'update existing tests when changing UI behavior'. This expectation should be more explicit.",
+      "evidence": "3 failing tests: ProductDetailPage.test.tsx lines 74,87 and EventDetailPage.test.tsx line 95 still expect 'Purchase request submitted successfully' text from the old modal. Worker handoff claims '307 tests passed' suggesting they may not have run tests after the final change, or tests were passing at commit time and broke later (unlikely since the modal text was changed in the same commit)."
+    },
+    {
+      "area": "conventions",
+      "observation": "Architecture.md lists Toast as a shared UI component but the new flow modals use alert() for error feedback instead. No convention documented about error feedback patterns.",
+      "evidence": "PurchaseFlowModal.tsx line 68: alert('Failed to complete purchase...'), ListingEntryModal.tsx line 68: alert('Failed to create listing...'). Architecture.md mentions 'Shared UI components: components/ui/' directory for Button, AnimatedModal, Toast, Skeleton."
+    },
+    {
+      "area": "conventions",
+      "observation": "The owned-assets POST API validates quantity > 0 and itemType is valid, but does not validate purchasePrice > 0. The listings POST API validates both askPrice > 0 and quantity > 0. This inconsistency is not documented as intentional.",
+      "evidence": "app/api/user/owned-assets/route.ts lines 56-80 vs app/api/user/listings/route.ts lines 60-86. Listings route has askPrice validation; owned-assets route lacks purchasePrice validation."
+    },
+    {
+      "area": "skills",
+      "observation": "Skill procedure step 2 says 'Write tests first for model/API changes where applicable'. Worker wrote API tests (user-owned-assets.test.ts, user-listings.test.ts) which is good, but did not update existing component tests that broke due to the UI changes. The skill procedure doesn't explicitly mention updating existing tests when modifying existing components.",
+      "evidence": "Worker added 18 new API tests but left 3 existing component tests broken. Skill SKILL.md step 2: 'Write tests first for model/API changes where applicable' — doesn't mention updating existing tests for UI changes."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "The pseudo-transaction-flows feature implementation is architecturally solid with proper multi-step purchase and listing flows, persisted DB writes, auth gating, and correct account surface routing. However, the worker failed to update 3 pre-existing component tests that broke when the old simple Purchase confirmation dialog was replaced with the new PurchaseFlowModal. These test failures are the sole blocking issue. Non-blocking concerns include: missing purchasePrice validation in the owned-assets API, lack of transaction atomicity in the listing creation's ownedAsset quantity update, use of alert() instead of the project's Toast component for errors, and Math.random()-based reference number generation. The feature's core functional requirements (VAL-FLOW-001 through VAL-FLOW-012 and VAL-MODEL-007 through VAL-MODEL-012) are met in the implementation code; only the test suite regression needs fixing."
+}

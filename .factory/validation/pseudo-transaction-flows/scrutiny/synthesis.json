@@ -1,0 +1,71 @@
+{
+  "milestone": "pseudo-transaction-flows",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": { "passed": false, "command": "npx vitest run", "exitCode": 1, "details": "304 passed, 3 failed (2 in ProductDetailPage.test.tsx, 1 in EventDetailPage.test.tsx). Failures: tests still assert on old 'Purchase request submitted successfully' modal text that was replaced by the new PurchaseFlowModal multi-step flow." },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "failedFeatures": ["pseudo-transaction-flows"]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "pseudo-transaction-flows",
+      "severity": "blocking",
+      "description": "3 pre-existing component tests broken by the modal-to-flow replacement. Tests in __tests__/components/goods/ProductDetailPage.test.tsx (lines 74, 87) and __tests__/components/events/EventDetailPage.test.tsx (line 95) still assert on 'Purchase request submitted successfully' text from the old simple dialog. The new PurchaseFlowModal shows 'Purchase Items/Tickets' and 'Select the quantity you want to purchase' as the first step. Tests must be updated to match the new multi-step flow behavior (quantity → summary → confirm → success)."
+    }
+  ],
+  "nonBlockingIssues": [
+    {
+      "featureId": "pseudo-transaction-flows",
+      "severity": "non_blocking",
+      "description": "No validation that purchasePrice is a positive number in POST /api/user/owned-assets. The listings route correctly validates askPrice > 0, but the owned-assets route lacks equivalent validation for purchasePrice."
+    },
+    {
+      "featureId": "pseudo-transaction-flows",
+      "severity": "non_blocking",
+      "description": "The ownedAsset quantity check and update in POST /api/user/listings is not wrapped in a Prisma transaction. Under concurrent requests, a race condition could allow over-listing."
+    },
+    {
+      "featureId": "pseudo-transaction-flows",
+      "severity": "non_blocking",
+      "description": "Error handling in PurchaseFlowModal.tsx and ListingEntryModal.tsx uses alert() instead of the project's existing Toast component."
+    },
+    {
+      "featureId": "pseudo-transaction-flows",
+      "severity": "non_blocking",
+      "description": "Reference number generation uses Math.random() which is not cryptographically secure. crypto.randomUUID() would be more robust."
+    }
+  ],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add to Testing & Validation Guidance: 'When modifying existing UI components or replacing UI behavior, workers MUST update all existing component tests that assert on the changed behavior. Run the full test suite after implementation and fix any test regressions before completing the feature.'",
+      "evidence": "Feature pseudo-transaction-flows replaced the simple Purchase confirmation dialog with a multi-step PurchaseFlowModal but did not update 3 pre-existing component tests (ProductDetailPage.test.tsx, EventDetailPage.test.tsx) that assert on the old modal text. Worker handoff claimed all 307 tests passed, indicating the test suite was not run correctly after the final changes.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add to UX Guidance: 'Use the project Toast component (components/ui/Toast) for user-facing error messages. Do not use browser alert() in production components.'",
+      "evidence": "PurchaseFlowModal.tsx and ListingEntryModal.tsx both use alert() for error feedback, while the project has a Toast component available in components/ui/. Architecture.md lists Toast as a shared UI component.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "Skill procedure step 2 doesn't explicitly mention updating existing tests for UI changes",
+      "reason": "This is a general software engineering expectation rather than a skill-specific gap. The AGENTS.md suggestion above covers this more appropriately as project-level guidance."
+    },
+    {
+      "observation": "Architecture.md lists Toast as a shared UI component but the new flow modals use alert() for error feedback instead",
+      "reason": "Duplicate of the AGENTS.md suggestion above about using Toast instead of alert()."
+    }
+  ],
+  "previousRound": null
+}
