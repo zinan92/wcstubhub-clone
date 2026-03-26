@@ -1,0 +1,189 @@
+{
+  "groupId": "account-surface",
+  "testedAt": "2026-03-26T10:15:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "loginPage": "http://localhost:3100/login",
+    "testUser": "test@example.com",
+    "myTicketsUrl": "http://localhost:3100/my/tickets",
+    "myListingsUrl": "http://localhost:3100/my/listings",
+    "accountLanding": "http://localhost:3100/my",
+    "viewport": "375x812",
+    "browserSession": "57e8b5d8d13b__u1"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-ACCOUNT-001",
+      "title": "My Tickets surface is available to authenticated users",
+      "status": "pass",
+      "steps": [
+        { "action": "Log in as test@example.com", "expected": "Successful login redirect to /", "observed": "Redirected to / after login" },
+        { "action": "Navigate to /my/tickets via account nav", "expected": "My Tickets page loads without 404 or blank page", "observed": "My Tickets page loaded at http://localhost:3100/my/tickets with 5 populated ticket records" },
+        { "action": "Verify URL", "expected": "URL is /my/tickets", "observed": "URL is http://localhost:3100/my/tickets" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets-scrolled.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (5 records)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-002",
+      "title": "My Listings surface is available to authenticated users",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my/listings", "expected": "My Listings page loads without 404 or blank page", "observed": "My Listings page loaded at http://localhost:3100/my/listings with 5 populated listing records" },
+        { "action": "Verify URL", "expected": "URL is /my/listings", "observed": "URL is http://localhost:3100/my/listings" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-002-my-listings.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/user/listings -> 200 (5 records)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-003",
+      "title": "My Tickets and My Listings remain protected from guests",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my/tickets as guest (unauthenticated)", "expected": "Redirect to /login with callbackUrl=/my/tickets", "observed": "Redirected to http://localhost:3100/login?callbackUrl=%2Fmy%2Ftickets" },
+        { "action": "Navigate to /my/listings as guest (unauthenticated)", "expected": "Redirect to /login with callbackUrl=/my/listings", "observed": "Redirected to http://localhost:3100/login?callbackUrl=%2Fmy%2Flistings" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-003-guest-tickets-redirect.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-003-guest-listings-redirect.png"],
+        "consoleErrors": "none",
+        "network": "GET /my/tickets -> 302 redirect to /login?callbackUrl=%2Fmy%2Ftickets; GET /my/listings -> 302 redirect to /login?callbackUrl=%2Fmy%2Flistings"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-004",
+      "title": "Seeded test user sees populated My Tickets examples",
+      "status": "pass",
+      "steps": [
+        { "action": "Log in as test@example.com", "expected": "Successful login", "observed": "Logged in as test@example.com (userId: cmn79wpj90000l0ndjrstscbo)" },
+        { "action": "Navigate to /my/tickets", "expected": "At least one populated ticket record", "observed": "5 owned asset records displayed: Jordan VS Argentina (Pending), France National Team #10 Jersey (Confirmed), Taylor Swift: The Eras Tour (Listed for Sale), Brazil VS Germany (Delivered), Golden State Warriors VS Boston Celtics (Sold)" },
+        { "action": "Verify API response", "expected": "API returns persisted records with IDs, timestamps, reference numbers", "observed": "GET /api/user/owned-assets returned 5 records with unique IDs, reference numbers (ASSET-2026-00001 through ASSET-2026-00005), purchase dates, delivery dates, quantities, and prices" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets-scrolled.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-006-tickets-statuses.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (5 records with IDs, ref numbers, timestamps)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-005",
+      "title": "Seeded test user sees populated My Listings examples",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my/listings", "expected": "At least one populated listing record", "observed": "5 listing records displayed: Germany Away Kit 2026 (Draft), Los Angeles Lakers VS San Antonio Spurs (Pending Sale), Taylor Swift: The Eras Tour (Active), Brazil VS Germany (Sold), Spain VS France (Cancelled)" },
+        { "action": "Verify API response", "expected": "API returns persisted records with IDs, timestamps, reference numbers", "observed": "GET /api/user/listings returned 5 records with unique IDs, reference numbers (LIST-2026-00001 through LIST-2026-00005), listing dates, sold/cancelled dates, quantities, and ask prices" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-002-my-listings.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-007-listings-statuses.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/user/listings -> 200 (5 records with IDs, ref numbers, timestamps)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-006",
+      "title": "My Tickets clearly communicates ownership status",
+      "status": "pass",
+      "steps": [
+        { "action": "Review ticket cards on My Tickets page", "expected": "Each ticket record shows visible ownership-related status or label", "observed": "All 5 ticket records have visible colored status badges: Pending (yellow), Confirmed (green), Listed for Sale (blue), Delivered (blue), Sold (gray). Badges are prominently displayed next to item names." }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets-scrolled.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-006-tickets-statuses.png"],
+        "consoleErrors": "none",
+        "network": "N/A (visual check)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-007",
+      "title": "My Listings clearly communicates listing status",
+      "status": "pass",
+      "steps": [
+        { "action": "Review listing cards on My Listings page", "expected": "Each listing record shows visible listing-related status", "observed": "All 5 listing records have visible colored status badges: Draft (gray), Pending Sale (orange), Active (green), Sold (blue), Cancelled (red). Badges are prominently displayed next to item names." }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-002-my-listings.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-007-listings-statuses.png"],
+        "consoleErrors": "none",
+        "network": "N/A (visual check)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-008",
+      "title": "My Tickets and My Listings are visually distinguishable",
+      "status": "pass",
+      "steps": [
+        { "action": "Compare My Tickets and My Listings pages side by side", "expected": "Clear visual differences in headings, labels, and metadata", "observed": "Pages are clearly distinguishable: (1) Different page headings: 'My Tickets' vs 'My Listings'. (2) My Tickets shows 'Purchased' date + 'Total Paid' pricing with 'ASSET-' reference numbers. (3) My Listings shows 'Listed' date + 'Total Value' pricing with 'LIST-' reference numbers. (4) Different status vocabularies: Tickets use Pending/Confirmed/Delivered/Listed for Sale/Sold; Listings use Draft/Active/Pending Sale/Sold/Cancelled. (5) My Tickets shows purchase price; My Listings shows ask price." }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-008-my-tickets-compare.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-008-my-listings-compare.png"],
+        "consoleErrors": "none",
+        "network": "N/A (visual comparison)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-014",
+      "title": "Account-center navigation clearly exposes both ownership areas",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my (account landing)", "expected": "Navigation menu shows both My Tickets and My Listings links", "observed": "Account menu shows 'My Tickets' (with blue Ticket icon, position 1) and 'My Listings' (with green Tag icon, position 2) as the first two menu items, clearly labeled and non-ambiguous" },
+        { "action": "Click My Tickets link", "expected": "Navigate to /my/tickets", "observed": "Navigated to http://localhost:3100/my/tickets successfully" },
+        { "action": "Navigate back to /my, click My Listings link", "expected": "Navigate to /my/listings", "observed": "Navigated to http://localhost:3100/my/listings successfully" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-014-account-nav.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-014-click-listings.png"],
+        "consoleErrors": "none",
+        "network": "N/A (navigation check)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-015",
+      "title": "Account data is scoped to the signed-in user",
+      "status": "pass",
+      "steps": [
+        { "action": "Check session identity", "expected": "Authenticated as test@example.com", "observed": "Session API returns user id cmn79wpj90000l0ndjrstscbo, email test@example.com, role user" },
+        { "action": "Verify owned assets API scoping", "expected": "All records belong to authenticated user", "observed": "GET /api/user/owned-assets returned 5 records, all with userId cmn79wpj90000l0ndjrstscbo (matching session user)" },
+        { "action": "Verify listings API scoping", "expected": "All records belong to authenticated user", "observed": "GET /api/user/listings returned 5 records, all with sellerId cmn79wpj90000l0ndjrstscbo (matching session user)" },
+        { "action": "Verify no data leakage", "expected": "Only one unique userId/sellerId across all records", "observed": "Confirmed: uniqueUserIds=[cmn79wpj90000l0ndjrstscbo], uniqueSellerIds=[cmn79wpj90000l0ndjrstscbo], allSameUser=true" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-002-my-listings.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/auth/session -> 200 (userId matches); GET /api/user/owned-assets -> 200 (5 records, all same userId); GET /api/user/listings -> 200 (5 records, all same sellerId)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-013",
+      "title": "User-facing history surfaces read persisted pseudo records",
+      "status": "pass",
+      "steps": [
+        { "action": "Fetch owned assets API", "expected": "Response contains persisted records with real IDs, timestamps, and reference numbers (not hard-coded placeholders)", "observed": "API returned 5 owned asset records with: unique CUID IDs (cmn79wpjk000fl0nd...), sequential reference numbers (ASSET-2026-00001 through ASSET-2026-00005), real timestamps (purchasedAt, deliveredAt, createdAt, updatedAt), item references (event-stable-001, product-stable-004, etc.), quantities, prices, and lifecycle statuses" },
+        { "action": "Fetch listings API", "expected": "Response contains persisted records with real IDs, timestamps, and reference numbers", "observed": "API returned 5 listing records with: unique CUID IDs, sequential reference numbers (LIST-2026-00001 through LIST-2026-00005), real timestamps (listedAt, soldAt, cancelledAt, createdAt, updatedAt), item references, quantities, ask prices, and lifecycle statuses (draft, active, pending_sale, sold, cancelled)" },
+        { "action": "Verify data is persisted (not hard-coded)", "expected": "Records have database-generated IDs and timestamps", "observed": "All records have CUID-format IDs (database-generated), ISO timestamps, and createdAt/updatedAt fields matching seed time, confirming persisted database records" },
+        { "action": "Verify UI matches API data", "expected": "UI displays the same data as API responses", "observed": "Screenshots show matching item names, prices, reference numbers, quantities, and statuses for all records from both APIs" }
+      ],
+      "evidence": {
+        "screenshots": ["my-tickets-and-listings/account-surface/VAL-ACCOUNT-001-my-tickets.png", "my-tickets-and-listings/account-surface/VAL-ACCOUNT-002-my-listings.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (5 persisted records with CUID IDs, timestamps, ref numbers); GET /api/user/listings -> 200 (5 persisted records with CUID IDs, timestamps, ref numbers)"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 11 assertions: all 11 passed. My Tickets and My Listings surfaces are fully functional for authenticated users, properly protected from guests with callback URL preservation, populated with seeded data showing diverse ownership and listing statuses, clearly visually distinguishable, properly scoped to the signed-in user, and backed by persisted database records (not hard-coded placeholders). Account navigation clearly exposes both surfaces with non-ambiguous labels and working click-through links."
+}

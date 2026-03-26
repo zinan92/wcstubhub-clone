@@ -108,3 +108,52 @@ This mission is a VISUAL overhaul. Validation focuses on:
 - Account and admin surfaces remain auth-protected.
 - Validate pseudo purchase and pseudo listing persistence through account surfaces.
 - Keep max concurrent browser validators at 2.
+
+## Account Center Routes
+
+- **My page (account landing):** `/my` — shows profile, stat cards, menu with My Tickets, My Listings, Order record, etc.
+- **My Tickets:** `/my/tickets` — lists owned assets (purchased items) with status badges, reference numbers, dates, quantities.
+- **My Listings:** `/my/listings` — lists created listings with status badges, reference numbers, dates, ask prices.
+- **Order record:** `/my/orders` — legacy order history.
+- All `/my/**` routes are auth-protected; guests get redirected to `/login?callbackUrl=<route>`.
+
+### Account Navigation
+The `/my` page has a menu list with items in this order:
+1. My Tickets (`/my/tickets`) — blue Ticket icon
+2. My Listings (`/my/listings`) — green Tag icon
+3. Order record (`/my/orders`) — purple FileText icon
+4. Personal information, Bank card binding, Security center, Notification, VIP, Company Profile, Language
+
+### My Tickets Data
+- API endpoint: `GET /api/user/owned-assets`
+- Shows: item name, image, purchase price, quantity, status badge (pending/confirmed/delivered/listed/sold/cancelled), reference number, purchase date, delivery date, available quantity, total paid.
+- Seeded test user (`test@example.com`) should have owned assets.
+
+### My Listings Data
+- API endpoint: `GET /api/user/listings`
+- Shows: item name, image, ask price, quantity, status badge (draft/active/pending_sale/sold/cancelled/expired), reference number, listed date, sold date, cancelled date, total value.
+- Seeded test user (`test@example.com`) should have listings.
+
+### Purchase and Listing Flows
+- Purchase flow from detail page → completes → redirects to `/my/tickets` or `/my/orders`.
+- For-sale flow from detail page → completes → redirects to `/my/listings`.
+- After a purchase, the new record should appear in My Tickets.
+- After a listing, the new record should appear in My Listings.
+
+## Flow Validator Guidance: Account Center
+
+### Testing Tool
+Use `agent-browser` skill. Set viewport to **375x812** for mobile-first account pages.
+
+### Isolation Rules
+- Each subagent uses its own browser session via `--session` flag.
+- Auth state is per-browser-session. Subagents don't interfere on auth.
+- Test user: `test@example.com` / `password123`.
+- Do not delete seed data. Creating new records via purchase/listing flows is acceptable.
+- Both subagents share the database. The test user's seeded data is read-only.
+- If creating new items via purchase/listing flows, use stable product/event IDs from `stable-seed-ids.md`.
+
+### Evidence Collection
+- Screenshot each key validation step.
+- Save screenshots to the evidence directory provided.
+- Note visible text content of status badges, reference numbers, timestamps.

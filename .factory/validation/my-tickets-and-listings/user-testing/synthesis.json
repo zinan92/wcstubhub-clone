@@ -1,0 +1,42 @@
+{
+  "milestone": "my-tickets-and-listings",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-MODEL-013",
+    "VAL-ACCOUNT-001",
+    "VAL-ACCOUNT-002",
+    "VAL-ACCOUNT-003",
+    "VAL-ACCOUNT-004",
+    "VAL-ACCOUNT-005",
+    "VAL-ACCOUNT-006",
+    "VAL-ACCOUNT-007",
+    "VAL-ACCOUNT-008",
+    "VAL-ACCOUNT-009",
+    "VAL-ACCOUNT-010",
+    "VAL-ACCOUNT-011",
+    "VAL-ACCOUNT-012",
+    "VAL-ACCOUNT-013",
+    "VAL-ACCOUNT-014",
+    "VAL-ACCOUNT-015",
+    "VAL-CROSS-007",
+    "VAL-CROSS-009",
+    "VAL-CROSS-014"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [
+    {
+      "target": "user-testing.md",
+      "description": "Added Account Center Routes section, Account Navigation details, My Tickets/My Listings data specs, Purchase/Listing flow details, and Flow Validator Guidance: Account Center section with testing tool, isolation rules, and evidence collection guidance",
+      "source": "setup"
+    }
+  ],
+  "previousRound": null
+}

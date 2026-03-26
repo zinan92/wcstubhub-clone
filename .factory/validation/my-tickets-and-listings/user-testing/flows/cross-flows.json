@@ -1,0 +1,206 @@
+{
+  "groupId": "cross-flows",
+  "testedAt": "2026-03-26T09:42:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "loginPage": "http://localhost:3100/login",
+    "testUser": "test@example.com",
+    "myTicketsUrl": "http://localhost:3100/my/tickets",
+    "myListingsUrl": "http://localhost:3100/my/listings",
+    "viewport": "375x812",
+    "browserSession": "57e8b5d8d13b__u2",
+    "stableProduct": "/products/product-stable-001",
+    "stableEvent": "/events/event-stable-001"
+  },
+  "toolsUsed": ["agent-browser", "curl"],
+  "assertions": [
+    {
+      "id": "VAL-ACCOUNT-009",
+      "title": "My Tickets shows activity/order-history context",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my/tickets after login", "expected": "My Tickets page renders with ticket records", "observed": "My Tickets page rendered with 6 owned-asset records" },
+        { "action": "Check for timestamps and references", "expected": "Each ticket shows purchase date, reference number, and activity context", "observed": "Each ticket card shows: Ref # (e.g., ASSET-2026-00005, OA-20260326-4YU4KC), Purchased date (e.g., Mar 26, 2026), Delivered date where applicable, Quantity (e.g., 1 of 1 available), Total Paid" },
+        { "action": "Verify via API /api/user/owned-assets", "expected": "API returns records with purchasedAt, referenceNumber, deliveredAt fields", "observed": "API returns 6 records each with purchasedAt timestamps, referenceNumber strings, and deliveredAt (null or timestamp)" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-009-my-tickets.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-009-my-tickets-scrolled.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (6 records with timestamps and references)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-010",
+      "title": "My Listings shows listing-history context",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my/listings after login", "expected": "My Listings page renders with listing records", "observed": "My Listings page rendered with 6 listing records (5 seeded + 1 newly created)" },
+        { "action": "Check for timestamps and references", "expected": "Each listing shows listed date, reference number, and listing context", "observed": "Each listing card shows: Ref # (e.g., LIST-2026-00001, LST-20260326-7HEW7F), Listed date (e.g., Mar 26, 2026), Sold date where applicable (e.g., for sold items), Cancelled date where applicable, Total Value" },
+        { "action": "Verify via API /api/user/listings", "expected": "API returns records with listedAt, referenceNumber, soldAt, cancelledAt fields", "observed": "API returns 6 records each with listedAt timestamps, referenceNumber strings, soldAt and cancelledAt (null or timestamp)" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings-scrolled.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings-cancelled.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/user/listings -> 200 (6 records with timestamps and references)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-011",
+      "title": "Multiple statuses are represented in seeded account-center data",
+      "status": "pass",
+      "steps": [
+        { "action": "Check My Tickets statuses", "expected": "At least two distinct status badges across owned tickets", "observed": "5 distinct statuses found in owned assets: pending, confirmed, listed (Listed for Sale), delivered, sold" },
+        { "action": "Check My Listings statuses", "expected": "At least two distinct status badges across listings", "observed": "5 distinct statuses found in listings: draft, pending_sale (Pending Sale), active, sold, cancelled" },
+        { "action": "Verify via API data", "expected": "API responses contain multiple distinct status values", "observed": "Owned assets API: [pending, confirmed, listed, delivered, sold]. Listings API: [draft, pending_sale, active, sold, cancelled]" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-009-my-tickets.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-011-my-tickets-more-statuses.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings-scrolled.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (5 distinct statuses), GET /api/user/listings -> 200 (5 distinct statuses)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-012",
+      "title": "Empty states appear only when a dataset is truly empty",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /my/tickets as seeded test user", "expected": "Populated records shown, not empty state", "observed": "My Tickets shows 6 populated owned-asset records with images, names, prices, statuses, references, and dates" },
+        { "action": "Navigate to /my/listings as seeded test user", "expected": "Populated records shown, not empty state", "observed": "My Listings shows 6 populated listing records with images, names, prices, statuses, references, and dates" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-009-my-tickets.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/user/owned-assets -> 200 (6 records), GET /api/user/listings -> 200 (6 records)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ACCOUNT-013",
+      "title": "Activity/history ordering is understandable",
+      "status": "pass",
+      "steps": [
+        { "action": "Check My Tickets ordering", "expected": "Records ordered by newest activity first", "observed": "Owned assets ordered newest first: Mar 26 (OA-20260326-4YU4KC) → Mar 25 (ASSET-2026-00005) → Mar 22 (ASSET-2026-00003) → Mar 18 (ASSET-2026-00002) → Mar 15 (ASSET-2026-00001) → Mar 12 (ASSET-2026-00004)" },
+        { "action": "Check My Listings ordering", "expected": "Records ordered by newest activity first", "observed": "Listings ordered newest first: Mar 26 (LST-20260326-7HEW7F) → Mar 24 (LIST-2026-00005) → Mar 23 (LIST-2026-00004) → Mar 20 (LIST-2026-00001) → Mar 17 (LIST-2026-00002) → Mar 14 (LIST-2026-00003)" },
+        { "action": "Verify via API query ordering", "expected": "API returns in descending chronological order", "observed": "Both /api/user/owned-assets and /api/user/listings return records sorted by purchasedAt/listedAt descending" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-009-my-tickets.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-009-my-tickets-scrolled.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings.png",
+          "my-tickets-and-listings/cross-flows/VAL-ACCOUNT-010-my-listings-scrolled.png"
+        ],
+        "consoleErrors": "none",
+        "network": "API responses confirm descending chronological ordering for both owned-assets and listings"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-007",
+      "title": "Guest browse to purchase reaches My Tickets",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear cookies to become guest, navigate to /products/product-stable-001", "expected": "Product detail page loads as guest", "observed": "Argentina Home Jersey 2026 product detail page loaded at $29.99 with Purchase and For Sale buttons" },
+        { "action": "Click Purchase as guest", "expected": "Redirect to login with callbackUrl preserving product page", "observed": "Redirected to /login?callbackUrl=%2Fproducts%2Fproduct-stable-001%3Faction%3Dpurchase" },
+        { "action": "Login with test@example.com / password123", "expected": "Return to product detail page", "observed": "Returned to /products/product-stable-001 with purchase flow auto-opened" },
+        { "action": "Complete purchase flow: quantity (1), summary ($29.99 total), confirm", "expected": "Multi-step purchase flow completes", "observed": "3-step flow: quantity selection → order summary → confirm purchase, all completed successfully" },
+        { "action": "Verify purchase success", "expected": "Success state with link to My Tickets", "observed": "Success modal: 'Purchase Complete! Your items have been added to My Tickets' with 'View My Tickets' button" },
+        { "action": "Click View My Tickets", "expected": "Navigate to /my/tickets with new record visible", "observed": "Navigated to /my/tickets. New 'Argentina Home Jersey 2026' record visible at top with Confirmed status, Ref # OA-20260326-4YU4KC, Purchased Mar 26, 2026, $29.99" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-product-detail-guest.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-login-redirect.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-purchase-quantity.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-purchase-summary.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-purchase-confirm.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-purchase-result.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-my-tickets-with-purchase.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST purchase API -> success, GET /api/user/owned-assets -> 200 with new record"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-009",
+      "title": "Create-listing flow reaches My Listings",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /events/event-stable-001 while logged in", "expected": "Event detail page loads", "observed": "Jordan VS Argentina event detail page loaded at $89.99" },
+        { "action": "Click For Sale button", "expected": "Create Listing flow opens with quantity and ask price", "observed": "Create Listing modal opened with item 'Jordan VS Argentina', Quantity 1, Ask Price $89.99" },
+        { "action": "Click Next to proceed to summary", "expected": "Listing summary step shown", "observed": "Listing Summary shown: Jordan VS Argentina, Qty 1, $89.99/unit, Total $89.99" },
+        { "action": "Click Continue to confirm", "expected": "Confirm listing step shown", "observed": "Confirm Listing step: 'Are you ready to list your tickets for sale?' Total Value $89.99" },
+        { "action": "Click Confirm Listing", "expected": "Listing created successfully", "observed": "Success modal: 'Listing Created! Your tickets are now listed for sale' with 'View My Listings' button" },
+        { "action": "Click View My Listings", "expected": "Navigate to /my/listings with new listing visible", "observed": "Navigated to /my/listings. New 'Jordan VS Argentina' listing visible at top with Active status, Ref # LST-20260326-7HEW7F, Listed Mar 26, 2026, $89.99" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-009-event-detail.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-009-listing-quantity.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-009-listing-summary.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-009-listing-confirm.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-009-listing-success.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-009-my-listings-with-new.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST listing API -> success, GET /api/user/listings -> 200 with new record"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-014",
+      "title": "Canonical account-center routes are used consistently",
+      "status": "pass",
+      "steps": [
+        { "action": "Complete purchase flow and verify redirect destination", "expected": "Post-purchase lands on canonical /my/tickets route", "observed": "After clicking 'View My Tickets' from purchase success, URL is http://localhost:3100/my/tickets (canonical route)" },
+        { "action": "Complete listing flow and verify redirect destination", "expected": "Post-listing lands on canonical /my/listings route", "observed": "After clicking 'View My Listings' from listing success, URL is http://localhost:3100/my/listings (canonical route)" },
+        { "action": "Verify route implementation in codebase", "expected": "app/my/tickets/page.tsx and app/my/listings/page.tsx exist as canonical routes", "observed": "Both app/my/tickets/page.tsx and app/my/listings/page.tsx exist. Code in PurchaseFlowModal.tsx uses router.push('/my/tickets'), ListingEntryModal.tsx uses router.push('/my/listings')" },
+        { "action": "Verify no deprecated aliases are used", "expected": "No deprecated or mismatched route aliases", "observed": "Routes /my/tickets and /my/listings are the canonical implementations, no aliases detected" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-007-my-tickets-with-purchase.png",
+          "my-tickets-and-listings/cross-flows/VAL-CROSS-009-my-listings-with-new.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Post-purchase URL: /my/tickets, Post-listing URL: /my/listings. Code references: PurchaseFlowModal.tsx:84 router.push('/my/tickets'), ListingEntryModal.tsx:86 router.push('/my/listings')"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "After purchase confirmation, the success modal appears on the same product detail page URL rather than immediately redirecting to /my/tickets. User must click 'View My Tickets' button to navigate. Same pattern for listings.",
+      "resolved": true,
+      "resolution": "This is by design - the success modal provides a clear CTA to navigate to the account surface. Both 'View My Tickets' and 'View My Listings' buttons correctly navigate to canonical routes.",
+      "affectedAssertions": ["VAL-CROSS-007", "VAL-CROSS-009"]
+    },
+    {
+      "description": "Purchase flow auto-opens when returning from login with ?action=purchase parameter, which is smooth but the URL parameter persists in the address bar",
+      "resolved": true,
+      "resolution": "This is expected behavior - the action parameter triggers the flow to auto-open after login callback return",
+      "affectedAssertions": ["VAL-CROSS-007"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 8 assertions: all 8 passed. My Tickets and My Listings show comprehensive activity context with timestamps, reference numbers, and stable ordering (newest first). Multiple statuses are well-represented across both surfaces (5 distinct statuses each). Seeded data populates both surfaces correctly with no empty states. Guest-to-purchase flow successfully creates a record visible in My Tickets. Create-listing flow successfully creates a record visible in My Listings. Both flows use canonical account-center routes (/my/tickets and /my/listings)."
+}
