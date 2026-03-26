@@ -18,9 +18,9 @@ export function BuyerProtection({ variant = 'full', className = '' }: BuyerProte
           <div>
             <h3 className="text-sm font-semibold text-surface-50 mb-1">Buyer Protection</h3>
             <p className="text-xs text-surface-300">
-              100% Money-Back Guarantee. Learn more about our{' '}
+              Every purchase is protected by our 100% Money-Back Guarantee.{' '}
               <button className="text-primary-400 hover:text-primary-300 underline">
-                buyer protection policy
+                Learn more about Buyer Protection
               </button>
             </p>
           </div>
@@ -36,7 +36,7 @@ export function BuyerProtection({ variant = 'full', className = '' }: BuyerProte
           <Shield className="w-8 h-8 text-primary-500" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-surface-50">Buyer Protection Guarantee</h2>
+          <h2 className="text-lg font-bold text-surface-50">Buyer Protection</h2>
           <p className="text-sm text-surface-300">Shop with confidence</p>
         </div>
       </div>
@@ -46,7 +46,7 @@ export function BuyerProtection({ variant = 'full', className = '' }: BuyerProte
           <CheckCircle2 className="w-5 h-5 text-success-500 flex-shrink-0 mt-0.5" />
           <div>
             <p className="text-sm font-medium text-surface-100">100% Money-Back Guarantee</p>
-            <p className="text-xs text-surface-400">Get a full refund if your order doesn&apos;t arrive or isn&apos;t as described</p>
+            <p className="text-xs text-surface-400">Every purchase is protected by our Buyer Protection program</p>
           </div>
         </div>
 
@@ -61,8 +61,8 @@ export function BuyerProtection({ variant = 'full', className = '' }: BuyerProte
         <div className="flex items-start gap-3">
           <RefreshCcw className="w-5 h-5 text-success-500 flex-shrink-0 mt-0.5" />
           <div>
-            <p className="text-sm font-medium text-surface-100">Easy Returns & Refunds</p>
-            <p className="text-xs text-surface-400">Hassle-free returns within 14 days of purchase</p>
+            <p className="text-sm font-medium text-surface-100">Easy Refunds</p>
+            <p className="text-xs text-surface-400">Full refund if your order doesn&apos;t arrive or isn&apos;t as described</p>
           </div>
         </div>
       </div>

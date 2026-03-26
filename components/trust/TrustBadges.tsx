@@ -40,7 +40,7 @@ const badgeConfig: Record<TrustBadgeType, {
   },
   'buyer-protected': {
     icon: Lock,
-    label: 'Buyer Protected',
+    label: 'Buyer Protection',
     bgColor: 'bg-success-900/30',
     textColor: 'text-success-400',
     iconColor: 'text-success-500',
