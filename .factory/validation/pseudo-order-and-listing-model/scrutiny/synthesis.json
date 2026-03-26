@@ -1,53 +1,51 @@
 {
   "milestone": "pseudo-order-and-listing-model",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "validatorsRun": {
     "test": {
       "passed": true,
-      "command": "cd \"/Users/wendy/wcstubhub-clone\" && npx vitest run",
+      "command": "cd /Users/wendy/wcstubhub-clone && npx vitest run",
       "exitCode": 0
     },
     "typecheck": {
       "passed": true,
-      "command": "cd \"/Users/wendy/wcstubhub-clone\" && pnpm typecheck",
+      "command": "cd /Users/wendy/wcstubhub-clone && pnpm typecheck",
       "exitCode": 0
     },
     "lint": {
       "passed": true,
-      "command": "cd \"/Users/wendy/wcstubhub-clone\" && pnpm lint",
+      "command": "cd /Users/wendy/wcstubhub-clone && pnpm lint",
       "exitCode": 0
     }
   },
   "reviewsSummary": {
     "total": 1,
-    "passed": 0,
-    "failed": 1,
-    "failedFeatures": [
-      "pseudo-order-and-listing-model"
-    ]
+    "passed": 1,
+    "failed": 0,
+    "failedFeatures": []
   },
-  "blockingIssues": [
-    {
-      "featureId": "pseudo-order-and-listing-model",
-      "severity": "blocking",
-      "description": "The admin sidebar still exposes only Dashboard, Products, Events, Users, and legacy Orders. The new pseudo transaction pages `/admin/owned-assets` and `/admin/listings` are omitted, so the shipped admin UI provides no navigable path to the pseudo transaction records this feature added. That falls short of the milestone requirement to ensure admins can view/filter pseudo transaction records where appropriate."
-    },
-    {
-      "featureId": "pseudo-order-and-listing-model",
-      "severity": "blocking",
-      "description": "The dashboard quick actions and stats continue to point only to legacy order management and do not surface owned assets or listings. Combined with the missing sidebar links, pseudo transactions are effectively undiscoverable in the canonical admin experience even though separate pages exist."
-    }
-  ],
+  "blockingIssues": [],
   "appliedUpdates": [],
   "suggestedGuidanceUpdates": [
     {
+      "target": "AGENTS.md",
+      "suggestion": "Add guidance: Validation artifacts (.factory/validation/) should be committed separately from feature code commits when possible, to keep feature commit history focused on application changes.",
+      "evidence": "Both pseudo-order-and-listing-model (6345accb) and fix-admin-exposure-for-pseudo-transactions (926b06e6) included .factory/validation/ JSON files alongside application code changes in the same commit.",
+      "isSystemic": true
+    },
+    {
       "target": "skills",
-      "suggestion": "Reinforce in marketplace-worker completion guidance that features adding admin-facing routes must include agent-browser validation with explicit interactiveChecks evidence in the handoff.",
-      "evidence": "Feature pseudo-order-and-listing-model added admin-owned-assets and admin-listings surfaces, but its handoff recorded only commandsRun and no interactiveChecks, contrary to marketplace-worker step 5.",
+      "suggestion": "Reinforce in marketplace-worker completion guidance that features adding admin-facing routes must include agent-browser validation with explicit interactiveChecks evidence in the handoff. The fix worker (fix-admin-exposure-for-pseudo-transactions) correctly followed this procedure, confirming the guidance is already in the skill but was missed by the original worker.",
+      "evidence": "Feature pseudo-order-and-listing-model added admin owned-assets and admin listings surfaces but its handoff recorded only commandsRun and no interactiveChecks. The fix worker correctly included 7 agent-browser interactive verification steps.",
       "isSystemic": false
     }
   ],
-  "rejectedObservations": [],
-  "previousRound": null
+  "rejectedObservations": [
+    {
+      "observation": "The fix worker correctly followed the marketplace-worker skill procedure including agent-browser interactive verification (step 5), which the original feature worker had skipped.",
+      "reason": "This is informational confirmation that the fix worker did the right thing, not a new observation requiring action. Already covered by the suggested skill reinforcement above."
+    }
+  ],
+  "previousRound": ".factory/validation/pseudo-order-and-listing-model/scrutiny/synthesis.json (round 1)"
 }

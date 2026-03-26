@@ -1,0 +1,33 @@
+{
+  "featureId": "fix-admin-exposure-for-pseudo-transactions",
+  "reviewedAt": "2026-03-26T08:30:00Z",
+  "commitId": "926b06e622c0486b3f6190b99df2843887883002",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The fix correctly addresses both blocking issues from the prior review. The admin sidebar in layout.tsx now includes Owned Assets and Listings navigation links with appropriate Ticket and Tag icons, positioned after Orders in the navigation array. The admin dashboard page adds two new stat cards (Owned Assets and Listings) with counts fetched from the updated stats API, and two new quick action links (View Owned Assets and View Listings). The stats API route.ts adds prisma.ownedAsset.count() and prisma.listing.count() to the parallel query and returns both in the response. The grid layout was updated from 4-column to 3-column to accommodate 6 stat cards, and the quick actions grid was similarly expanded. The implementation follows existing patterns and coding conventions consistently. Agent-browser interactive verification confirmed all navigation paths work correctly.",
+    "issues": [
+      {
+        "file": "app/admin/dashboard/page.tsx",
+        "line": 108,
+        "severity": "non_blocking",
+        "description": "The stat cards grid changed from lg:grid-cols-4 to lg:grid-cols-3 to fit 6 cards in two rows. This is a reasonable layout choice, but the original 4-column layout with 4 items had balanced spacing. With 6 items in a 3-column grid, the layout is balanced (2 rows of 3). No functional issue, just a minor design trade-off worth noting."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The prior review noted that the original pseudo-order-and-listing-model feature committed validation review files (.factory/validation/...) inside the application commit. This fix feature's commit also includes the prior round's review and synthesis JSON files alongside the code changes. Validation artifacts should arguably be tracked separately from feature code commits to keep the git history clean.",
+      "evidence": "git show 926b06e6 --stat shows .factory/validation/pseudo-order-and-listing-model/scrutiny/reviews/pseudo-order-and-listing-model.json and .factory/validation/pseudo-order-and-listing-model/scrutiny/synthesis.json committed alongside the app code changes."
+    },
+    {
+      "area": "skills",
+      "observation": "The fix worker correctly followed the marketplace-worker skill procedure including agent-browser interactive verification (step 5), which the original feature worker had skipped. The skill feedback confirms followedProcedure: true with no deviations, showing the prior observation about missing interactive checks was addressed.",
+      "evidence": "Handoff interactiveChecks array contains 7 detailed browser verification steps covering sidebar navigation, dashboard stat cards, owned assets page, listings page, and quick action links."
+    }
+  ],
+  "addressesFailureFrom": ".factory/validation/pseudo-order-and-listing-model/scrutiny/reviews/pseudo-order-and-listing-model.json",
+  "summary": "The fix fully resolves both blocking issues from the prior review. The admin sidebar now includes Owned Assets and Listings navigation links, and the admin dashboard displays stat cards with counts and quick action links for both surfaces. The stats API was updated to fetch and return ownedAssets and listings counts. All three modified files (layout.tsx, dashboard/page.tsx, stats/route.ts) follow existing patterns. Agent-browser verification confirmed all navigation paths are functional. Pass."
+}
