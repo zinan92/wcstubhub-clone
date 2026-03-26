@@ -3,53 +3,46 @@
   "round": 1,
   "status": "fail",
   "validatorsRun": {
-    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0 },
-    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
-    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+    "test": {
+      "passed": true,
+      "command": "npx vitest run",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "pnpm typecheck",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "pnpm lint",
+      "exitCode": 0
+    }
   },
   "reviewsSummary": {
-    "total": 1,
-    "passed": 0,
+    "total": 2,
+    "passed": 1,
     "failed": 1,
-    "failedFeatures": ["guest-browsing-and-trust-foundation"]
+    "failedFeatures": [
+      "guest-browsing-and-trust-foundation"
+    ]
   },
   "blockingIssues": [
     {
       "featureId": "guest-browsing-and-trust-foundation",
       "severity": "blocking",
-      "description": "Product detail always renders trust badges without checking product-specific eligibility, so trust badge visibility is not conditionally accurate."
-    },
-    {
-      "featureId": "guest-browsing-and-trust-foundation",
-      "severity": "blocking",
-      "description": "Event detail always renders trust badges without checking event-specific eligibility, so trust badge visibility is not conditionally accurate."
-    },
-    {
-      "featureId": "guest-browsing-and-trust-foundation",
-      "severity": "blocking",
-      "description": "Trust/support messaging was only added to /my/orders rather than broadly across account surfaces, leaving the feature short of its stated account-surface trust coverage."
+      "description": "Trust architecture was not added to the football, basketball, or concert listing pages, so required listing-surface Buyer Protection / trust messaging coverage remains incomplete."
     }
   ],
   "appliedUpdates": [],
   "suggestedGuidanceUpdates": [
     {
-      "target": "AGENTS.md",
-      "suggestion": "Reinforce that milestone feature handoffs must include evidence for every surface named in the feature description, especially when wording says trust content should appear on account surfaces broadly rather than a single page.",
-      "evidence": "The guest-browsing-and-trust-foundation feature handoff claimed account-surface trust coverage, but scrutiny found trust/support copy only on /my/orders while other /my/** surfaces were unchanged.",
+      "target": "skills",
+      "suggestion": "Reinforce in marketplace-worker review expectations that milestone handoffs must include agent-browser interactive evidence whenever the skill requires browser validation, and scrutiny should treat missing browser evidence as a procedural issue even when curl checks pass.",
+      "evidence": "The original feature review for guest-browsing-and-trust-foundation found the worker handoff relied only on curl-based verification despite marketplace-worker requiring agent-browser validation; the subsequent fix feature corrected this by including browser evidence.",
       "isSystemic": false
-    },
-    {
-      "target": "marketplace-worker skill",
-      "suggestion": "Tighten completion guidance so required agent-browser checks are mandatory evidence in the handoff whenever the skill says browser verification is required.",
-      "evidence": "The marketplace-worker skill requires agent-browser validation for guest browsing and gated transaction flows, but the completed feature handoff reported no interactiveChecks and only curl-based verification.",
-      "isSystemic": true
     }
   ],
-  "rejectedObservations": [
-    {
-      "observation": "Update .factory/library/user-testing.md to remove the claim that all pages require authentication.",
-      "reason": "recommend-to-orchestrator-needed: this is a real issue but outside scrutiny's apply-now scope for this run because the mission result is failing and the observed mismatch should be handled alongside the milestone fix work."
-    }
-  ],
+  "rejectedObservations": [],
   "previousRound": null
 }

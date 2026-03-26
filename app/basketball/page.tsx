@@ -7,6 +7,8 @@ import SearchBar from '@/components/goods/SearchBar';
 import BasketballCard from '@/components/basketball/BasketballCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
+import { BuyerProtection } from '@/components/trust/BuyerProtection';
+import { TrustBadgesGroup } from '@/components/trust/TrustBadges';
 
 interface BasketballEvent {
   id: string;
@@ -86,6 +88,19 @@ export default function BasketballPage() {
           <span className="text-2xl">🏀</span>
           <h2 className="text-lg font-semibold text-gray-900">Basketball</h2>
         </div>
+      </div>
+
+      {/* Trust Architecture - visible to all users */}
+      <div className="px-4 pb-4">
+        <BuyerProtection variant="compact" />
+      </div>
+
+      {/* Trust Badges */}
+      <div className="px-4 pb-4">
+        <TrustBadgesGroup 
+          badges={['verified', 'buyer-protected', 'secure-delivery']} 
+          size="sm"
+        />
       </div>
 
       {/* Match Cards */}

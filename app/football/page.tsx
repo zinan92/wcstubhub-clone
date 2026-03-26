@@ -7,6 +7,8 @@ import SearchBar from '@/components/goods/SearchBar';
 import MatchCard from '@/components/football/MatchCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
+import { BuyerProtection } from '@/components/trust/BuyerProtection';
+import { TrustBadgesGroup } from '@/components/trust/TrustBadges';
 
 interface FootballEvent {
   id: string;
@@ -88,6 +90,19 @@ export default function FootballPage() {
           <Trophy className="w-5 h-5 text-primary-500" />
           <h2 className="text-lg font-semibold text-gray-900">Football</h2>
         </div>
+      </div>
+
+      {/* Trust Architecture - visible to all users */}
+      <div className="px-4 pb-4">
+        <BuyerProtection variant="compact" />
+      </div>
+
+      {/* Trust Badges */}
+      <div className="px-4 pb-4">
+        <TrustBadgesGroup 
+          badges={['verified', 'buyer-protected', 'secure-delivery']} 
+          size="sm"
+        />
       </div>
 
       {/* Match Cards */}
