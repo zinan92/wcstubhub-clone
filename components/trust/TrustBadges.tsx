@@ -25,11 +25,11 @@ const badgeConfig: Record<TrustBadgeType, {
     iconColor: 'text-success-500',
   },
   official: {
-    icon: Shield,
-    label: 'Official',
-    bgColor: 'bg-primary-900/30',
-    textColor: 'text-primary-400',
-    iconColor: 'text-primary-500',
+    icon: BadgeCheck,
+    label: 'Verified',
+    bgColor: 'bg-success-900/30',
+    textColor: 'text-success-400',
+    iconColor: 'text-success-500',
   },
   'secure-delivery': {
     icon: Truck,
@@ -39,11 +39,11 @@ const badgeConfig: Record<TrustBadgeType, {
     iconColor: 'text-accent-500',
   },
   'buyer-protected': {
-    icon: Lock,
+    icon: Shield,
     label: 'Buyer Protection',
-    bgColor: 'bg-success-900/30',
-    textColor: 'text-success-400',
-    iconColor: 'text-success-500',
+    bgColor: 'bg-primary-900/30',
+    textColor: 'text-primary-400',
+    iconColor: 'text-primary-500',
   },
 };
 

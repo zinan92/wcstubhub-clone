@@ -1,62 +1,25 @@
 {
   "milestone": "guest-browsing-and-trust-foundation",
-  "round": 1,
+  "round": 2,
   "status": "fail",
   "assertionsSummary": {
-    "total": 21,
-    "passed": 16,
-    "failed": 5,
+    "total": 2,
+    "passed": 0,
+    "failed": 2,
     "blocked": 0
   },
-  "passedAssertions": [
-    "VAL-TRUST-001",
-    "VAL-TRUST-002",
-    "VAL-TRUST-003",
-    "VAL-TRUST-004",
-    "VAL-TRUST-005",
-    "VAL-TRUST-006",
-    "VAL-TRUST-008",
-    "VAL-TRUST-009",
-    "VAL-TRUST-010",
-    "VAL-TRUST-011",
-    "VAL-TRUST-012",
-    "VAL-TRUST-015",
-    "VAL-TRUST-016",
-    "VAL-CROSS-005",
-    "VAL-CROSS-010",
-    "VAL-CROSS-016"
-  ],
+  "passedAssertions": [],
   "failedAssertions": [
     {
-      "id": "VAL-TRUST-007",
-      "reason": "Authenticated account-surface trust coverage could not be validated because /my/tickets returned 404."
-    },
-    {
-      "id": "VAL-TRUST-013",
-      "reason": "Account/order trust messaging could not be validated because /my/tickets returned 404."
-    },
-    {
       "id": "VAL-TRUST-014",
-      "reason": "Trust naming was inconsistent across reachable surfaces and account copy could not be compared because /my/tickets returned 404."
-    },
-    {
-      "id": "VAL-CROSS-006",
-      "reason": "Guest purchase callback returned to detail page but did not resume a dedicated purchase destination/flow after login."
+      "reason": "Trust copy is inconsistent across user-facing surfaces. Browse and detail surfaces use the Buyer Protection naming consistently, but the guarantee/support language conflicts: public browse/detail/account pages say 'Every purchase is protected by our 100% Money-Back Guarantee' and '100% Guarantee', while /my/orders and /my/tickets also introduce 'Easy Refunds' with 'Full refund if your order doesn't arrive or isn't as described'. Badge terminology is also inconsistent because the football browse page shows 'Verified', 'Buyer Protection', and 'Secure Delivery', while the event detail page swaps 'Verified' for 'Official'."
     },
     {
       "id": "VAL-CROSS-008",
-      "reason": "Guest listing callback returned to detail page but did not resume a dedicated listing destination/flow after login."
+      "reason": "Guest for-sale intent was preserved through login via callbackUrl=/products/cmn75io4y0006l0atloup346a?action=forsale, but after authentication the app returned only to the product detail page with an OK modal and did not auto-enter a distinct sell/listing flow. Re-clicking For sale after login produced the same modal instead of a listing-entry flow."
     }
   ],
   "blockedAssertions": [],
   "appliedUpdates": [],
-  "previousRound": null,
-  "flowReports": [
-    ".factory/validation/guest-browsing-and-trust-foundation/user-testing/flows/guest-routes.json",
-    ".factory/validation/guest-browsing-and-trust-foundation/user-testing/flows/trust-admin.json"
-  ],
-  "systemicIssues": [
-    "Authenticated /my/tickets route returned 404 during validation, preventing account trust validation.",
-    "Post-login purchase/sell callback only returned users to the detail page; no dedicated resumed transaction entry flow was available."
-  ]
+  "previousRound": "/Users/wendy/wcstubhub-clone/.factory/validation/guest-browsing-and-trust-foundation/user-testing/synthesis.json"
 }

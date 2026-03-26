@@ -285,7 +285,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           <div className="mb-6">
             <TrustBadgesGroup 
               badges={[
-                ...(event.isOfficial ? ['official' as const] : []),
+                ...(event.isOfficial ? ['verified' as const] : []),
                 ...(event.isBuyerProtected ? ['buyer-protected' as const] : []),
                 ...(event.hasSecureDelivery ? ['secure-delivery' as const] : []),
               ]} 
@@ -295,14 +295,8 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
         )}
 
         {/* Buyer Protection - Compact */}
-        <div className="mb-6">
+        <div className="mb-24">
           <BuyerProtection variant="compact" />
-        </div>
-
-        {/* Trust Messaging near CTA */}
-        <div className="mb-24 space-y-3">
-          <TrustMessaging variant="guarantee" />
-          <TrustMessaging variant="support" />
         </div>
       </div>
 

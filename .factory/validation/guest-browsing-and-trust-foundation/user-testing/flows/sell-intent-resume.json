@@ -1,0 +1,35 @@
+{
+  "assertionResults": [
+    {
+      "id": "VAL-CROSS-008",
+      "status": "fail",
+      "reason": "Guest for-sale intent was preserved through login via callbackUrl=/products/cmn75io4y0006l0atloup346a?action=forsale, but after authentication the app returned only to the product detail page with an OK modal and did not auto-enter a distinct sell/listing flow. Re-clicking For sale after login produced the same modal instead of a listing-entry flow.",
+      "evidence": {
+        "paths": [
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/sell-intent-resume/VAL-CROSS-008-home.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/sell-intent-resume/VAL-CROSS-008-detail-page.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/sell-intent-resume/VAL-CROSS-008-login-redirect.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/sell-intent-resume/VAL-CROSS-008-post-login.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/sell-intent-resume/VAL-CROSS-008-after-ok.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/sell-intent-resume/VAL-CROSS-008-authenticated-for-sale-result.png"
+        ],
+        "notes": [
+          "Guest detail page URL before auth gate: http://localhost:3100/products/cmn75io4y0006l0atloup346a",
+          "Redirect after tapping For sale as guest: http://localhost:3100/login?callbackUrl=%2Fproducts%2Fcmn75io4y0006l0atloup346a%3Faction%3Dforsale",
+          "Post-login landing URL: http://localhost:3100/products/cmn75io4y0006l0atloup346a",
+          "Observed network after login included GET /products/cmn75io4y0006l0atloup346a?action=forsale requests before final detail-page URL, indicating callback intent was requested but not resumed in UI.",
+          "Console errors check: none observed from agent-browser errors output."
+        ]
+      },
+      "frictions": [
+        "Clicking the product card by cached element ref from the home screenshot did not navigate; text-based click was needed to enter the detail page."
+      ],
+      "blockers": []
+    }
+  ],
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "testedAt": "2026-03-26T07:31:29.544458+00:00",
+  "groupId": "sell-intent-resume"
+}

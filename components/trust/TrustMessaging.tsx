@@ -10,20 +10,20 @@ interface TrustMessagingProps {
 const messagingConfig = {
   refund: {
     icon: CheckCircle2,
-    title: 'Easy Refunds',
+    title: '100% Money-Back Guarantee',
     message: 'Full refund if your order doesn\'t arrive or isn\'t as described',
     iconColor: 'text-success-500',
   },
   support: {
     icon: Headphones,
-    title: '24/7 Support',
-    message: 'Get help anytime with our dedicated customer support team',
+    title: '24/7 Customer Support',
+    message: 'Get help anytime with our dedicated support team',
     iconColor: 'text-accent-500',
   },
   guarantee: {
     icon: ShieldCheck,
-    title: '100% Guarantee',
-    message: 'Every purchase is protected by our Buyer Protection program',
+    title: 'Buyer Protection',
+    message: 'Every purchase is protected with our 100% Money-Back Guarantee',
     iconColor: 'text-primary-500',
   },
   delivery: {

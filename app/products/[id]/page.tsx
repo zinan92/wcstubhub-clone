@@ -214,14 +214,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         )}
 
         {/* Buyer Protection - Compact */}
-        <div className="mb-6">
+        <div className="mb-24">
           <BuyerProtection variant="compact" />
-        </div>
-
-        {/* Trust Messaging near CTA */}
-        <div className="mb-24 space-y-3">
-          <TrustMessaging variant="guarantee" />
-          <TrustMessaging variant="refund" />
         </div>
       </div>
 

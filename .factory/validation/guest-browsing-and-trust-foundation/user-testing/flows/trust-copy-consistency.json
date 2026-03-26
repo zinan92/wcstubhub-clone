@@ -1,0 +1,45 @@
+{
+  "assertionResults": [
+    {
+      "id": "VAL-TRUST-014",
+      "status": "fail",
+      "reason": "Trust copy is inconsistent across user-facing surfaces. Browse and detail surfaces use the Buyer Protection naming consistently, but the guarantee/support language conflicts: public browse/detail/account pages say 'Every purchase is protected by our 100% Money-Back Guarantee' and '100% Guarantee', while /my/orders and /my/tickets also introduce 'Easy Refunds' with 'Full refund if your order doesn't arrive or isn't as described'. Badge terminology is also inconsistent because the football browse page shows 'Verified', 'Buyer Protection', and 'Secure Delivery', while the event detail page swaps 'Verified' for 'Official'.",
+      "evidence": {
+        "paths": [
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/trust-copy-consistency/public-home.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/trust-copy-consistency/public-listing-football.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/trust-copy-consistency/detail-page.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/trust-copy-consistency/my-orders-authenticated-loaded.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/guest-browsing-and-trust-foundation/trust-copy-consistency/my-tickets.png"
+        ],
+        "notes": [
+          "Public home: 'Buyer Protection' + 'Every purchase is protected by our 100% Money-Back Guarantee.'",
+          "Football browse: badges 'Verified', 'Buyer Protection', 'Secure Delivery'.",
+          "Event detail: badges 'Official', 'Buyer Protection', 'Secure Delivery'; trust cards '100% Guarantee' and '24/7 Support'.",
+          "My Orders: trust stack includes '24/7 Support', 'Easy Refunds', '100% Guarantee', plus Buyer Protection module.",
+          "My Tickets: same account trust stack includes 'Easy Refunds' and '100% Guarantee' despite empty-state page."
+        ],
+        "console": "No console/page errors surfaced during checked flows.",
+        "network": [
+          "GET /api/events?type=football -> observed in browse flow",
+          "GET /api/events/cmn75io4z0008l0atsyc6ctei -> observed in detail flow",
+          "POST /api/auth/callback/credentials -> observed during login",
+          "GET /api/user/orders?type=purchase -> observed on /my/orders"
+        ]
+      },
+      "frictions": [
+        "The shared browser network log retained earlier requests, so request evidence needed manual filtering to the relevant flows.",
+        "After login, /my/orders briefly remained on the login URL before settling on the callback route; an extra wait was required before capturing final evidence."
+      ],
+      "blockers": [
+        "The guidance file /Users/wendy/.factory/library/user-testing.md was missing, so only mission AGENTS.md and the validation contract could be followed.",
+        "The /my/tickets page loaded an empty state for the seeded test user, limiting badge comparison there to the account trust/support module rather than ticket-row badges."
+      ],
+      "toolsUsed": [
+        "agent-browser"
+      ]
+    }
+  ],
+  "testedAt": "2026-03-26T07:31:55.098582+00:00",
+  "summary": "VAL-TRUST-014 failed: Buyer Protection naming stays mostly stable, but guarantee/refund/support claims and badge terminology are not consistent across browse, detail, and account surfaces."
+}
