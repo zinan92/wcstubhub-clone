@@ -11,11 +11,11 @@ describe('BannerCarousel', () => {
     vi.restoreAllMocks();
   });
 
-  it('renders banner images', () => {
+  it('renders banner content with titles', () => {
     render(<BannerCarousel />);
     
-    const images = screen.getAllByRole('img');
-    expect(images.length).toBeGreaterThan(0);
+    // Check that banner titles are present
+    expect(screen.getByText('FIFA World Cup 2026')).toBeInTheDocument();
   });
 
   it('renders dot indicators', () => {

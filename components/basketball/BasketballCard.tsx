@@ -31,30 +31,55 @@ export default function BasketballCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-3 hover:shadow-md transition-shadow">
-        {/* Teams with basketball icon */}
-        <div className="flex items-center justify-center mb-3">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-gray-900">{team1}</span>
-            <span className="text-gray-400 font-bold mx-3">VS</span>
-            <span className="font-semibold text-gray-900">{team2}</span>
+      <div className="relative bg-gradient-to-br from-orange-50 to-red-50 rounded-xl shadow-card p-5 mb-4 hover:shadow-elevated transition-all overflow-hidden">
+        {/* Basketball decorative elements */}
+        <div className="absolute top-2 right-2 text-6xl opacity-10">🏀</div>
+        <div className="absolute bottom-2 left-2 text-4xl opacity-10">🏀</div>
+        
+        {/* Teams with basketball theme */}
+        <div className="relative flex items-center justify-center mb-4">
+          <div className="flex items-center gap-3">
+            <div className="text-center">
+              <div className="text-lg font-bold text-gray-900 mb-1">{team1}</div>
+              <div className="w-12 h-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mx-auto"></div>
+            </div>
+            
+            <div className="px-4">
+              <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white font-bold text-xs px-3 py-1.5 rounded-full">
+                VS
+              </div>
+            </div>
+            
+            <div className="text-center">
+              <div className="text-lg font-bold text-gray-900 mb-1">{team2}</div>
+              <div className="w-12 h-1 bg-gradient-to-r from-orange-500 to-red-500 rounded-full mx-auto"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Court graphic */}
+        <div className="flex justify-center mb-3">
+          <div className="flex items-center gap-1">
+            <div className="w-8 h-8 rounded-full border-2 border-orange-500 flex items-center justify-center">
+              <div className="w-2 h-2 rounded-full bg-orange-500"></div>
+            </div>
           </div>
         </div>
 
         {/* Date and Time */}
-        <div className="text-sm text-gray-600 mb-2 text-center">
+        <div className="text-sm text-gray-700 mb-2 text-center font-medium">
           <span>{formattedDate}</span>
           <span className="mx-2">•</span>
           <span>{formattedTime}</span>
         </div>
 
         {/* Venue */}
-        <div className="text-sm text-gray-600 mb-3 text-center">
+        <div className="text-sm text-gray-700 mb-3 text-center font-medium">
           📍 {venue}
         </div>
 
         {/* Price */}
-        <div className="text-lg font-bold text-primary-500 text-center">
+        <div className="text-xl font-bold bg-gradient-to-r from-orange-600 to-red-600 bg-clip-text text-transparent text-center">
           ${price.toFixed(2)}
         </div>
       </div>

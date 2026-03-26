@@ -40,49 +40,50 @@ export default function ConcertCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mb-3 hover:shadow-md transition-shadow">
-        <div className="flex gap-4">
-          {/* Artist Image */}
-          <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-            <Image
-              src={artistImageUrl}
-              alt={artistName}
-              fill
-              className="object-cover"
-            />
-          </div>
-
-          {/* Event Info */}
-          <div className="flex-1 min-w-0">
-            {/* Artist Name */}
+      <div className="relative bg-white rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all">
+        {/* Full-width Artist Image with Gradient Overlay */}
+        <div className="relative w-full h-40">
+          <Image
+            src={artistImageUrl}
+            alt={artistName}
+            fill
+            className="object-cover"
+          />
+          {/* Gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+          
+          {/* Artist info overlay */}
+          <div className="absolute bottom-0 left-0 right-0 p-4 text-white">
             <div className="flex items-center gap-2 mb-1">
-              <Music className="w-4 h-4 text-accent-500" />
-              <span className="text-sm font-semibold text-gray-900">{artistName}</span>
+              <Music className="w-4 h-4 text-white/90" />
+              <span className="text-sm font-semibold">{artistName}</span>
             </div>
-
-            {/* Event Title */}
-            <h3 className="text-base font-semibold text-gray-900 mb-2 truncate">
+            <h3 className="text-lg font-bold line-clamp-1">
               {title}
             </h3>
+          </div>
+        </div>
 
-            {/* Date */}
-            <div className="flex items-center gap-2 mb-1.5">
-              <Calendar className="w-4 h-4 text-gray-400" />
-              <span className="text-sm text-gray-600">{formatDate(date)}</span>
-            </div>
+        {/* Event Details */}
+        <div className="p-4">
+          {/* Date */}
+          <div className="flex items-center gap-2 mb-2">
+            <Calendar className="w-4 h-4 text-accent-500" />
+            <span className="text-sm text-gray-700 font-medium">{formatDate(date)}</span>
+          </div>
 
-            {/* Venue */}
-            <div className="flex items-center gap-2 mb-2">
-              <MapPin className="w-4 h-4 text-gray-400" />
-              <span className="text-sm text-gray-600 truncate">{venue}</span>
-            </div>
+          {/* Venue */}
+          <div className="flex items-center gap-2 mb-3">
+            <MapPin className="w-4 h-4 text-accent-500" />
+            <span className="text-sm text-gray-700 font-medium line-clamp-1">{venue}</span>
+          </div>
 
-            {/* Price */}
-            <div className="flex items-center justify-between">
-              <span className="text-lg font-bold text-primary-500">
-                {formatPrice(price)}
-              </span>
-            </div>
+          {/* Price */}
+          <div className="flex items-center justify-between">
+            <span className="text-xl font-bold text-primary-500">
+              {formatPrice(price)}
+            </span>
+            <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">Concert</span>
           </div>
         </div>
       </div>

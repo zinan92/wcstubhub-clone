@@ -35,36 +35,46 @@ export default function MatchCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="bg-white rounded-lg shadow-sm p-4 mb-3 hover:shadow-md transition-shadow">
-        {/* Teams with flags */}
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2 flex-1">
-            <span className="text-2xl">{team1Flag}</span>
-            <span className="font-semibold text-gray-900">{team1}</span>
+      <div className="bg-white rounded-xl shadow-card p-5 mb-4 hover:shadow-elevated transition-all">
+        {/* Teams with prominent flags in VS layout */}
+        <div className="flex items-center justify-between mb-4">
+          {/* Team 1 */}
+          <div className="flex flex-col items-center gap-2 flex-1">
+            <span className="text-5xl">{team1Flag}</span>
+            <span className="font-bold text-gray-900 text-center text-sm">{team1}</span>
           </div>
           
-          <span className="text-gray-400 font-bold mx-3">VS</span>
+          {/* VS Badge */}
+          <div className="px-4">
+            <div className="bg-gradient-to-r from-primary-500 to-accent-500 text-white font-bold text-xs px-3 py-1.5 rounded-full">
+              VS
+            </div>
+          </div>
           
-          <div className="flex items-center gap-2 flex-1 justify-end">
-            <span className="font-semibold text-gray-900 text-right">{team2}</span>
-            <span className="text-2xl">{team2Flag}</span>
+          {/* Team 2 */}
+          <div className="flex flex-col items-center gap-2 flex-1">
+            <span className="text-5xl">{team2Flag}</span>
+            <span className="font-bold text-gray-900 text-center text-sm">{team2}</span>
           </div>
         </div>
 
+        {/* Separator */}
+        <div className="border-t border-gray-100 mb-3"></div>
+
         {/* Date and Time */}
-        <div className="text-sm text-gray-600 mb-2">
+        <div className="text-sm text-gray-600 mb-2 text-center">
           <span>{formattedDate}</span>
           <span className="mx-2">•</span>
           <span>{formattedTime}</span>
         </div>
 
         {/* Venue */}
-        <div className="text-sm text-gray-600 mb-3">
+        <div className="text-sm text-gray-600 mb-3 text-center">
           📍 {venue}
         </div>
 
         {/* Price */}
-        <div className="text-lg font-bold text-primary-500">
+        <div className="text-xl font-bold text-primary-500 text-center">
           ${price.toFixed(2)}
         </div>
       </div>
