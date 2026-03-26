@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Users } from 'lucide-react';
+import Image from 'next/image';
 
 interface User {
   id: string;
@@ -129,11 +130,14 @@ export default function AdminUsersPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         {user.avatarUrl && (
-                          <img
-                            src={user.avatarUrl}
-                            alt={user.name || 'User avatar'}
-                            className="w-8 h-8 rounded-full mr-3 object-cover"
-                          />
+                          <div className="w-8 h-8 relative mr-3 flex-shrink-0">
+                            <Image
+                              src={user.avatarUrl}
+                              alt={user.name || 'User avatar'}
+                              fill
+                              className="rounded-full object-cover"
+                            />
+                          </div>
                         )}
                         <div>
                           <div className="font-medium text-gray-900">

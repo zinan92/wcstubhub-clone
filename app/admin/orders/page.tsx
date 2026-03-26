@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ShoppingCart } from 'lucide-react';
+import Image from 'next/image';
 
 interface Order {
   id: string;
@@ -165,11 +166,14 @@ export default function AdminOrdersPage() {
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         {order.itemImageUrl && (
-                          <img
-                            src={order.itemImageUrl}
-                            alt={order.itemName}
-                            className="w-10 h-10 object-cover rounded mr-3"
-                          />
+                          <div className="w-10 h-10 relative mr-3 flex-shrink-0">
+                            <Image
+                              src={order.itemImageUrl}
+                              alt={order.itemName}
+                              fill
+                              className="object-cover rounded"
+                            />
+                          </div>
                         )}
                         <div className="font-medium text-gray-900">
                           {order.itemName}

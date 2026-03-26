@@ -3,6 +3,7 @@
 import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   User,
   CreditCard,
@@ -112,9 +113,9 @@ export default function MyPage() {
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3">
             {/* Avatar */}
-            <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+            <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 relative">
               {profile.avatarUrl ? (
-                <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                <Image src={profile.avatarUrl} alt="Avatar" fill className="object-cover" />
               ) : (
                 <DefaultAvatar className="w-16 h-16" />
               )}

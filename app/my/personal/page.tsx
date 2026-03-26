@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, User } from 'lucide-react';
+import Image from 'next/image';
 import DefaultAvatar from '@/components/ui/DefaultAvatar';
 
 interface UserProfile {
@@ -71,12 +72,13 @@ export default function PersonalCenterPage() {
         <div className="bg-white rounded-lg shadow-sm p-6">
           <div className="flex flex-col items-center">
             {/* Avatar */}
-            <div className="w-24 h-24 rounded-full overflow-hidden mb-4">
+            <div className="w-24 h-24 rounded-full overflow-hidden mb-4 relative">
               {profile?.avatarUrl ? (
-                <img
+                <Image
                   src={profile.avatarUrl}
                   alt="User avatar"
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover"
                 />
               ) : (
                 <DefaultAvatar className="w-24 h-24" />

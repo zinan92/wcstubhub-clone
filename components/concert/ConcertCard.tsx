@@ -38,13 +38,16 @@ export default function ConcertCard({
     return `$${amount.toFixed(2)}`;
   };
 
+  // Use placeholder if artistImageUrl is empty
+  const imageSrc = artistImageUrl || 'https://picsum.photos/seed/concert/400/400';
+
   return (
     <Link href={`/events/${id}`}>
       <div className="relative bg-white rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all">
         {/* Full-width Artist Image with Gradient Overlay */}
         <div className="relative w-full h-40">
           <Image
-            src={artistImageUrl}
+            src={imageSrc}
             alt={artistName}
             fill
             className="object-cover"

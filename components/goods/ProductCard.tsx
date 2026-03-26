@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface Product {
   id: string;
@@ -20,10 +21,11 @@ export default function ProductCard({ product }: ProductCardProps) {
       className="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
     >
       <div className="aspect-square bg-gray-100 relative">
-        <img
+        <Image
           src={product.imageUrl}
           alt={product.name}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
         />
       </div>
       <div className="p-3">

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
+import Image from 'next/image';
 
 interface Product {
   id: string;
@@ -300,11 +301,14 @@ export default function AdminProductsPage() {
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       {product.imageUrl && (
-                        <img
-                          src={product.imageUrl}
-                          alt={product.name}
-                          className="w-10 h-10 object-cover rounded mr-3"
-                        />
+                        <div className="w-10 h-10 relative mr-3 flex-shrink-0">
+                          <Image
+                            src={product.imageUrl}
+                            alt={product.name}
+                            fill
+                            className="object-cover rounded"
+                          />
+                        </div>
                       )}
                       <div className="font-medium text-gray-900">{product.name}</div>
                     </div>

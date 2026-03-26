@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft } from 'lucide-react';
+import Image from 'next/image';
 import { ProductCardSkeleton } from '@/components/ui/Skeleton';
 
 interface Product {
@@ -113,11 +114,12 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       </div>
 
       {/* Product Image - Full Width */}
-      <div className="w-full aspect-square bg-gray-100">
-        <img
+      <div className="w-full aspect-square bg-gray-100 relative">
+        <Image
           src={product.imageUrl}
           alt={product.name}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
         />
       </div>
 

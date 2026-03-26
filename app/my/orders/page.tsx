@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ArrowLeft, Package } from 'lucide-react';
+import Image from 'next/image';
 
 interface Order {
   id: string;
@@ -166,12 +167,19 @@ export default function OrderRecordPage() {
                 <div className="px-4 pb-4">
                   <div className="flex gap-3">
                     {/* Item Image */}
-                    <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                      <img
-                        src={order.itemImageUrl}
-                        alt={order.itemName}
-                        className="w-full h-full object-cover"
-                      />
+                    <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+                      {order.itemImageUrl ? (
+                        <Image
+                          src={order.itemImageUrl}
+                          alt={order.itemName}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                          <Package className="w-8 h-8 text-gray-400" />
+                        </div>
+                      )}
                     </div>
 
                     {/* Item Details */}
