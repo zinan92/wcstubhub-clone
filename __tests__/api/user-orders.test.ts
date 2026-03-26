@@ -47,7 +47,7 @@ describe('GET /api/user/orders', () => {
         itemType: 'product',
         itemId: 'product-1',
         itemName: 'Lionel Messi #10 Argentina Jersey',
-        itemImageUrl: 'https://picsum.photos/seed/messi/400/400',
+        itemImageUrl: 'https://flagcdn.com/w640/ar.png',
         purchasePrice: 149.99,
         currentPrice: 155.00,
         quantity: 2,

@@ -12,7 +12,7 @@ describe('GET /api/products/[id]', () => {
       data: {
         name: 'Test Product for Detail View',
         description: 'This is a detailed description of the test product with all the information a customer needs.',
-        imageUrl: 'https://picsum.photos/seed/testproduct/400/400',
+        imageUrl: 'https://flagcdn.com/w640/us.png',
         price: 149.99,
         category: 'jersey',
         stock: 50,

@@ -31,7 +31,7 @@ const mockConcertEvent = {
   title: 'Taylor Swift - The Eras Tour',
   type: 'concert',
   artistName: 'Taylor Swift',
-  artistImageUrl: 'https://picsum.photos/seed/taylor/400/400',
+  artistImageUrl: '',
   date: '2026-07-20T20:00:00.000Z',
   venue: 'Madison Square Garden',
   price: 199.99,

@@ -66,7 +66,7 @@ describe('ConcertPage', () => {
     });
   });
 
-  it('renders banner image', async () => {
+  it('renders banner with gradient', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockConcerts,
     });
@@ -74,8 +74,10 @@ describe('ConcertPage', () => {
     render(<ConcertPage />);
 
     await waitFor(() => {
-      const banner = screen.getByAltText(/concert/i);
-      expect(banner).toBeInTheDocument();
+      const bannerTitle = screen.getByText('Live Concerts 2026');
+      expect(bannerTitle).toBeInTheDocument();
+      const bannerSubtitle = screen.getByText('World-Class Performances');
+      expect(bannerSubtitle).toBeInTheDocument();
     });
   });
 

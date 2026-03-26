@@ -52,12 +52,14 @@ describe('FootballPage', () => {
     });
   });
 
-  it('renders World Cup banner image', async () => {
+  it('renders World Cup banner with gradient', async () => {
     render(<FootballPage />);
     
     await waitFor(() => {
-      const banner = screen.getByAltText(/world cup/i);
-      expect(banner).toBeDefined();
+      const bannerTitle = screen.getByText('FIFA World Cup 2026');
+      expect(bannerTitle).toBeDefined();
+      const bannerSubtitle = screen.getByText(/USA.*Canada.*Mexico/);
+      expect(bannerSubtitle).toBeDefined();
     });
   });
 

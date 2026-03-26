@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Trophy } from 'lucide-react';
-import Image from 'next/image';
 import SearchBar from '@/components/goods/SearchBar';
 import MatchCard from '@/components/football/MatchCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
@@ -72,13 +71,12 @@ export default function FootballPage() {
 
       {/* World Cup Banner */}
       <div className="px-4 pb-4">
-        <div className="relative w-full h-40 rounded-lg overflow-hidden">
-          <Image
-            src="https://picsum.photos/seed/worldcup/800/320"
-            alt="World Cup"
-            fill
-            className="object-cover"
-          />
+        <div className="w-full h-40 rounded-lg bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 flex items-center justify-center overflow-hidden">
+          <div className="text-center text-white px-6">
+            <Trophy className="w-16 h-16 mx-auto mb-2 opacity-90" />
+            <h2 className="text-2xl font-bold mb-1">FIFA World Cup 2026</h2>
+            <p className="text-sm opacity-90">USA · Canada · Mexico</p>
+          </div>
         </div>
       </div>
 

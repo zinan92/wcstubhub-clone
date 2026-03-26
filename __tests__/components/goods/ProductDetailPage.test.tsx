@@ -15,10 +15,10 @@ global.fetch = vi.fn();
 
 const mockProduct = {
   id: 'prod123',
-  name: 'Messi #10 Argentina Jersey',
-  price: 199.99,
-  imageUrl: 'https://picsum.photos/seed/messi/400/400',
-  description: 'Official Argentina national team jersey with Messi #10. Authentic FIFA World Cup edition. Made from premium breathable fabric.',
+  name: 'Argentina Home Jersey 2026',
+  price: 29.99,
+  imageUrl: 'https://flagcdn.com/w640/ar.png',
+  description: 'Official FIFA World Cup 2026 Argentina national team home jersey. Iconic blue and white stripes with AFA badge.',
   remainingQty: 25,
 };
 
@@ -36,21 +36,21 @@ describe('ProductDetailPage', () => {
 
     // Wait for product to load
     await waitFor(() => {
-      expect(screen.getByText('Messi #10 Argentina Jersey')).toBeDefined();
+      expect(screen.getByText('Argentina Home Jersey 2026')).toBeDefined();
     });
 
-    expect(screen.getByText('$199.99')).toBeDefined();
+    expect(screen.getByText('$29.99')).toBeDefined();
     expect(screen.getByText('25 units')).toBeDefined();
-    expect(screen.getByText(/Official Argentina national team jersey/)).toBeDefined();
+    expect(screen.getByText(/Official FIFA World Cup 2026/)).toBeDefined();
   });
 
   it('displays product image with correct alt text', async () => {
     render(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
-      const img = screen.getByAltText('Messi #10 Argentina Jersey');
+      const img = screen.getByAltText('Argentina Home Jersey 2026');
       expect(img).toBeDefined();
-      expect(img.getAttribute('src')).toBe('https://picsum.photos/seed/messi/400/400');
+      expect(img.getAttribute('src')).toBe('https://flagcdn.com/w640/ar.png');
     });
   });
 

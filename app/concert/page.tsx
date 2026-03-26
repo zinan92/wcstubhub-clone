@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { Music } from 'lucide-react';
-import Image from 'next/image';
 import SearchBar from '@/components/goods/SearchBar';
 import ConcertCard from '@/components/concert/ConcertCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
@@ -70,13 +69,12 @@ export default function ConcertPage() {
 
       {/* Concert Banner */}
       <div className="px-4 pb-4">
-        <div className="relative w-full h-40 rounded-lg overflow-hidden">
-          <Image
-            src="https://picsum.photos/seed/concert/800/320"
-            alt="Concert"
-            fill
-            className="object-cover"
-          />
+        <div className="w-full h-40 rounded-lg bg-gradient-to-r from-purple-600 via-pink-600 to-red-600 flex items-center justify-center overflow-hidden">
+          <div className="text-center text-white px-6">
+            <Music className="w-16 h-16 mx-auto mb-2 opacity-90" />
+            <h2 className="text-2xl font-bold mb-1">Live Concerts 2026</h2>
+            <p className="text-sm opacity-90">World-Class Performances</p>
+          </div>
         </div>
       </div>
 

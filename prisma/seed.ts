@@ -31,7 +31,7 @@ async function main() {
       integrationPoints: 3240,
       creditPoints: 1000,
       inviteCode: 'TEST123',
-      avatarUrl: 'https://i.pravatar.cc/150?u=test',
+      avatarUrl: '',
     },
   });
 
@@ -48,17 +48,17 @@ async function main() {
       integrationPoints: 0,
       creditPoints: 0,
       inviteCode: 'ADMIN123',
-      avatarUrl: 'https://i.pravatar.cc/150?u=admin',
+      avatarUrl: '',
     },
   });
 
-  // Create products (sports jerseys)
+  // Create products (FIFA World Cup 2026 jerseys)
   const product1 = await prisma.product.create({
     data: {
-      name: 'Lionel Messi #10 Argentina Jersey',
-      description: 'Official 2022 World Cup Argentina home jersey with Messi #10 print. Made with breathable fabric.',
-      imageUrl: 'https://picsum.photos/seed/messi/400/400',
-      price: 149.99,
+      name: 'Argentina Home Jersey 2026',
+      description: 'Official FIFA World Cup 2026 Argentina national team home jersey. Iconic blue and white stripes with AFA badge.',
+      imageUrl: 'https://flagcdn.com/w640/ar.png',
+      price: 29.99,
       category: 'Football Jersey',
       stock: 100,
       remainingQty: 85,
@@ -67,10 +67,10 @@ async function main() {
 
   await prisma.product.create({
     data: {
-      name: 'Cristiano Ronaldo #7 Portugal Jersey',
-      description: 'Portugal national team home jersey with Ronaldo #7. Premium quality material.',
-      imageUrl: 'https://picsum.photos/seed/ronaldo/400/400',
-      price: 139.99,
+      name: 'Germany Away Kit 2026',
+      description: 'Germany national team FIFA World Cup 2026 away jersey. Modern design with DFB crest.',
+      imageUrl: 'https://flagcdn.com/w640/de.png',
+      price: 27.99,
       category: 'Football Jersey',
       stock: 120,
       remainingQty: 95,
@@ -79,10 +79,10 @@ async function main() {
 
   await prisma.product.create({
     data: {
-      name: 'Neymar Jr #10 Brazil Jersey',
-      description: 'Brazil national team classic yellow jersey with Neymar Jr #10. Lightweight and comfortable.',
-      imageUrl: 'https://picsum.photos/seed/neymar/400/400',
-      price: 129.99,
+      name: 'Brazil Home Jersey 2026',
+      description: 'Brazil FIFA World Cup 2026 home jersey. Classic yellow with green details and CBF badge.',
+      imageUrl: 'https://flagcdn.com/w640/br.png',
+      price: 32.99,
       category: 'Football Jersey',
       stock: 90,
       remainingQty: 78,
@@ -91,10 +91,10 @@ async function main() {
 
   await prisma.product.create({
     data: {
-      name: 'Kylian Mbappé #10 France Jersey',
-      description: 'France World Cup champion jersey with Mbappé #10. Official replica with embroidered badge.',
-      imageUrl: 'https://picsum.photos/seed/mbappe/400/400',
-      price: 159.99,
+      name: 'France National Team #10 Jersey 2026',
+      description: 'France FIFA World Cup 2026 jersey. Defending champions kit with FFF badge and number 10.',
+      imageUrl: 'https://flagcdn.com/w640/fr.png',
+      price: 34.99,
       category: 'Football Jersey',
       stock: 80,
       remainingQty: 65,
@@ -103,11 +103,11 @@ async function main() {
 
   await prisma.product.create({
     data: {
-      name: 'Karim Benzema #9 Real Madrid Jersey',
-      description: 'Real Madrid home jersey with Benzema #9. Classic white design with gold details.',
-      imageUrl: 'https://picsum.photos/seed/benzema/400/400',
-      price: 169.99,
-      category: 'Club Jersey',
+      name: 'USA National Team Jersey 2026',
+      description: 'USA FIFA World Cup 2026 host nation jersey. Stars and stripes design with USSF crest.',
+      imageUrl: 'https://flagcdn.com/w640/us.png',
+      price: 28.99,
+      category: 'Football Jersey',
       stock: 75,
       remainingQty: 60,
     },
@@ -115,11 +115,11 @@ async function main() {
 
   await prisma.product.create({
     data: {
-      name: 'Mohamed Salah #11 Liverpool Jersey',
-      description: 'Liverpool home jersey with Salah #11. Premier League champions edition.',
-      imageUrl: 'https://picsum.photos/seed/salah/400/400',
-      price: 154.99,
-      category: 'Club Jersey',
+      name: 'Spain Home Kit 2026',
+      description: 'Spain national team FIFA World Cup 2026 home kit. Red jersey with RFEF badge.',
+      imageUrl: 'https://flagcdn.com/w640/es.png',
+      price: 31.99,
+      category: 'Football Jersey',
       stock: 110,
       remainingQty: 92,
     },
@@ -253,7 +253,7 @@ async function main() {
       title: 'Taylor Swift: The Eras Tour',
       type: 'concert',
       artistName: 'Taylor Swift',
-      artistImageUrl: 'https://i.pravatar.cc/300?u=taylorswift',
+      artistImageUrl: '',
       date: new Date('2026-08-15T20:00:00Z'),
       venue: 'SoFi Stadium, Los Angeles',
       price: 299.99,
@@ -267,7 +267,7 @@ async function main() {
       title: 'Ed Sheeran: Mathematics Tour',
       type: 'concert',
       artistName: 'Ed Sheeran',
-      artistImageUrl: 'https://i.pravatar.cc/300?u=edsheeran',
+      artistImageUrl: '',
       date: new Date('2026-08-22T19:30:00Z'),
       venue: 'Wembley Stadium, London',
       price: 189.99,
@@ -281,7 +281,7 @@ async function main() {
       title: 'The Weeknd: After Hours Til Dawn',
       type: 'concert',
       artistName: 'The Weeknd',
-      artistImageUrl: 'https://i.pravatar.cc/300?u=theweeknd',
+      artistImageUrl: '',
       date: new Date('2026-09-05T21:00:00Z'),
       venue: 'MetLife Stadium, New Jersey',
       price: 249.99,
@@ -295,7 +295,7 @@ async function main() {
       title: 'Beyoncé: Renaissance World Tour',
       type: 'concert',
       artistName: 'Beyoncé',
-      artistImageUrl: 'https://i.pravatar.cc/300?u=beyonce',
+      artistImageUrl: '',
       date: new Date('2026-09-12T20:30:00Z'),
       venue: 'Mercedes-Benz Stadium, Atlanta',
       price: 349.99,
@@ -310,10 +310,10 @@ async function main() {
       userId: testUser.id,
       itemType: 'product',
       itemId: product1.id,
-      itemName: 'Lionel Messi #10 Argentina Jersey',
-      itemImageUrl: 'https://picsum.photos/seed/messi/400/400',
-      purchasePrice: 149.99,
-      currentPrice: 155.00,
+      itemName: 'Argentina Home Jersey 2026',
+      itemImageUrl: 'https://flagcdn.com/w640/ar.png',
+      purchasePrice: 29.99,
+      currentPrice: 32.00,
       quantity: 2,
       sharesHeld: 150,
       status: 'paid',
@@ -328,7 +328,7 @@ async function main() {
       itemType: 'event',
       itemId: 'evt-001',
       itemName: 'Phoenix Suns VS Los Angeles Lakers',
-      itemImageUrl: 'https://i.pravatar.cc/400?u=suns-lakers',
+      itemImageUrl: '',
       purchasePrice: 145.00,
       currentPrice: 145.00,
       quantity: 1,

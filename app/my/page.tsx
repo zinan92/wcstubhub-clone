@@ -14,6 +14,7 @@ import {
   ChevronRight,
   FileText,
 } from 'lucide-react';
+import DefaultAvatar from '@/components/ui/DefaultAvatar';
 
 interface UserProfile {
   id: string;
@@ -111,13 +112,11 @@ export default function MyPage() {
         <div className="flex items-start justify-between mb-6">
           <div className="flex items-center gap-3">
             {/* Avatar */}
-            <div className="w-16 h-16 rounded-full bg-white overflow-hidden flex-shrink-0">
+            <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
               {profile.avatarUrl ? (
                 <img src={profile.avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
               ) : (
-                <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                  <User className="w-8 h-8 text-gray-500" />
-                </div>
+                <DefaultAvatar className="w-16 h-16" />
               )}
             </div>
             

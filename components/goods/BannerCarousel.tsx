@@ -1,23 +1,29 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Trophy, Shirt, Star } from 'lucide-react';
 
 const banners = [
   {
     id: 1,
-    imageUrl: 'https://picsum.photos/seed/worldcup/800/300',
-    alt: 'World Cup 2026'
+    title: 'FIFA World Cup 2026',
+    subtitle: 'Official Team Jerseys',
+    gradient: 'from-blue-600 via-blue-500 to-cyan-400',
+    icon: Trophy,
   },
   {
     id: 2,
-    imageUrl: 'https://picsum.photos/seed/ronaldo/800/300',
-    alt: 'Cristiano Ronaldo'
+    title: 'National Team Kits',
+    subtitle: 'Authentic Match Jerseys',
+    gradient: 'from-purple-600 via-pink-500 to-red-400',
+    icon: Shirt,
   },
   {
     id: 3,
-    imageUrl: 'https://picsum.photos/seed/sports/800/300',
-    alt: 'Sports Merchandise'
+    title: 'Premium Collection',
+    subtitle: 'Limited Edition',
+    gradient: 'from-green-600 via-teal-500 to-blue-400',
+    icon: Star,
   }
 ];
 
@@ -67,7 +73,7 @@ export default function BannerCarousel() {
     <div className="relative w-full">
       {/* Banner container */}
       <div
-        className="relative overflow-hidden rounded-lg bg-gray-200"
+        className="relative overflow-hidden rounded-lg"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
@@ -76,15 +82,18 @@ export default function BannerCarousel() {
           className="flex transition-transform duration-500 ease-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
-          {banners.map((banner) => (
-            <div key={banner.id} className="w-full flex-shrink-0">
-              <img
-                src={banner.imageUrl}
-                alt={banner.alt}
-                className="w-full h-40 object-cover"
-              />
-            </div>
-          ))}
+          {banners.map((banner) => {
+            const Icon = banner.icon;
+            return (
+              <div key={banner.id} className="w-full flex-shrink-0">
+                <div className={`w-full h-40 bg-gradient-to-r ${banner.gradient} flex flex-col items-center justify-center text-white px-6`}>
+                  <Icon className="w-12 h-12 mb-2 opacity-90" />
+                  <h2 className="text-2xl font-bold text-center mb-1">{banner.title}</h2>
+                  <p className="text-sm opacity-90">{banner.subtitle}</p>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Navigation arrows */}

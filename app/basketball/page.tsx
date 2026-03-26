@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import SearchBar from '@/components/goods/SearchBar';
 import BasketballCard from '@/components/basketball/BasketballCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
@@ -69,13 +68,12 @@ export default function BasketballPage() {
 
       {/* Basketball Banner */}
       <div className="px-4 pb-4">
-        <div className="relative w-full h-40 rounded-lg overflow-hidden">
-          <Image
-            src="https://picsum.photos/seed/nba/800/320"
-            alt="NBA Basketball"
-            fill
-            className="object-cover"
-          />
+        <div className="w-full h-40 rounded-lg bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 flex items-center justify-center overflow-hidden">
+          <div className="text-center text-white px-6">
+            <span className="text-6xl mb-2 block">🏀</span>
+            <h2 className="text-2xl font-bold mb-1">NBA Season 2026</h2>
+            <p className="text-sm opacity-90">Premium Court Experience</p>
+          </div>
         </div>
       </div>
 

@@ -68,7 +68,7 @@ describe('BasketballPage', () => {
     });
   });
 
-  it('renders the basketball banner image', async () => {
+  it('renders the basketball banner with gradient', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockBasketballEvents,
     });
@@ -76,8 +76,10 @@ describe('BasketballPage', () => {
     render(<BasketballPage />);
     
     await waitFor(() => {
-      const banner = screen.getByAltText('NBA Basketball');
-      expect(banner).toBeDefined();
+      const bannerTitle = screen.getByText('NBA Season 2026');
+      expect(bannerTitle).toBeDefined();
+      const bannerSubtitle = screen.getByText('Premium Court Experience');
+      expect(bannerSubtitle).toBeDefined();
     });
   });
 
