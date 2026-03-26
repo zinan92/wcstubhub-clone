@@ -1,0 +1,19 @@
+{
+  "flowId": "concert-images",
+  "milestone": "content-images",
+  "assertions": {
+    "VAL-IMG-005": {
+      "status": "pass",
+      "evidence": "Concert cards display CSS-based music-themed gradient backgrounds (purple/pink/red gradients) with music note emoji/icons and artist name overlays. No picsum.photos images are used — the page contains zero <img> tags; all visual content is rendered via CSS gradients and text overlays. Verified cards for Taylor Swift (The Eras Tour), Ed Sheeran (Mathematics Tour), The Weeknd (After Hours Til Dawn), and Beyoncé (Renaissance World Tour). Each card shows the artist name prominently with a concert-themed visual treatment. No random landscapes, ocean waves, camera equipment, or mountain imagery present.",
+      "screenshotPaths": [
+        "content-images/concert-images/VAL-IMG-005-concert-page-top.png",
+        "content-images/concert-images/VAL-IMG-005-concert-page-scrolled.png",
+        "content-images/concert-images/VAL-IMG-005-concert-page-bottom.png"
+      ],
+      "issues": []
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "toolsUsed": ["agent-browser"]
+}
