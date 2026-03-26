@@ -1,25 +1,23 @@
 {
   "milestone": "guest-browsing-and-trust-foundation",
-  "round": 2,
+  "round": 3,
   "status": "fail",
   "assertionsSummary": {
     "total": 2,
-    "passed": 0,
-    "failed": 2,
-    "blocked": 0
+    "passed": 1,
+    "failed": 0,
+    "blocked": 1
   },
-  "passedAssertions": [],
-  "failedAssertions": [
-    {
-      "id": "VAL-TRUST-014",
-      "reason": "Trust copy is inconsistent across user-facing surfaces. Browse and detail surfaces use the Buyer Protection naming consistently, but the guarantee/support language conflicts: public browse/detail/account pages say 'Every purchase is protected by our 100% Money-Back Guarantee' and '100% Guarantee', while /my/orders and /my/tickets also introduce 'Easy Refunds' with 'Full refund if your order doesn't arrive or isn't as described'. Badge terminology is also inconsistent because the football browse page shows 'Verified', 'Buyer Protection', and 'Secure Delivery', while the event detail page swaps 'Verified' for 'Official'."
-    },
+  "passedAssertions": [
+    "VAL-TRUST-014"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [
     {
       "id": "VAL-CROSS-008",
-      "reason": "Guest for-sale intent was preserved through login via callbackUrl=/products/cmn75io4y0006l0atloup346a?action=forsale, but after authentication the app returned only to the product detail page with an OK modal and did not auto-enter a distinct sell/listing flow. Re-clicking For sale after login produced the same modal instead of a listing-entry flow."
+      "blockedBy": "The expected product detail callback target /products/cmn75io4y0006l0atloup346a currently resolves to a Product not found page after login, so the rerun could not verify whether guest sell intent resumes into a create-listing destination."
     }
   ],
-  "blockedAssertions": [],
   "appliedUpdates": [],
   "previousRound": "/Users/wendy/wcstubhub-clone/.factory/validation/guest-browsing-and-trust-foundation/user-testing/synthesis.json"
 }

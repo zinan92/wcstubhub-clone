@@ -1,0 +1,76 @@
+{
+  "groupId": "sell-resume",
+  "testedAt": "2026-03-26T07:50:49.777925+00:00",
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-CROSS-008",
+      "status": "blocked",
+      "reason": "The expected product detail callback target /products/cmn75io4y0006l0atloup346a currently resolves to a Product not found page after login, so the rerun could not verify whether guest sell intent resumes into a create-listing destination.",
+      "steps": [
+        {
+          "action": "Open the app home page at mobile viewport 375x812",
+          "expected": "Marketplace loads for guest browsing",
+          "observed": "Home page loaded successfully."
+        },
+        {
+          "action": "Open the callback target detail route /products/cmn75io4y0006l0atloup346a",
+          "expected": "Product detail page with sell CTA is available for the rerun target",
+          "observed": "Route rendered Product not found with no sell CTA."
+        },
+        {
+          "action": "Open /login?callbackUrl=%2Fproducts%2Fcmn75io4y0006l0atloup346a%3Faction%3Dforsale and sign in as test@example.com",
+          "expected": "After login the app returns to a valid sell/listing destination for the same detail route",
+          "observed": "Login succeeded and redirected to /products/cmn75io4y0006l0atloup346a, but that route still rendered Product not found."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/sell-resume/VAL-CROSS-008-home.png",
+          "guest-browsing-and-trust-foundation/sell-resume/VAL-CROSS-008-detail-before-login.png",
+          "guest-browsing-and-trust-foundation/sell-resume/VAL-CROSS-008-login-redirect.png",
+          "guest-browsing-and-trust-foundation/sell-resume/VAL-CROSS-008-post-login.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Observed redirect to /login?callbackUrl=%2Fproducts%2Fcmn75io4y0006l0atloup346a%3Faction%3Dforsale followed by post-login navigation to /products/cmn75io4y0006l0atloup346a; no useful network requests were captured by agent-browser during the rerun."
+      },
+      "issues": "Blocking test data drift: the previously referenced product id now returns Product not found, so the assertion cannot be validated on the live surface in this rerun."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The prior synthesis referenced a product id that no longer resolves in the current shared app/database state.",
+      "resolved": false,
+      "resolution": null,
+      "affectedAssertions": [
+        "VAL-CROSS-008"
+      ]
+    },
+    {
+      "description": "agent-browser network logging did not retain useful request details for this redirect sequence during the rerun.",
+      "resolved": false,
+      "resolution": null,
+      "affectedAssertions": [
+        "VAL-CROSS-008"
+      ]
+    }
+  ],
+  "blockers": [
+    {
+      "description": "The assigned callback target route /products/cmn75io4y0006l0atloup346a is no longer a valid product detail page, preventing verification of the sell-resume destination after authentication.",
+      "affectedAssertions": [
+        "VAL-CROSS-008"
+      ],
+      "quickFixAttempted": "Retried the route directly before and after login using the provided callbackUrl; both attempts rendered Product not found."
+    }
+  ],
+  "evidenceSummary": "Captured mobile screenshots of the guest home page, the missing product route, the login redirect with preserved callbackUrl, and the post-login landing page showing the same missing product state.",
+  "summary": "VAL-CROSS-008 is blocked on rerun because the previously targeted product detail route now returns Product not found, so the live app could not demonstrate whether guest sell intent resumes into a create-listing destination after login.",
+  "notes": [
+    "Viewport used: 375x812 as required for marketplace/detail/login flow.",
+    "Browser session used: a2f8f59abc0b__u2.",
+    "No code or shared data was modified during validation."
+  ]
+}

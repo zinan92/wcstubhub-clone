@@ -1,0 +1,97 @@
+{
+  "groupId": "trust-copy",
+  "testedAt": "2026-03-26T07:50:04Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "session": "a2f8f59abc0b__u1",
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "missionDir": "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-TRUST-014",
+      "title": "Trust copy is consistent across the app",
+      "status": "pass",
+      "reason": "Guest-facing trust terminology matched across the tested home, football listing, product detail, and event detail surfaces. All pages used 'Buyer Protection', '100% Money-Back Guarantee. Every purchase is protected.', and badge terminology such as 'Verified' and 'Secure Delivery' without conflicting alternate naming.",
+      "steps": [
+        {
+          "action": "Open home page as guest",
+          "expected": "Trust copy on marketplace entry page uses canonical Buyer Protection language",
+          "observed": "Home page showed 'Buyer Protection' and '100% Money-Back Guarantee. Every purchase is protected. Learn more'."
+        },
+        {
+          "action": "Open football listing page as guest",
+          "expected": "Listing surface uses same Buyer Protection naming and trust badge terms",
+          "observed": "Football page repeated 'Buyer Protection' and '100% Money-Back Guarantee. Every purchase is protected.' with badges 'Verified' and 'Secure Delivery'."
+        },
+        {
+          "action": "Open product detail page as guest",
+          "expected": "Detail CTA area keeps same trust language and badge terminology",
+          "observed": "Product detail used 'Buyer Protection', 'Secure Delivery', and the same money-back sentence near CTA buttons."
+        },
+        {
+          "action": "Open event detail page as guest",
+          "expected": "Event detail matches the same trust naming and guarantee copy",
+          "observed": "Event detail repeated 'Verified', 'Buyer Protection', 'Secure Delivery', and '100% Money-Back Guarantee. Every purchase is protected.'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/trust-copy/val-trust-014-home.png",
+          "guest-browsing-and-trust-foundation/trust-copy/val-trust-014-football.png",
+          "guest-browsing-and-trust-foundation/trust-copy/val-trust-014-product-detail.png",
+          "guest-browsing-and-trust-foundation/trust-copy/val-trust-014-event-detail.png"
+        ],
+        "consoleErrors": "none observed on tested pages",
+        "network": "No API requests were captured during these passive browse checks; page loads and route transitions completed normally.",
+        "copyInventory": {
+          "home": [
+            "Buyer Protection",
+            "100% Money-Back Guarantee. Every purchase is protected."
+          ],
+          "football": [
+            "Buyer Protection",
+            "100% Money-Back Guarantee. Every purchase is protected.",
+            "Verified",
+            "Secure Delivery"
+          ],
+          "productDetail": [
+            "Buyer Protection",
+            "100% Money-Back Guarantee. Every purchase is protected.",
+            "Secure Delivery"
+          ],
+          "eventDetail": [
+            "Verified",
+            "Buyer Protection",
+            "Secure Delivery",
+            "100% Money-Back Guarantee. Every purchase is protected."
+          ]
+        }
+      },
+      "issues": null,
+      "notes": [
+        "Validation was run in a shared local environment as an anonymous user.",
+        "This rerun covered trust-copy consistency only and did not retest gated account surfaces."
+      ]
+    }
+  ],
+  "frictions": [
+    {
+      "description": "`agent-browser get text body` includes streamed Next.js hydration payload text after visible copy, so screenshots and the leading visible text segment were used as the primary source of truth for comparison.",
+      "resolved": true,
+      "resolution": "Compared the visible trust strings captured before the hydration payload content and relied on screenshots for confirmation.",
+      "affectedAssertions": [
+        "VAL-TRUST-014"
+      ]
+    }
+  ],
+  "blockers": [],
+  "evidenceSummary": "Captured four mobile screenshots covering home, football listing, product detail, and event detail trust copy. Console error checks were clean on the detail pages tested.",
+  "summary": "VAL-TRUST-014 passed. Trust naming and guarantee/badge terminology were consistent across the guest-facing surfaces sampled in this rerun."
+}

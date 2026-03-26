@@ -53,8 +53,10 @@ async function main() {
   });
 
   // Create products (FIFA World Cup 2026 jerseys)
+  // Use stable IDs for validation testing reliability
   const product1 = await prisma.product.create({
     data: {
+      id: 'product-stable-001',
       name: 'Argentina Home Jersey 2026',
       description: 'Official FIFA World Cup 2026 Argentina national team home jersey. Iconic blue and white stripes with AFA badge.',
       imageUrl: 'https://flagcdn.com/w640/ar.png',
@@ -70,6 +72,7 @@ async function main() {
 
   await prisma.product.create({
     data: {
+      id: 'product-stable-002',
       name: 'Germany Away Kit 2026',
       description: 'Germany national team FIFA World Cup 2026 away jersey. Modern design with DFB crest.',
       imageUrl: 'https://flagcdn.com/w640/de.png',
@@ -85,6 +88,7 @@ async function main() {
 
   await prisma.product.create({
     data: {
+      id: 'product-stable-003',
       name: 'Brazil Home Jersey 2026',
       description: 'Brazil FIFA World Cup 2026 home jersey. Classic yellow with green details and CBF badge.',
       imageUrl: 'https://flagcdn.com/w640/br.png',
@@ -100,6 +104,7 @@ async function main() {
 
   await prisma.product.create({
     data: {
+      id: 'product-stable-004',
       name: 'France National Team #10 Jersey 2026',
       description: 'France FIFA World Cup 2026 jersey. Defending champions kit with FFF badge and number 10.',
       imageUrl: 'https://flagcdn.com/w640/fr.png',
@@ -115,6 +120,7 @@ async function main() {
 
   await prisma.product.create({
     data: {
+      id: 'product-stable-005',
       name: 'USA National Team Jersey 2026',
       description: 'USA FIFA World Cup 2026 host nation jersey. Stars and stripes design with USSF crest.',
       imageUrl: 'https://flagcdn.com/w640/us.png',
@@ -130,6 +136,7 @@ async function main() {
 
   await prisma.product.create({
     data: {
+      id: 'product-stable-006',
       name: 'Spain Home Kit 2026',
       description: 'Spain national team FIFA World Cup 2026 home kit. Red jersey with RFEF badge.',
       imageUrl: 'https://flagcdn.com/w640/es.png',
@@ -144,8 +151,10 @@ async function main() {
   });
 
   // Create football matches
+  // Use stable IDs for validation testing reliability
   await prisma.event.create({
     data: {
+      id: 'event-stable-001',
       title: 'Jordan VS Argentina',
       type: 'football',
       team1: 'Jordan',
@@ -165,6 +174,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-002',
       title: 'Algeria VS Austria',
       type: 'football',
       team1: 'Algeria',
@@ -184,6 +194,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-003',
       title: 'Brazil VS Germany',
       type: 'football',
       team1: 'Brazil',
@@ -203,6 +214,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-004',
       title: 'Spain VS France',
       type: 'football',
       team1: 'Spain',
@@ -223,6 +235,7 @@ async function main() {
   // Create basketball games
   await prisma.event.create({
     data: {
+      id: 'event-stable-005',
       title: 'Phoenix Suns VS Los Angeles Lakers',
       type: 'basketball',
       team1: 'Phoenix Suns',
@@ -240,6 +253,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-006',
       title: 'Los Angeles Lakers VS San Antonio Spurs',
       type: 'basketball',
       team1: 'Los Angeles Lakers',
@@ -257,6 +271,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-007',
       title: 'Golden State Warriors VS Boston Celtics',
       type: 'basketball',
       team1: 'Golden State Warriors',
@@ -274,6 +289,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-008',
       title: 'Milwaukee Bucks VS Brooklyn Nets',
       type: 'basketball',
       team1: 'Milwaukee Bucks',
@@ -292,6 +308,7 @@ async function main() {
   // Create concert events
   await prisma.event.create({
     data: {
+      id: 'event-stable-009',
       title: 'Taylor Swift: The Eras Tour',
       type: 'concert',
       artistName: 'Taylor Swift',
@@ -309,6 +326,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-010',
       title: 'Ed Sheeran: Mathematics Tour',
       type: 'concert',
       artistName: 'Ed Sheeran',
@@ -326,6 +344,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-011',
       title: 'The Weeknd: After Hours Til Dawn',
       type: 'concert',
       artistName: 'The Weeknd',
@@ -343,6 +362,7 @@ async function main() {
 
   await prisma.event.create({
     data: {
+      id: 'event-stable-012',
       title: 'Beyoncé: Renaissance World Tour',
       type: 'concert',
       artistName: 'Beyoncé',
@@ -363,7 +383,7 @@ async function main() {
     data: {
       userId: testUser.id,
       itemType: 'product',
-      itemId: product1.id,
+      itemId: 'product-stable-001',
       itemName: 'Argentina Home Jersey 2026',
       itemImageUrl: 'https://flagcdn.com/w640/ar.png',
       purchasePrice: 29.99,
@@ -380,7 +400,7 @@ async function main() {
     data: {
       userId: testUser.id,
       itemType: 'event',
-      itemId: 'evt-001',
+      itemId: 'event-stable-005',
       itemName: 'Phoenix Suns VS Los Angeles Lakers',
       itemImageUrl: '',
       purchasePrice: 145.00,
