@@ -9,6 +9,7 @@ import { ProductCardSkeleton } from '@/components/ui/Skeleton';
 import AnimatedModal from '@/components/ui/AnimatedModal';
 import Button from '@/components/ui/Button';
 import { BuyerProtection, TrustBadgesGroup, TrustMessaging } from '@/components/trust';
+import ListingEntryModal from '@/components/listing/ListingEntryModal';
 
 interface Product {
   id: string;
@@ -269,25 +270,17 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         </div>
       </AnimatedModal>
 
-      {/* For Sale Confirmation Dialog */}
-      <AnimatedModal isOpen={showForSaleDialog} onClose={closeForSaleDialog}>
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-            Success
-          </h3>
-          <p className="text-gray-700 mb-6 text-center">
-            Listing request submitted successfully
-          </p>
-          <Button
-            onClick={closeForSaleDialog}
-            variant="primary"
-            size="lg"
-            className="w-full min-h-[44px]"
-          >
-            OK
-          </Button>
-        </div>
-      </AnimatedModal>
+      {/* For Sale Listing Entry Flow */}
+      {product && (
+        <ListingEntryModal
+          isOpen={showForSaleDialog}
+          onClose={closeForSaleDialog}
+          itemName={product.name}
+          itemPrice={product.price}
+          maxQuantity={product.remainingQty}
+          itemType="product"
+        />
+      )}
     </div>
   );
 }

@@ -158,7 +158,7 @@ describe('EventDetailPage', () => {
     fireEvent.click(forSaleButton);
 
     await waitFor(() => {
-      expect(screen.getByText(/Listing request submitted successfully/)).toBeInTheDocument();
+      expect(screen.getByText('Create Listing')).toBeInTheDocument();
     });
   });
 });

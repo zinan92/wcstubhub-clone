@@ -107,7 +107,7 @@ describe('ProductDetailPage', () => {
     fireEvent.click(forSaleButton);
 
     await waitFor(() => {
-      expect(screen.getByText('Listing request submitted successfully')).toBeDefined();
+      expect(screen.getByText('Create Listing')).toBeDefined();
     });
   });
 
@@ -134,7 +134,7 @@ describe('ProductDetailPage', () => {
     });
   });
 
-  it('closes For sale dialog when OK clicked', async () => {
+  it('closes For sale dialog when Cancel clicked', async () => {
     renderWithSession(<ProductDetailPage params={Promise.resolve({ id: 'prod123' })} />);
 
     await waitFor(() => {
@@ -145,15 +145,15 @@ describe('ProductDetailPage', () => {
     fireEvent.click(screen.getByText('For sale'));
 
     await waitFor(() => {
-      expect(screen.getByText('Listing request submitted successfully')).toBeDefined();
+      expect(screen.getByText('Create Listing')).toBeDefined();
     });
 
     // Close dialog
-    const okButtons = screen.getAllByText('OK');
-    fireEvent.click(okButtons[0]);
+    const cancelButtons = screen.getAllByText('Cancel');
+    fireEvent.click(cancelButtons[0]);
 
     await waitFor(() => {
-      expect(screen.queryByText('Listing request submitted successfully')).toBeNull();
+      expect(screen.queryByText('Create Listing')).toBeNull();
     });
   });
 
