@@ -44,45 +44,54 @@ export default function ConcertCard({
         <div className="absolute bottom-2 left-2 text-5xl opacity-10">🎤</div>
         <div className="absolute top-1/2 left-1/4 text-4xl opacity-5 transform -rotate-12">🎸</div>
 
-        {/* Gradient header section with artist info */}
-        <div className="relative bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 p-6 text-white">
-          {/* Large music icon */}
-          <div className="flex justify-center mb-3">
-            <div className="text-6xl">🎵</div>
-          </div>
+        {/* Gradient header section with artist info - enhanced for WCAG AA contrast */}
+        <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-6 text-white">
+          {/* Dark gradient overlay for better text contrast (WCAG AA: 4.5:1) */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30"></div>
+          
+          {/* Content with proper z-index */}
+          <div className="relative z-10">
+            {/* Large music icon */}
+            <div className="flex justify-center mb-3">
+              <div className="text-6xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">🎵</div>
+            </div>
 
-          {/* Artist name */}
-          <div className="flex items-center justify-center gap-2 mb-2">
-            <Music className="w-4 h-4" />
-            <span className="text-sm font-semibold">{artistName}</span>
-          </div>
+            {/* Artist name - prominent */}
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <Music className="w-5 h-5 drop-shadow-sm" />
+              <span className="text-base font-bold drop-shadow-sm">{artistName}</span>
+            </div>
 
-          {/* Tour title */}
-          <h3 className="text-lg font-bold text-center line-clamp-2 mb-1">
-            {title}
-          </h3>
+            {/* Tour title */}
+            <h3 className="text-xl font-bold text-center line-clamp-2 mb-1 drop-shadow-sm leading-tight">
+              {title}
+            </h3>
+          </div>
         </div>
 
         {/* Event Details */}
-        <div className="p-4 bg-white/80 backdrop-blur-sm">
+        <div className="p-5 bg-white">
           {/* Date */}
-          <div className="flex items-center gap-2 mb-2">
-            <Calendar className="w-4 h-4 text-purple-500" />
-            <span className="text-sm text-gray-700 font-medium">{formatDate(date)}</span>
+          <div className="flex items-center gap-2 mb-2.5">
+            <Calendar className="w-4 h-4 text-purple-600" />
+            <span className="text-sm text-gray-800 font-medium">{formatDate(date)}</span>
           </div>
 
           {/* Venue */}
-          <div className="flex items-center gap-2 mb-3">
-            <MapPin className="w-4 h-4 text-purple-500" />
+          <div className="flex items-center gap-2 mb-4">
+            <MapPin className="w-4 h-4 text-purple-600" />
             <span className="text-sm text-gray-700 font-medium line-clamp-1">{venue}</span>
           </div>
 
+          {/* Separator */}
+          <div className="border-t border-purple-100 mb-4"></div>
+
           {/* Price */}
           <div className="flex items-center justify-between">
-            <span className="text-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               {formatPrice(price)}
             </span>
-            <span className="text-xs text-white bg-gradient-to-r from-purple-500 to-pink-500 px-2 py-1 rounded-full font-medium">Concert</span>
+            <span className="text-xs text-white bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1.5 rounded-full font-semibold shadow-soft">Concert</span>
           </div>
         </div>
       </div>
