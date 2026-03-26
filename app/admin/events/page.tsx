@@ -311,20 +311,20 @@ export default function AdminEventsPage() {
   const getEventTypeColor = (type: string) => {
     switch (type) {
       case 'football':
-        return 'bg-green-100 text-green-800';
+        return 'bg-success-100 text-success-800';
       case 'basketball':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-orange-100 text-warning-800';
       case 'concert':
-        return 'bg-purple-100 text-purple-800';
+        return 'bg-accent-100 text-accent-800';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-surface-100 text-muted-800';
     }
   };
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-gray-600">Loading...</div>
+        <div className="text-lg text-muted-600">Loading...</div>
       </div>
     );
   }
@@ -332,7 +332,7 @@ export default function AdminEventsPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-red-600">Error: {error}</div>
+        <div className="text-lg text-error-600">Error: {error}</div>
       </div>
     );
   }
@@ -341,12 +341,12 @@ export default function AdminEventsPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Event Management</h1>
-          <p className="text-gray-600 mt-2">Manage football, basketball, and concert events</p>
+          <h1 className="text-3xl font-bold text-muted-900">Event Management</h1>
+          <p className="text-muted-600 mt-2">Manage football, basketball, and concert events</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-card hover:bg-primary-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
           Create Event
@@ -354,47 +354,47 @@ export default function AdminEventsPage() {
       </div>
 
       {/* Events Table */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-card shadow-card overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-surface-50 border-b border-muted-200">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Title
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Type
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Venue
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Price
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-right text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-muted-200">
             {events.length === 0 ? (
               <tr>
-                <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                <td colSpan={6} className="px-6 py-8 text-center text-muted-500">
                   No events found. Create your first event!
                 </td>
               </tr>
             ) : (
               events.map((event) => (
-                <tr key={event.id} className="hover:bg-gray-50">
+                <tr key={event.id} className="hover:bg-surface-50">
                   <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900">{event.title}</div>
+                    <div className="font-medium text-muted-900">{event.title}</div>
                     {event.type === 'concert' && event.artistName && (
-                      <div className="text-sm text-gray-500">{event.artistName}</div>
+                      <div className="text-sm text-muted-500">{event.artistName}</div>
                     )}
                     {(event.type === 'football' || event.type === 'basketball') && event.team1 && event.team2 && (
-                      <div className="text-sm text-gray-500">{event.team1} vs {event.team2}</div>
+                      <div className="text-sm text-muted-500">{event.team1} vs {event.team2}</div>
                     )}
                   </td>
                   <td className="px-6 py-4">
@@ -402,27 +402,27 @@ export default function AdminEventsPage() {
                       {event.type}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-700">
+                  <td className="px-6 py-4 text-muted-700">
                     {formatDate(event.date)}
                   </td>
-                  <td className="px-6 py-4 text-gray-700">
+                  <td className="px-6 py-4 text-muted-700">
                     {event.venue}
                   </td>
-                  <td className="px-6 py-4 text-gray-700">
+                  <td className="px-6 py-4 text-muted-700">
                     ${event.price.toFixed(2)}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => openEditModal(event)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        className="p-2 text-primary-600 hover:bg-primary-50 rounded transition-colors"
                         title="Edit event"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => openDeleteConfirm(event)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                        className="p-2 text-error-600 hover:bg-error-50 rounded transition-colors"
                         title="Delete event"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -439,8 +439,8 @@ export default function AdminEventsPage() {
       {/* Create/Edit Modal */}
       <AnimatedModal isOpen={showModal} onClose={closeModal}>
         <div className="max-h-[80vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">
+            <div className="p-6 border-b border-muted-200">
+              <h2 className="text-2xl font-bold text-muted-900">
                 {modalMode === 'create' ? 'Create Event' : 'Edit Event'}
               </h2>
             </div>
@@ -449,33 +449,33 @@ export default function AdminEventsPage() {
               <div className="space-y-4">
                 {/* Title */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Title <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Title <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.title ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.title ? 'border-error-500' : 'border-muted-300'
                     }`}
                     placeholder="Event title"
                   />
                   {formErrors.title && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.title}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.title}</p>
                   )}
                 </div>
 
                 {/* Type */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Type <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Type <span className="text-error-500">*</span>
                   </label>
                   <select
                     value={formData.type}
                     onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.type ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.type ? 'border-error-500' : 'border-muted-300'
                     }`}
                   >
                     <option value="">Select type</option>
@@ -484,7 +484,7 @@ export default function AdminEventsPage() {
                     <option value="concert">Concert</option>
                   </select>
                   {formErrors.type && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.type}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.type}</p>
                   )}
                 </div>
 
@@ -493,26 +493,26 @@ export default function AdminEventsPage() {
                   <>
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-muted-700 mb-1">
                           Team 1
                         </label>
                         <input
                           type="text"
                           value={formData.team1}
                           onChange={(e) => setFormData({ ...formData, team1: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                           placeholder="Team 1 name"
                         />
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-sm font-medium text-muted-700 mb-1">
                           Team 2
                         </label>
                         <input
                           type="text"
                           value={formData.team2}
                           onChange={(e) => setFormData({ ...formData, team2: e.target.value })}
-                          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                          className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                           placeholder="Team 2 name"
                         />
                       </div>
@@ -521,26 +521,26 @@ export default function AdminEventsPage() {
                     {formData.type === 'football' && (
                       <div className="grid grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-medium text-muted-700 mb-1">
                             Team 1 Flag URL
                           </label>
                           <input
                             type="text"
                             value={formData.team1Flag}
                             onChange={(e) => setFormData({ ...formData, team1Flag: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                             placeholder="https://flagcdn.com/w40/us.png"
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
+                          <label className="block text-sm font-medium text-muted-700 mb-1">
                             Team 2 Flag URL
                           </label>
                           <input
                             type="text"
                             value={formData.team2Flag}
                             onChange={(e) => setFormData({ ...formData, team2Flag: e.target.value })}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                             placeholder="https://flagcdn.com/w40/ca.png"
                           />
                         </div>
@@ -553,26 +553,26 @@ export default function AdminEventsPage() {
                 {formData.type === 'concert' && (
                   <>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-muted-700 mb-1">
                         Artist Name
                       </label>
                       <input
                         type="text"
                         value={formData.artistName}
                         onChange={(e) => setFormData({ ...formData, artistName: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                         placeholder="Artist or band name"
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                      <label className="block text-sm font-medium text-muted-700 mb-1">
                         Artist Image URL
                       </label>
                       <input
                         type="text"
                         value={formData.artistImageUrl}
                         onChange={(e) => setFormData({ ...formData, artistImageUrl: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                         placeholder="https://example.com/artist.jpg"
                       />
                     </div>
@@ -581,103 +581,103 @@ export default function AdminEventsPage() {
 
                 {/* Date */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date & Time <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Date & Time <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="datetime-local"
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.date ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.date ? 'border-error-500' : 'border-muted-300'
                     }`}
                   />
                   {formErrors.date && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.date}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.date}</p>
                   )}
                 </div>
 
                 {/* Venue */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Venue <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Venue <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={formData.venue}
                     onChange={(e) => setFormData({ ...formData, venue: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.venue ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.venue ? 'border-error-500' : 'border-muted-300'
                     }`}
                     placeholder="Stadium or venue name"
                   />
                   {formErrors.venue && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.venue}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.venue}</p>
                   )}
                 </div>
 
                 {/* Price */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Price <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Price <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="number"
                     step="0.01"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.price ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.price ? 'border-error-500' : 'border-muted-300'
                     }`}
                     placeholder="0.00"
                   />
                   {formErrors.price && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.price}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.price}</p>
                   )}
                 </div>
 
                 {/* Remaining Quantity */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
                     Remaining Quantity
                   </label>
                   <input
                     type="number"
                     value={formData.remainingQty}
                     onChange={(e) => setFormData({ ...formData, remainingQty: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="1000"
                   />
                 </div>
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
                     Description
                   </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-muted-300 rounded-card focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="Event description"
                   />
                 </div>
               </div>
 
               {/* Form Actions */}
-              <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+              <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-muted-200">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 border border-muted-300 text-muted-700 rounded-card hover:bg-surface-50 transition-colors"
                   disabled={isSubmitting}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 bg-primary-600 text-white rounded-card hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Saving...' : modalMode === 'create' ? 'Create' : 'Save'}
@@ -692,20 +692,20 @@ export default function AdminEventsPage() {
         {eventToDelete && (
           <div>
             <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Delete Event</h2>
-              <p className="text-gray-700 mb-6">
+              <h2 className="text-xl font-bold text-muted-900 mb-4">Delete Event</h2>
+              <p className="text-muted-700 mb-6">
                 Are you sure you want to delete <strong>{eventToDelete.title}</strong>? This action cannot be undone.
               </p>
               <div className="flex items-center justify-end gap-3">
                 <button
                   onClick={closeDeleteConfirm}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 border border-muted-300 text-muted-700 rounded-card hover:bg-surface-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  className="px-4 py-2 bg-error-600 text-white rounded-card hover:bg-error-700 transition-colors"
                 >
                   Delete
                 </button>

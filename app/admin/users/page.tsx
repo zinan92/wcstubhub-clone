@@ -65,7 +65,7 @@ export default function AdminUsersPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-gray-600">Loading...</div>
+        <div className="text-lg text-muted-600">Loading...</div>
       </div>
     );
   }
@@ -73,7 +73,7 @@ export default function AdminUsersPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-red-600">Error: {error}</div>
+        <div className="text-lg text-error-600">Error: {error}</div>
       </div>
     );
   }
@@ -82,51 +82,51 @@ export default function AdminUsersPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">User Management</h1>
-          <p className="text-gray-600 mt-2">View all registered users</p>
+          <h1 className="text-3xl font-bold text-muted-900">User Management</h1>
+          <p className="text-muted-600 mt-2">View all registered users</p>
         </div>
-        <div className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-700 rounded-lg">
+        <div className="flex items-center gap-2 px-4 py-2 bg-primary-100 text-primary-700 rounded-card">
           <Users className="w-5 h-5" />
           <span className="font-semibold">{users.length} Users</span>
         </div>
       </div>
 
       {/* Users Table */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-card shadow-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b border-gray-200">
+            <thead className="bg-surface-50 border-b border-muted-200">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                   Email
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                   Name
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                   VIP Level
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                   Role
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                   Account Status
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                   Created Date
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-muted-200">
               {users.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={6} className="px-6 py-8 text-center text-muted-500">
                     No users found.
                   </td>
                 </tr>
               ) : (
                 users.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-50">
+                  <tr key={user.id} className="hover:bg-surface-50">
                     <td className="px-6 py-4">
                       <div className="flex items-center">
                         {user.avatarUrl && (
@@ -140,38 +140,38 @@ export default function AdminUsersPage() {
                           </div>
                         )}
                         <div>
-                          <div className="font-medium text-gray-900">
+                          <div className="font-medium text-muted-900">
                             {user.email || user.phone || 'N/A'}
                           </div>
                           {user.phone && user.email && (
-                            <div className="text-sm text-gray-500">{user.phone}</div>
+                            <div className="text-sm text-muted-500">{user.phone}</div>
                           )}
                         </div>
                       </div>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">
+                    <td className="px-6 py-4 text-muted-700">
                       {user.name || '-'}
                     </td>
                     <td className="px-6 py-4">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent-100 text-accent-800">
                         VIP{user.vipLevel}
                       </span>
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                         user.role === 'admin' 
-                          ? 'bg-red-100 text-red-800' 
-                          : 'bg-green-100 text-green-800'
+                          ? 'bg-error-100 text-error-800' 
+                          : 'bg-success-100 text-success-800'
                       }`}>
                         {user.role}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">
-                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    <td className="px-6 py-4 text-muted-700">
+                      <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success-100 text-success-800">
                         {getAccountStatus(user)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-gray-700">
+                    <td className="px-6 py-4 text-muted-700">
                       {formatDate(user.createdAt)}
                     </td>
                   </tr>
@@ -182,7 +182,7 @@ export default function AdminUsersPage() {
         </div>
       </div>
 
-      <div className="mt-4 text-sm text-gray-500">
+      <div className="mt-4 text-sm text-muted-500">
         <p>* User management is read-only. No edit or delete operations available.</p>
       </div>
     </div>

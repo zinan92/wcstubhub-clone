@@ -40,7 +40,7 @@ export default function AdminDashboardPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-gray-600">Loading...</div>
+        <div className="text-lg text-muted-600">Loading...</div>
       </div>
     );
   }
@@ -48,7 +48,7 @@ export default function AdminDashboardPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-red-600">Error: {error}</div>
+        <div className="text-lg text-error-600">Error: {error}</div>
       </div>
     );
   }
@@ -58,28 +58,28 @@ export default function AdminDashboardPage() {
       title: 'Total Users',
       value: stats?.users ?? 0,
       icon: Users,
-      bgColor: 'bg-blue-500',
+      bgColor: 'bg-primary-500',
       link: '/admin/users',
     },
     {
       title: 'Total Products',
       value: stats?.products ?? 0,
       icon: Package,
-      bgColor: 'bg-green-500',
+      bgColor: 'bg-success-500',
       link: '/admin/products',
     },
     {
       title: 'Total Events',
       value: stats?.events ?? 0,
       icon: Calendar,
-      bgColor: 'bg-purple-500',
+      bgColor: 'bg-accent-500',
       link: '/admin/events',
     },
     {
       title: 'Total Orders',
       value: stats?.orders ?? 0,
       icon: ShoppingCart,
-      bgColor: 'bg-orange-500',
+      bgColor: 'bg-warning-500',
       link: '/admin/orders',
     },
   ];
@@ -87,8 +87,8 @@ export default function AdminDashboardPage() {
   return (
     <div className="p-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="text-gray-600 mt-2">Welcome to the admin panel</p>
+        <h1 className="text-3xl font-bold text-muted-900">Dashboard</h1>
+        <p className="text-muted-600 mt-2">Welcome to the admin panel</p>
       </div>
 
       {/* Stat Cards Grid */}
@@ -99,14 +99,14 @@ export default function AdminDashboardPage() {
             <a
               key={card.title}
               href={card.link}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+              className="bg-white rounded-card shadow-card p-6 hover:shadow-elevated transition-shadow"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600 mb-1">
+                  <p className="text-sm font-medium text-muted-600 mb-1">
                     {card.title}
                   </p>
-                  <p className="text-3xl font-bold text-gray-900">
+                  <p className="text-3xl font-bold text-muted-900">
                     {card.value}
                   </p>
                 </div>
@@ -120,36 +120,36 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Quick Links Section */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <div className="bg-white rounded-card shadow-card p-6">
+        <h2 className="text-xl font-semibold text-muted-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <a
             href="/admin/products"
-            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-center p-4 border border-muted-200 rounded-lg hover:bg-surface-50 transition-colors"
           >
-            <Package className="w-5 h-5 text-gray-600 mr-3" />
-            <span className="font-medium text-gray-700">Manage Products</span>
+            <Package className="w-5 h-5 text-muted-600 mr-3" />
+            <span className="font-medium text-muted-700">Manage Products</span>
           </a>
           <a
             href="/admin/events"
-            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-center p-4 border border-muted-200 rounded-lg hover:bg-surface-50 transition-colors"
           >
-            <Calendar className="w-5 h-5 text-gray-600 mr-3" />
-            <span className="font-medium text-gray-700">Manage Events</span>
+            <Calendar className="w-5 h-5 text-muted-600 mr-3" />
+            <span className="font-medium text-muted-700">Manage Events</span>
           </a>
           <a
             href="/admin/users"
-            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-center p-4 border border-muted-200 rounded-lg hover:bg-surface-50 transition-colors"
           >
-            <Users className="w-5 h-5 text-gray-600 mr-3" />
-            <span className="font-medium text-gray-700">View Users</span>
+            <Users className="w-5 h-5 text-muted-600 mr-3" />
+            <span className="font-medium text-muted-700">View Users</span>
           </a>
           <a
             href="/admin/orders"
-            className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+            className="flex items-center p-4 border border-muted-200 rounded-lg hover:bg-surface-50 transition-colors"
           >
-            <ShoppingCart className="w-5 h-5 text-gray-600 mr-3" />
-            <span className="font-medium text-gray-700">View Orders</span>
+            <ShoppingCart className="w-5 h-5 text-muted-600 mr-3" />
+            <span className="font-medium text-muted-700">View Orders</span>
           </a>
         </div>
       </div>

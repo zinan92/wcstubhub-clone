@@ -238,7 +238,7 @@ export default function AdminProductsPage() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-gray-600">Loading...</div>
+        <div className="text-lg text-muted-600">Loading...</div>
       </div>
     );
   }
@@ -246,7 +246,7 @@ export default function AdminProductsPage() {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-red-600">Error: {error}</div>
+        <div className="text-lg text-error-600">Error: {error}</div>
       </div>
     );
   }
@@ -255,12 +255,12 @@ export default function AdminProductsPage() {
     <div className="p-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
-          <p className="text-gray-600 mt-2">Manage your product catalog</p>
+          <h1 className="text-3xl font-bold text-muted-900">Product Management</h1>
+          <p className="text-muted-600 mt-2">Manage your product catalog</p>
         </div>
         <button
           onClick={openCreateModal}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
         >
           <Plus className="w-5 h-5" />
           Create Product
@@ -268,37 +268,37 @@ export default function AdminProductsPage() {
       </div>
 
       {/* Products Table */}
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-card shadow-card overflow-hidden">
         <table className="w-full">
-          <thead className="bg-gray-50 border-b border-gray-200">
+          <thead className="bg-surface-50 border-b border-muted-200">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Name
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Price
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Category
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Stock
               </th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-right text-xs font-medium text-muted-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-muted-200">
             {products.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
+                <td colSpan={5} className="px-6 py-8 text-center text-muted-500">
                   No products found. Create your first product!
                 </td>
               </tr>
             ) : (
               products.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50">
+                <tr key={product.id} className="hover:bg-surface-50">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       {product.imageUrl && (
@@ -311,30 +311,30 @@ export default function AdminProductsPage() {
                           />
                         </div>
                       )}
-                      <div className="font-medium text-gray-900">{product.name}</div>
+                      <div className="font-medium text-muted-900">{product.name}</div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-700">
+                  <td className="px-6 py-4 text-muted-700">
                     ${product.price.toFixed(2)}
                   </td>
-                  <td className="px-6 py-4 text-gray-700">
+                  <td className="px-6 py-4 text-muted-700">
                     {product.category}
                   </td>
-                  <td className="px-6 py-4 text-gray-700">
+                  <td className="px-6 py-4 text-muted-700">
                     {product.stock}
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => openEditModal(product)}
-                        className="p-2 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                        className="p-2 text-primary-600 hover:bg-primary-50 rounded transition-colors"
                         title="Edit product"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => openDeleteConfirm(product)}
-                        className="p-2 text-red-600 hover:bg-red-50 rounded transition-colors"
+                        className="p-2 text-error-600 hover:bg-error-50 rounded transition-colors"
                         title="Delete product"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -351,8 +351,8 @@ export default function AdminProductsPage() {
       {/* Create/Edit Modal */}
       <AnimatedModal isOpen={showModal} onClose={closeModal}>
         <div className="max-h-[80vh] overflow-y-auto">
-            <div className="p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">
+            <div className="p-6 border-b border-muted-200">
+              <h2 className="text-2xl font-bold text-muted-900">
                 {modalMode === 'create' ? 'Create Product' : 'Edit Product'}
               </h2>
             </div>
@@ -361,123 +361,123 @@ export default function AdminProductsPage() {
               <div className="space-y-4">
                 {/* Name */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Name <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.name ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.name ? 'border-error-500' : 'border-muted-300'
                     }`}
                     placeholder="Product name"
                   />
                   {formErrors.name && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.name}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.name}</p>
                   )}
                 </div>
 
                 {/* Image URL */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
                     Image URL
                   </label>
                   <input
                     type="text"
                     value={formData.imageUrl}
                     onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="https://example.com/image.jpg"
                   />
                 </div>
 
                 {/* Price */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Price <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Price <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="number"
                     step="0.01"
                     value={formData.price}
                     onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.price ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.price ? 'border-error-500' : 'border-muted-300'
                     }`}
                     placeholder="0.00"
                   />
                   {formErrors.price && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.price}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.price}</p>
                   )}
                 </div>
 
                 {/* Category */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Category <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Category <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="text"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.category ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.category ? 'border-error-500' : 'border-muted-300'
                     }`}
                     placeholder="jerseys, equipment, etc."
                   />
                   {formErrors.category && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.category}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.category}</p>
                   )}
                 </div>
 
                 {/* Stock */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Stock <span className="text-red-500">*</span>
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
+                    Stock <span className="text-error-500">*</span>
                   </label>
                   <input
                     type="number"
                     value={formData.stock}
                     onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                      formErrors.stock ? 'border-red-500' : 'border-gray-300'
+                    className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 ${
+                      formErrors.stock ? 'border-error-500' : 'border-muted-300'
                     }`}
                     placeholder="0"
                   />
                   {formErrors.stock && (
-                    <p className="mt-1 text-sm text-red-600">{formErrors.stock}</p>
+                    <p className="mt-1 text-sm text-error-600">{formErrors.stock}</p>
                   )}
                 </div>
 
                 {/* Description */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium text-muted-700 mb-1">
                     Description
                   </label>
                   <textarea
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-muted-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="Product description"
                   />
                 </div>
               </div>
 
               {/* Form Actions */}
-              <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-gray-200">
+              <div className="flex items-center justify-end gap-3 mt-6 pt-6 border-t border-muted-200">
                 <button
                   type="button"
                   onClick={closeModal}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 border border-muted-300 text-muted-700 rounded-lg hover:bg-surface-50 transition-colors"
                   disabled={isSubmitting}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? 'Saving...' : modalMode === 'create' ? 'Create' : 'Save'}
@@ -492,20 +492,20 @@ export default function AdminProductsPage() {
         {productToDelete && (
           <div>
             <div className="p-6">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">Delete Product</h2>
-              <p className="text-gray-700 mb-6">
+              <h2 className="text-xl font-bold text-muted-900 mb-4">Delete Product</h2>
+              <p className="text-muted-700 mb-6">
                 Are you sure you want to delete <strong>{productToDelete.name}</strong>? This action cannot be undone.
               </p>
               <div className="flex items-center justify-end gap-3">
                 <button
                   onClick={closeDeleteConfirm}
-                  className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-4 py-2 border border-muted-300 text-muted-700 rounded-lg hover:bg-surface-50 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleDelete}
-                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                  className="px-4 py-2 bg-error-600 text-white rounded-lg hover:bg-error-700 transition-colors"
                 >
                   Delete
                 </button>
