@@ -1,0 +1,51 @@
+{
+  "milestone": "listing-intelligence-and-final-trust-polish",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0 },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Added listing intelligence fields documentation to marketplace-trust.md: isBestValue, isSellingFast, urgencyThreshold fields on Product/Event models, ListingIntelligenceBadges component path, and warning about select clause risks.",
+      "sourceFeature": "listing-intelligence-and-final-trust-polish"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add guidance documenting the ListingIntelligenceBadges component at components/listing-intelligence/ and its prop interface. Future workers adding new event types or product categories should integrate intelligence badges via this component.",
+      "evidence": "Feature listing-intelligence-and-final-trust-polish introduced a new component directory (components/listing-intelligence/) that all browse card components and detail pages now depend on. The AGENTS.md mentions 'Listing intelligence labels must be readable on mobile' but does not document the component path or integration pattern.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [],
+  "nonBlockingIssues": [
+    {
+      "featureId": "listing-intelligence-and-final-trust-polish",
+      "severity": "non_blocking",
+      "description": "No unit tests for ListingIntelligenceBadges component despite conditional logic (urgency threshold comparison, badge assembly based on boolean flags). The component at components/listing-intelligence/ListingIntelligenceBadges.tsx should have render tests."
+    },
+    {
+      "featureId": "listing-intelligence-and-final-trust-polish",
+      "severity": "suggestion",
+      "description": "Delivery timing copy blocks use hardcoded static text. Could be made data-driven in a future enhancement."
+    },
+    {
+      "featureId": "listing-intelligence-and-final-trust-polish",
+      "severity": "suggestion",
+      "description": "Home page Product interface makes intelligence fields required while ProductCard accepts them as optional. Could be made consistent."
+    }
+  ],
+  "previousRound": null
+}

@@ -1,0 +1,58 @@
+{
+  "featureId": "listing-intelligence-and-final-trust-polish",
+  "milestone": "listing-intelligence-and-final-trust-polish",
+  "reviewedAt": "2026-03-26T10:00:00.000Z",
+  "commitId": "d785d5b4",
+  "transcriptSkeletonReviewed": false,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Clean, well-structured implementation of listing intelligence badges across all browse and detail surfaces. The ListingIntelligenceBadges component uses a config-driven approach with proper conditional logic for urgency threshold comparison. Schema additions are non-breaking with sensible defaults. All 4 card components and both detail pages are updated consistently. Delivery timing copy is present on both product and event detail pages. Seed data has realistic intelligence attributes calibrated against remaining quantities. Badge layout uses flex-wrap with gap-1.5 for mobile-safe rendering."
+  },
+  "codeQuality": {
+    "score": 4,
+    "observations": [
+      "Config-driven badge rendering pattern is clean and extensible — adding a new badge type requires only a config entry",
+      "Consistent use of optional props with defaults across all card components prevents breaking existing consumers",
+      "Proper use of 'use client' directive on the component that uses lucide-react icons",
+      "Schema changes use @default(false) and Int? which makes the migration non-breaking for existing data",
+      "Urgency threshold logic (remainingQty <= urgencyThreshold) is correct and data-accurate per seed values",
+      "No unit tests added for the new ListingIntelligenceBadges component — while non-blocking, the component has conditional logic (urgency threshold, badge assembly) that warrants at least basic render tests",
+      "badge border-current/20 uses Tailwind arbitrary value; however, this is a reasonable choice for subtle borders"
+    ]
+  },
+  "issues": [
+    {
+      "severity": "non_blocking",
+      "description": "No unit tests were added for the new ListingIntelligenceBadges component. The component contains conditional logic (urgency threshold comparison, badge list assembly based on boolean flags) that would benefit from render tests verifying: (1) correct badges appear for given props, (2) urgency badge shows only when remainingQty <= urgencyThreshold, (3) no badges render when all flags are false. The worker's handoff notes 'No new tests required as intelligence badges are presentation layer additions' but the component does contain non-trivial conditional logic.",
+      "file": "components/listing-intelligence/ListingIntelligenceBadges.tsx",
+      "line": 96
+    },
+    {
+      "severity": "suggestion",
+      "description": "The delivery timing copy blocks on product and event detail pages use hardcoded static text ('within 1-2 business days', '24 hours of purchase'). For a marketplace like StubHub, delivery timing would ideally come from the listing/product data model. Currently acceptable as static trust copy, but worth noting for future enhancement.",
+      "file": "app/products/[id]/page.tsx",
+      "line": 229
+    },
+    {
+      "severity": "suggestion",
+      "description": "The home page (app/page.tsx) has added intelligence fields to its Product interface but the ProductGrid component receives the full product objects and passes them to ProductCard. This works correctly since ProductCard accepts optional intelligence props, but the home page interface could be made consistent with the ProductCard interface by making the intelligence fields optional too (they are required in the home page interface but optional in ProductCard).",
+      "file": "app/page.tsx",
+      "line": 17
+    }
+  ],
+  "sharedStateObservations": [
+    {
+      "target": "AGENTS.md",
+      "observation": "The AGENTS.md mentions 'Listing intelligence labels must be readable on mobile' but does not document the specific component path (components/listing-intelligence/) or its prop interface. Future workers modifying browse cards or detail pages should know about ListingIntelligenceBadges and its expected props.",
+      "rationale": "A worker adding a new event type or product category would need to integrate intelligence badges. Documenting the component location and prop pattern in AGENTS.md would prevent missed integration."
+    },
+    {
+      "target": "library",
+      "observation": "The listing intelligence feature adds 3 new fields to both Product and Event models (isBestValue, isSellingFast, urgencyThreshold) that are returned by all API routes without explicit select. The library/architecture.md should document these intelligence fields and the convention that API routes return all model fields implicitly.",
+      "rationale": "Future workers adding select clauses for performance optimization could accidentally omit the intelligence fields, breaking the browse cards."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "The listing intelligence feature is well-implemented with a clean, extensible badge component architecture. All expected behaviors are covered: Best Value, Selling Fast, Only X left (data-accurate), and Verified Listing badges render on all 4 browse card types and both detail page types. Delivery timing copy is present. Schema changes are non-breaking. Seed data has realistic attributes. Mobile layout uses flex-wrap for non-overlapping badges. The only non-blocking concern is the absence of unit tests for the new component's conditional logic. All validators (326 tests, typecheck, lint) pass. Status: PASS."
+}
