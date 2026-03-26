@@ -40,7 +40,7 @@ describe('ProductDetailPage', () => {
     });
 
     expect(screen.getByText('$29.99')).toBeDefined();
-    expect(screen.getByText('25 units')).toBeDefined();
+    expect(screen.getByText('25 units remaining')).toBeDefined();
     expect(screen.getByText(/Official FIFA World Cup 2026/)).toBeDefined();
   });
 

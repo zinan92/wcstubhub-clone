@@ -6,6 +6,7 @@ import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { ProductCardSkeleton } from '@/components/ui/Skeleton';
 import AnimatedModal from '@/components/ui/AnimatedModal';
+import Button from '@/components/ui/Button';
 
 interface Product {
   id: string;
@@ -114,34 +115,37 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         </div>
       </div>
 
-      {/* Product Image - Full Width */}
-      <div className="w-full aspect-square bg-gray-100 relative">
+      {/* Product Image - 40%+ viewport height with rounded corners */}
+      <div className="w-full h-[45vh] bg-gray-100 relative overflow-hidden">
         <Image
           src={product.imageUrl}
           alt={product.name}
           fill
-          className="object-cover"
+          className="object-cover rounded-b-card"
         />
       </div>
 
       {/* Product Information */}
-      <div className="px-4 py-4">
+      <div className="px-4 py-6">
         {/* Product Title */}
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">
+        <h2 className="text-2xl font-bold text-gray-900 mb-4">
           {product.name}
         </h2>
 
-        {/* Price */}
-        <p className="text-3xl font-bold text-primary-500 mb-4">
-          ${product.price.toFixed(2)}
-        </p>
-
-        {/* Remaining Quantity */}
-        <div className="mb-6">
-          <p className="text-sm text-gray-500">Remaining Quantity</p>
-          <p className="text-lg font-semibold text-gray-900">
-            {product.remainingQty} units
+        {/* Price Section - Large bold accent-colored */}
+        <div className="mb-5">
+          <p className="text-sm text-gray-500 mb-1">Price</p>
+          <p className="text-4xl font-bold text-accent-500">
+            ${product.price.toFixed(2)}
           </p>
+        </div>
+
+        {/* Remaining Quantity - Styled as Badge */}
+        <div className="mb-6">
+          <p className="text-sm text-gray-500 mb-2">Availability</p>
+          <span className="inline-flex items-center px-3 py-1.5 bg-primary-50 text-primary-700 text-sm font-semibold rounded-full">
+            {product.remainingQty} units remaining
+          </span>
         </div>
 
         {/* Description */}
@@ -158,21 +162,25 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
       {/* Action Buttons - Fixed at Bottom */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 pb-20 z-20">
         <div className="flex gap-3">
-          {/* For Sale Button - Outline Style */}
-          <button
+          {/* For Sale Button - Using shared Button component */}
+          <Button
             onClick={handleForSale}
-            className="flex-1 px-6 py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+            variant="outline"
+            size="lg"
+            className="flex-1 min-h-[44px]"
           >
             For sale
-          </button>
+          </Button>
 
-          {/* Purchase Button - Gradient Style */}
-          <button
+          {/* Purchase Button - Using shared Button component */}
+          <Button
             onClick={handlePurchase}
-            className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            variant="primary"
+            size="lg"
+            className="flex-1 min-h-[44px]"
           >
             Purchase
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -185,12 +193,14 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           <p className="text-gray-700 mb-6 text-center">
             Purchase request submitted successfully
           </p>
-          <button
+          <Button
             onClick={closePurchaseDialog}
-            className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            variant="primary"
+            size="lg"
+            className="w-full min-h-[44px]"
           >
             OK
-          </button>
+          </Button>
         </div>
       </AnimatedModal>
 
@@ -203,12 +213,14 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           <p className="text-gray-700 mb-6 text-center">
             Listing request submitted successfully
           </p>
-          <button
+          <Button
             onClick={closeForSaleDialog}
-            className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            variant="primary"
+            size="lg"
+            className="w-full min-h-[44px]"
           >
             OK
-          </button>
+          </Button>
         </div>
       </AnimatedModal>
     </div>

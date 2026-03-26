@@ -6,6 +6,7 @@ import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 import AnimatedModal from '@/components/ui/AnimatedModal';
+import Button from '@/components/ui/Button';
 
 interface Event {
   id: string;
@@ -139,24 +140,25 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
         </div>
       </div>
 
-      {/* Event Banner/Image */}
+      {/* Event Banner/Image - Full-width at top */}
       {event.type === 'concert' && event.artistImageUrl ? (
-        <div className="w-full aspect-square bg-gray-100">
+        <div className="w-full h-[40vh] bg-gray-100 relative overflow-hidden">
           <Image
             src={event.artistImageUrl}
             alt={event.artistName || event.title}
-            width={400}
-            height={400}
-            className="w-full h-full object-cover"
+            fill
+            className="object-cover"
           />
+          {/* Gradient overlay for better text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         </div>
       ) : (
-        <div className="w-full aspect-[16/9] bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
+        <div className="w-full h-[35vh] bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
           <div className="text-center text-white">
             {event.type === 'football' || event.type === 'basketball' ? (
-              <div className="flex items-center gap-4 text-4xl">
+              <div className="flex items-center gap-6 text-5xl">
                 {event.team1Flag && <span>{event.team1Flag}</span>}
-                <span className="text-2xl font-bold">VS</span>
+                <span className="text-3xl font-bold">VS</span>
                 {event.team2Flag && <span>{event.team2Flag}</span>}
               </div>
             ) : null}
@@ -165,54 +167,56 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
       )}
 
       {/* Event Information */}
-      <div className="px-4 py-4">
-        {/* Event Title / Team Names */}
+      <div className="px-4 py-6">
+        {/* Event Title / Team Names - PROMINENT hierarchy */}
         {event.type === 'football' || event.type === 'basketball' ? (
-          <div className="mb-4">
-            <div className="flex items-center justify-center gap-3 mb-2">
-              {event.team1Flag && <span className="text-3xl">{event.team1Flag}</span>}
-              <h2 className="text-xl font-bold text-gray-900">{event.team1}</h2>
-              <span className="text-gray-400 font-bold mx-2">VS</span>
-              <h2 className="text-xl font-bold text-gray-900">{event.team2}</h2>
-              {event.team2Flag && <span className="text-3xl">{event.team2Flag}</span>}
+          <div className="mb-6">
+            <div className="flex items-center justify-center gap-4 mb-3">
+              {event.team1Flag && <span className="text-4xl">{event.team1Flag}</span>}
+              <h2 className="text-2xl font-bold text-gray-900">{event.team1}</h2>
+              <span className="text-gray-400 font-bold text-xl mx-2">VS</span>
+              <h2 className="text-2xl font-bold text-gray-900">{event.team2}</h2>
+              {event.team2Flag && <span className="text-4xl">{event.team2Flag}</span>}
             </div>
-            <p className="text-center text-sm text-gray-600">{event.title}</p>
+            <p className="text-center text-base text-gray-600 font-medium">{event.title}</p>
           </div>
         ) : (
-          <div className="mb-4">
+          <div className="mb-6">
             {event.artistName && (
-              <p className="text-sm font-semibold text-accent-500 mb-1">{event.artistName}</p>
+              <p className="text-base font-semibold text-accent-500 mb-2">{event.artistName}</p>
             )}
-            <h2 className="text-2xl font-bold text-gray-900">{event.title}</h2>
+            <h2 className="text-3xl font-bold text-gray-900">{event.title}</h2>
           </div>
         )}
 
-        {/* Date and Time */}
-        <div className="flex items-center gap-2 mb-3">
+        {/* Date and Time - SECONDARY hierarchy */}
+        <div className="flex items-center gap-2 mb-3 text-gray-600">
           <Calendar className="w-5 h-5 text-gray-400" />
-          <div className="text-gray-700">
+          <div>
             <span className="font-medium">{formatDate(event.date)}</span>
             <span className="mx-2">•</span>
             <span>{formatTime(event.date)}</span>
           </div>
         </div>
 
-        {/* Venue */}
-        <div className="flex items-center gap-2 mb-4">
+        {/* Venue - SECONDARY hierarchy */}
+        <div className="flex items-center gap-2 mb-6 text-gray-600">
           <MapPin className="w-5 h-5 text-gray-400" />
-          <p className="text-gray-700">{event.venue}</p>
+          <p>{event.venue}</p>
         </div>
 
-        {/* Price */}
-        <div className="mb-4">
+        {/* Price - ACCENT color, prominent */}
+        <div className="mb-5">
           <p className="text-sm text-gray-500 mb-1">Ticket Price</p>
-          <p className="text-3xl font-bold text-primary-500">${event.price.toFixed(2)}</p>
+          <p className="text-4xl font-bold text-accent-500">${event.price.toFixed(2)}</p>
         </div>
 
-        {/* Remaining Quantity */}
+        {/* Remaining Quantity - Styled as badge */}
         <div className="mb-6">
-          <p className="text-sm text-gray-500">Remaining Quantity</p>
-          <p className="text-lg font-semibold text-gray-900">{event.remainingQty} tickets</p>
+          <p className="text-sm text-gray-500 mb-2">Availability</p>
+          <span className="inline-flex items-center px-3 py-1.5 bg-success-50 text-success-700 text-sm font-semibold rounded-full">
+            {event.remainingQty} tickets remaining
+          </span>
         </div>
 
         {/* Description */}
@@ -226,24 +230,28 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
         )}
       </div>
 
-      {/* Action Buttons - Fixed at Bottom */}
+      {/* Action Buttons - Fixed at Bottom, consistent with product detail */}
       <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 pb-20 z-20">
         <div className="flex gap-3">
-          {/* For Sale Button - Outline Style */}
-          <button
+          {/* For Sale Button - Using shared Button component */}
+          <Button
             onClick={handleForSale}
-            className="flex-1 px-6 py-3 border-2 border-primary-500 text-primary-500 font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+            variant="outline"
+            size="lg"
+            className="flex-1 min-h-[44px]"
           >
             For sale
-          </button>
+          </Button>
 
-          {/* Purchase Button - Gradient Style */}
-          <button
+          {/* Purchase Button - Using shared Button component */}
+          <Button
             onClick={handlePurchase}
-            className="flex-1 px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            variant="primary"
+            size="lg"
+            className="flex-1 min-h-[44px]"
           >
             Purchase
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -254,12 +262,14 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           <p className="text-gray-700 mb-6 text-center">
             Purchase request submitted successfully
           </p>
-          <button
+          <Button
             onClick={closePurchaseDialog}
-            className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            variant="primary"
+            size="lg"
+            className="w-full min-h-[44px]"
           >
             OK
-          </button>
+          </Button>
         </div>
       </AnimatedModal>
 
@@ -270,12 +280,14 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           <p className="text-gray-700 mb-6 text-center">
             Listing request submitted successfully
           </p>
-          <button
+          <Button
             onClick={closeForSaleDialog}
-            className="w-full px-6 py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white font-semibold rounded-lg hover:opacity-90 transition-opacity"
+            variant="primary"
+            size="lg"
+            className="w-full min-h-[44px]"
           >
             OK
-          </button>
+          </Button>
         </div>
       </AnimatedModal>
     </div>

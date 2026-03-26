@@ -66,7 +66,7 @@ describe('EventDetailPage', () => {
     expect(screen.getAllByText('🇦🇷').length).toBeGreaterThan(0);
     expect(screen.getByText('Khalifa International Stadium')).toBeInTheDocument();
     expect(screen.getByText('$89.99')).toBeInTheDocument();
-    expect(screen.getByText('250 tickets')).toBeInTheDocument();
+    expect(screen.getByText('250 tickets remaining')).toBeInTheDocument();
     expect(screen.getByText(/Exciting World Cup qualifier match/)).toBeInTheDocument();
   });
 
