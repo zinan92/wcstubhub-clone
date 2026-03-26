@@ -1,0 +1,39 @@
+{
+  "featureId": "event-pages-visual-polish",
+  "reviewedAt": "2026-03-26T03:43:02.691187Z",
+  "commitId": "099af08b",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The feature improves the three event card components visually, but it does not fully satisfy the expected behavior because the basketball card introduces arbitrary Tailwind shadow values instead of shared design tokens and the concert implementation claims WCAG AA contrast without any measurable verification or image-backed overlay behavior. Football generally matches the requested VS-card polish.",
+    "issues": [
+      {
+        "file": "components/basketball/BasketballCard.tsx",
+        "line": 36,
+        "severity": "blocking",
+        "description": "The basketball redesign uses multiple arbitrary `drop-shadow-[...]` and `shadow-[...]` classes instead of the shared semantic shadow tokens required by the mission (`shadow-card`, `shadow-elevated`, etc.). AGENTS.md explicitly says to use design tokens and avoid ad-hoc styling; this feature was supposed to share the design system while differentiating page personality."
+      },
+      {
+        "file": "components/concert/ConcertCard.tsx",
+        "line": 47,
+        "severity": "non_blocking",
+        "description": "The card documents a WCAG AA 4.5:1 contrast guarantee in comments/handoff, but the implementation is just a static gradient plus translucent overlay with no evidence or testable calculation. The feature likely looks better, but the stated accessibility assertion is unsupported by the code and could mislead future reviewers."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "Mission conventions prohibit ad-hoc styling in favor of shared Tailwind design tokens, but this worker used several arbitrary shadow values for the basketball card glow treatment. AGENTS.md mentions avoiding arbitrary hex colors, but not that arbitrary shadow utilities should also be avoided when tokens exist.",
+      "evidence": "AGENTS.md: 'ALWAYS use semantic token classes'; compare with components/basketball/BasketballCard.tsx:36-37,47,52,60,67-68,89 using `drop-shadow-[...]` / `shadow-[...]` instead of shared shadows from tailwind.config.ts."
+    },
+    {
+      "area": "knowledge",
+      "observation": "Concert cards still do not render any image-backed artwork; they remain CSS-only even though the feature description talks about gradient overlays on images for readability. This current pattern is documented in known-issues.md, which is useful shared knowledge to preserve for future event-page work.",
+      "evidence": "components/concert/ConcertCard.tsx ignores the `artistImageUrl` prop, and prisma/seed.ts lines 254-297 keep concert `artistImageUrl` values empty; .factory/library/known-issues.md already records this mismatch."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Reviewed feature `event-pages-visual-polish` using the mission metadata, worker handoff/transcript, commit `099af08b`, relevant page/card files, and shared-state docs. Football polish is aligned with requirements, but the basketball card violates the shared design-token convention with arbitrary shadow utilities, so the feature does not fully meet the expected behavior and is marked fail."
+}

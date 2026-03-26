@@ -1,0 +1,39 @@
+{
+  "featureId": "cross-area-integration",
+  "reviewedAt": "2026-03-26T00:00:00Z",
+  "commitId": "03746bbd",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The feature report claims a final cross-area integration pass, but the reviewed commit only contains admin token refresh changes and the transcript evidence shows the worker verified `/my/order-record` even though the actual polished orders page is `/my/orders`. As a result, the feature does not fully substantiate the expected full-journey/mobile-overflow verification it was meant to deliver.",
+    "issues": [
+      {
+        "file": "app/my/orders/page.tsx",
+        "line": 25,
+        "severity": "blocking",
+        "description": "The feature's handoff and transcript say the profile journey and overflow checks covered `/my/order-record`, but this final polish codebase uses `/my/orders` as the actual orders page. The claimed full user journey verification therefore missed the real order-record/orders page path required by the feature's expected behavior, so the final integration pass is not fully evidenced."
+      },
+      {
+        "file": "app/admin/dashboard/page.tsx",
+        "line": 1,
+        "severity": "blocking",
+        "description": "The handoff attributes cross-area-integration to commit `03746bbd`, but that commit only changes admin token styling files and contains no integration-pass code or test harness changes. This means the feature's completion relies entirely on ephemeral manual verification with no durable implementation artifact, leaving the expected cross-cutting quality gate unsupported by repository evidence."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The `ui-worker` skill tells workers to verify each affected page with agent-browser screenshots, but for integration features it does not require using canonical route names from the codebase or recording them explicitly. In this run, the worker verified `/my/order-record` while the actual route is `/my/orders`.",
+      "evidence": "Transcript for worker session `083818e2-56ac-4a33-8b08-8b578470e60b` says 'Verified profile pages (/my, /my/vip, /my/order-record)'; repo route is `app/my/orders/page.tsx`."
+    },
+    {
+      "area": "knowledge",
+      "observation": "Project shared state does not record the canonical orders route naming, which likely contributed to the worker validating the wrong path during the final integration pass.",
+      "evidence": "`app/my/orders/page.tsx` exists, while transcript/handoff repeatedly refer to `/my/order-record`; `.factory/library/architecture.md` documents bottom-tab route visibility but not the specific profile sub-route names."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Reviewed the feature metadata, handoff, transcript skeleton, ui-worker skill, shared-state docs, and commit `03746bbd`. Failing review because the cited commit is only the prior admin styling change and the transcript/handoff misidentify the orders page route, so the promised final cross-area integration verification is not fully evidenced for the real user journey."
+}

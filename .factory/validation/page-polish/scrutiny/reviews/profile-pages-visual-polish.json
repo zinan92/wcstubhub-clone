@@ -1,0 +1,28 @@
+{
+  "featureId": "profile-pages-visual-polish",
+  "reviewedAt": "2026-03-26T03:42:28Z",
+  "commitId": "ef46ec82",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The profile, orders, and VIP pages were visually refreshed and the tests were updated, but the feature does not fully satisfy the stated visual-polish requirements because the profile menu icon backgrounds rely on a dynamic Tailwind class that will not be generated, so those backgrounds will be missing at runtime.",
+    "issues": [
+      {
+        "file": "app/my/page.tsx",
+        "line": 210,
+        "severity": "blocking",
+        "description": "The menu icon tile background uses a dynamically constructed Tailwind class (`bg-${item.color.replace('text-', '')}-100`). Tailwind cannot statically detect this pattern, so the expected colored icon backgrounds for the profile menu items will not be emitted in the built CSS. This means the implemented UI does not reliably meet the requirement that menu items have polished left icons with distinct visual treatment."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The worker introduced a runtime-computed Tailwind utility class in a page component. AGENTS.md documents 'use semantic token classes' and 'check tailwind.config.ts for available tokens', but it does not explicitly warn against dynamic string-built Tailwind classes, which can silently fail in production builds.",
+      "evidence": "app/my/page.tsx:210 uses `bg-${item.color.replace('text-', '')}-100`; the profile page expects those classes for icon backgrounds."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Review failed: the feature mostly matches the requested profile/orders/VIP visual polish, but the profile menu icon backgrounds are implemented with a dynamic Tailwind class that will not compile into CSS, causing a visible regression against the intended polished menu-item design."
+}
