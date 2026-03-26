@@ -29,6 +29,7 @@ Testing surface, required testing skills/tools, resource cost classification per
 - Bottom tab navigation is the primary navigation mechanism for user pages
 - Floating customer service icon is non-functional placeholder
 - Purchase/For Sale buttons show confirmation dialogs (mock actions)
+- **All pages require authentication** — the app redirects unauthenticated users to /login. There are no public pages. Always log in first before testing any page.
 
 ## Flow Validator Guidance: Web Browser
 

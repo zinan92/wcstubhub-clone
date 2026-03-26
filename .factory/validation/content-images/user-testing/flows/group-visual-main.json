@@ -1,0 +1,73 @@
+{
+  "groupId": "group-visual-main",
+  "testedAt": "2026-03-26T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "8ba0bb1d3008__visual1",
+    "viewport": "375x812",
+    "credentials": "test@example.com / password123"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-IMG-001": {
+      "status": "pass",
+      "reason": "All product images depict sports merchandise. Product grid shows country flags (USA, Spain, Germany, Brazil, France, Argentina) representing national team jerseys. Product names are sports merchandise (e.g., 'USA National Team Jersey 2026', 'Spain Home Kit 2026'). Prices are reasonable ($27.99-$34.99). Product detail page also shows flag imagery. Image sources use flagcdn.com, not picsum.photos. No landscape, nature, or non-sports imagery found.",
+      "evidence": [
+        "content-images/group-visual-main/VAL-IMG-002-home-hero-banner.png",
+        "content-images/group-visual-main/VAL-IMG-001-product-grid-scrolled.png",
+        "content-images/group-visual-main/VAL-IMG-001-product-detail.png"
+      ]
+    },
+    "VAL-IMG-002": {
+      "status": "pass",
+      "reason": "Home hero banner displays 'FIFA World Cup 2026' with 'Official Team Jerseys' subtitle. Features a blue gradient background with trophy icon. No generic landscapes or picsum.photos placeholders. Clearly sports/FIFA themed content.",
+      "evidence": [
+        "content-images/group-visual-main/VAL-IMG-002-home-hero-banner.png"
+      ]
+    },
+    "VAL-IMG-003": {
+      "status": "pass",
+      "reason": "Football match cards prominently display national flags of competing countries in VS layout. Flags are clearly identifiable and correctly matched to team names: Jordan vs Argentina, Algeria vs Austria, Brazil vs Germany, Spain vs France. VS badge is displayed between the two flags. Cards show date, venue, and price.",
+      "evidence": [
+        "content-images/group-visual-main/VAL-IMG-003-football-cards-top.png",
+        "content-images/group-visual-main/VAL-IMG-003-football-cards-scrolled.png"
+      ]
+    },
+    "VAL-IMG-004": {
+      "status": "pass",
+      "reason": "Basketball match cards display basketball-related imagery: basketball emoji/icons on cards, orange-themed VS badge and design elements, real NBA team names (Phoenix Suns vs LA Lakers, LA Lakers vs San Antonio Spurs, Golden State Warriors vs Boston Celtics, Milwaukee Bucks vs Brooklyn Nets). Cards have distinctive orange color scheme with basketball icons. No generic placeholders.",
+      "evidence": [
+        "content-images/group-visual-main/VAL-IMG-004-basketball-cards.png",
+        "content-images/group-visual-main/VAL-IMG-004-basketball-cards-scrolled.png"
+      ]
+    },
+    "VAL-IMG-005": {
+      "status": "fail",
+      "reason": "Concert card images use picsum.photos random seeded images instead of actual artist/concert imagery. All 4 concert cards use picsum.photos URLs: Taylor Swift shows ocean waves (seed/taylorswift), Ed Sheeran shows an orange/sunset scene (seed/edsheeran), The Weeknd shows camera equipment (seed/theweeknd), Beyoncé shows mountain landscape (seed/beyonce). While cards have concert-themed design elements (music note icons, gradient overlays, artist names, tour names, 'Concert' badges), the underlying images are clearly random landscapes/objects, NOT concert or music-themed imagery.",
+      "evidence": [
+        "content-images/group-visual-main/VAL-IMG-005-concert-cards.png",
+        "content-images/group-visual-main/VAL-IMG-005-concert-cards-scrolled.png",
+        "content-images/group-visual-main/VAL-IMG-005-concert-cards-bottom.png"
+      ]
+    },
+    "VAL-ADD-004": {
+      "status": "pass",
+      "reason": "All three event tab banners show relevant sports/event content with themed gradients and icons. Football page: 'FIFA World Cup 2026 - USA · Canada · Mexico' with blue-purple gradient and trophy icon. Basketball page: 'NBA Season 2026 - Premium Court Experience' with orange-red gradient and basketball icon. Concert page: 'Live Concerts 2026 - World-Class Performances' with blue-red gradient and music note icon. No generic landscape placeholders on any banner.",
+      "evidence": [
+        "content-images/group-visual-main/VAL-IMG-003-football-cards-top.png",
+        "content-images/group-visual-main/VAL-IMG-004-basketball-cards.png",
+        "content-images/group-visual-main/VAL-ADD-004-concert-banner.png"
+      ]
+    }
+  },
+  "frictions": [
+    {
+      "description": "Home page (/) redirects to /login requiring authentication, despite task stating 'No login required for public pages'. Had to log in with test credentials before testing.",
+      "resolved": true,
+      "resolution": "Logged in with test@example.com / password123 before proceeding with visual testing.",
+      "affectedAssertions": ["VAL-IMG-001", "VAL-IMG-002", "VAL-IMG-003", "VAL-IMG-004", "VAL-IMG-005", "VAL-ADD-004"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 6 assertions: 5 passed, 1 failed. VAL-IMG-005 FAIL: Concert card images use random picsum.photos seeded images (ocean waves, camera equipment, mountain landscapes) instead of actual concert/artist imagery. All other assertions pass - product images show sports merchandise flags, home banner is FIFA-themed, football cards have VS layout with country flags, basketball cards have team-focused design with basketball icons, and all event tab banners show relevant sports/event content."
+}
