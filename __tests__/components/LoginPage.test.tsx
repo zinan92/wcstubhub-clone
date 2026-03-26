@@ -34,15 +34,15 @@ describe('LoginPage', () => {
     });
   });
 
-  it('renders login page with SAE-A Trading branding', () => {
+  it('renders login page with premium design', () => {
     render(
       <ToastProvider>
         <LoginPage />
       </ToastProvider>
     );
     
-    expect(screen.getByText('SAE-A Trading')).toBeInTheDocument();
-    expect(screen.getByText('Sports Merchandise & Event Tickets')).toBeInTheDocument();
+    expect(screen.getByText('Welcome Back')).toBeInTheDocument();
+    expect(screen.getByText('Sign in to continue')).toBeInTheDocument();
   });
 
   it('renders phone and email tabs', () => {
@@ -178,18 +178,6 @@ describe('LoginPage', () => {
       expect(mockPush).toHaveBeenCalledWith('/');
       expect(mockRefresh).toHaveBeenCalled();
     });
-  });
-
-  it('renders language selector with English default', () => {
-    render(
-      <ToastProvider>
-        <LoginPage />
-      </ToastProvider>
-    );
-    
-    const languageSelect = screen.getByLabelText('Language') as HTMLSelectElement;
-    expect(languageSelect).toBeInTheDocument();
-    expect(languageSelect.value).toBe('en');
   });
 
   it('renders register link', () => {

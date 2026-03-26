@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
+import Button from '@/components/ui/Button';
 import { useToast } from '@/components/ui/Toast';
 
 export default function RegisterPage() {
@@ -90,20 +91,20 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary-500 to-accent-500 py-6 px-4 text-center">
-        <h1 className="text-2xl font-bold text-white">SAE-A Trading</h1>
-        <p className="text-sm text-white/90 mt-1">Create Your Account</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center p-6">
+      {/* Form Card */}
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-elevated p-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Create Account</h1>
+          <p className="text-sm text-gray-600 mt-2">Join us today</p>
+        </div>
 
-      {/* Main Content */}
-      <div className="flex-1 px-6 py-8">
         {/* Register Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email/Phone Input */}
           <div>
-            <label htmlFor="emailOrPhone" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="emailOrPhone" className="block text-sm font-semibold text-gray-700 mb-2">
               Email or Phone
             </label>
             <input
@@ -112,13 +113,13 @@ export default function RegisterPage() {
               value={emailOrPhone}
               onChange={(e) => setEmailOrPhone(e.target.value)}
               placeholder="Enter your email or phone number"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-surface-300 rounded-lg bg-surface-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all focus:bg-white"
             />
           </div>
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
               Password
             </label>
             <div className="relative">
@@ -128,12 +129,12 @@ export default function RegisterPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password (min 6 characters)"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12"
+                className="w-full px-4 py-3 border border-surface-300 rounded-lg bg-surface-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12 transition-all focus:bg-white"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-500 hover:text-primary-600 transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -152,7 +153,7 @@ export default function RegisterPage() {
 
           {/* Confirm Password Input */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-2">
               Confirm Password
             </label>
             <div className="relative">
@@ -162,12 +163,12 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12"
+                className="w-full px-4 py-3 border border-surface-300 rounded-lg bg-surface-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12 transition-all focus:bg-white"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-500 hover:text-primary-600 transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
               >
                 {showConfirmPassword ? (
@@ -186,26 +187,29 @@ export default function RegisterPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-error-50 text-error-600 px-4 py-3 rounded-lg text-sm font-medium">
               {error}
             </div>
           )}
 
           {/* Register Button */}
-          <button
+          <Button
             type="submit"
+            variant="primary"
+            size="lg"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-primary-500 to-accent-500 text-white py-3 px-4 rounded-lg font-medium hover:opacity-90 transition-all active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100"
+            loading={loading}
+            className="w-full"
           >
-            {loading ? 'Creating account...' : 'Register'}
-          </button>
+            Register
+          </Button>
         </form>
 
         {/* Login Link */}
         <div className="mt-6 text-center">
-          <p className="text-gray-600 text-sm">
+          <p className="text-muted-600 text-sm">
             Already have an account?{' '}
-            <Link href="/login" className="text-primary-500 font-medium hover:underline">
+            <Link href="/login" className="text-primary-600 font-semibold hover:text-primary-700 hover:underline transition-colors">
               Login here
             </Link>
           </p>

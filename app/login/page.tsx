@@ -70,17 +70,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-primary-500 to-accent-500 py-6 px-4 text-center">
-        <h1 className="text-2xl font-bold text-white">SAE-A Trading</h1>
-        <p className="text-sm text-white/90 mt-1">Sports Merchandise & Event Tickets</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center p-6">
+      {/* Form Card */}
+      <div className="w-full max-w-md bg-white rounded-2xl shadow-elevated p-8">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
+          <p className="text-sm text-gray-600 mt-2">Sign in to continue</p>
+        </div>
 
-      {/* Main Content */}
-      <div className="flex-1 px-6 py-8">
         {/* Tab Switcher */}
-        <div className="flex bg-gray-100 rounded-lg p-1 mb-6">
+        <div className="flex bg-surface-100 rounded-lg p-1 mb-6">
           <button
             type="button"
             onClick={() => {
@@ -88,10 +88,10 @@ export default function LoginPage() {
               setEmailOrPhone('');
               setError('');
             }}
-            className={`flex-1 py-3 px-4 rounded-md font-medium transition-all active:scale-95 ${
+            className={`flex-1 py-3 px-4 rounded-md font-semibold transition-all active:scale-95 ${
               activeTab === 'phone'
-                ? 'bg-white text-primary-500 shadow-sm'
-                : 'text-gray-600'
+                ? 'bg-white text-primary-600 shadow-soft'
+                : 'text-muted-600 hover:text-muted-800'
             }`}
           >
             Phone
@@ -103,10 +103,10 @@ export default function LoginPage() {
               setEmailOrPhone('');
               setError('');
             }}
-            className={`flex-1 py-3 px-4 rounded-md font-medium transition-all active:scale-95 ${
+            className={`flex-1 py-3 px-4 rounded-md font-semibold transition-all active:scale-95 ${
               activeTab === 'email'
-                ? 'bg-white text-primary-500 shadow-sm'
-                : 'text-gray-600'
+                ? 'bg-white text-primary-600 shadow-soft'
+                : 'text-muted-600 hover:text-muted-800'
             }`}
           >
             Email
@@ -117,7 +117,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email/Phone Input */}
           <div>
-            <label htmlFor="emailOrPhone" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="emailOrPhone" className="block text-sm font-semibold text-gray-700 mb-2">
               {activeTab === 'email' ? 'Email Address' : 'Phone Number'}
             </label>
             <input
@@ -126,13 +126,13 @@ export default function LoginPage() {
               value={emailOrPhone}
               onChange={(e) => setEmailOrPhone(e.target.value)}
               placeholder={activeTab === 'email' ? 'Enter your email' : 'Enter your phone number'}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-surface-300 rounded-lg bg-surface-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all focus:bg-white"
             />
           </div>
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
               Password
             </label>
             <div className="relative">
@@ -142,12 +142,12 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Enter your password"
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12"
+                className="w-full px-4 py-3 border border-surface-300 rounded-lg bg-surface-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-12 transition-all focus:bg-white"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-500 hover:text-primary-600 transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
               >
                 {showPassword ? (
@@ -166,7 +166,7 @@ export default function LoginPage() {
 
           {/* Error Message */}
           {error && (
-            <div className="bg-red-50 text-red-600 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-error-50 text-error-600 px-4 py-3 rounded-lg text-sm font-medium">
               {error}
             </div>
           )}
@@ -186,26 +186,12 @@ export default function LoginPage() {
 
         {/* Register Link */}
         <div className="mt-6 text-center">
-          <p className="text-gray-600 text-sm">
+          <p className="text-muted-600 text-sm">
             No account?{' '}
-            <Link href="/register" className="text-primary-500 font-medium hover:underline">
+            <Link href="/register" className="text-primary-600 font-semibold hover:text-primary-700 hover:underline transition-colors">
               Register now
             </Link>
           </p>
-        </div>
-
-        {/* Language Selector */}
-        <div className="mt-8">
-          <label htmlFor="language" className="block text-sm font-medium text-gray-700 mb-2">
-            Language
-          </label>
-          <select
-            id="language"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white"
-            defaultValue="en"
-          >
-            <option value="en">English</option>
-          </select>
         </div>
       </div>
     </div>
