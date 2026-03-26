@@ -1,0 +1,166 @@
+{
+  "groupId": "guest-routes",
+  "testedAt": "2026-03-26T06:52:31.624450+00:00",
+  "isolation": {
+    "baseUrl": "http://localhost:3100",
+    "browserSession": "8ee4071ab339__u1",
+    "viewport": "375x812",
+    "credentialsUsed": [
+      "test@example.com/password123"
+    ],
+    "scope": "shared dev server/database; read-only guest flows only"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-TRUST-001",
+      "status": "pass",
+      "observations": "Guest loaded home, /football, /basketball, /concert, and a product detail route without any login redirect.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-001-home.png",
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-001-detail-product.png"
+        ],
+        "consoleErrors": "none observed on these pages",
+        "network": "Public pages loaded successfully; product detail resolved at /products/cmn73y3w80007l0khinmfb3ij"
+      }
+    },
+    {
+      "id": "VAL-TRUST-002",
+      "status": "pass",
+      "observations": "Guest could browse pricing, availability, description, badges, and Buyer Protection content before interacting with gated actions.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-001-home.png",
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-001-detail-product.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "GET /api/products and GET /api/products/cmn73y3w80007l0khinmfb3ij completed during anonymous browsing"
+      }
+    },
+    {
+      "id": "VAL-TRUST-003",
+      "status": "pass",
+      "observations": "Guest tapping Purchase from the product detail page redirected to /login with callbackUrl preserving the detail route.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-003-login-purchase-callback.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "Redirected to /login?callbackUrl=%2Fproducts%2Fcmn73y3w80007l0khinmfb3ij"
+      }
+    },
+    {
+      "id": "VAL-TRUST-004",
+      "status": "pass",
+      "observations": "Guest tapping For sale from the same detail page redirected to /login with the original detail callbackUrl preserved.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-004-login-forsale-callback.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "Redirected to /login?callbackUrl=%2Fproducts%2Fcmn73y3w80007l0khinmfb3ij"
+      }
+    },
+    {
+      "id": "VAL-TRUST-005",
+      "status": "pass",
+      "observations": "Guest access to /my/orders redirected to login and preserved callbackUrl to the requested /my/** route.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-005-login-my-orders-callback.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "GET /my/orders redirected to /login?callbackUrl=%2Fmy%2Forders"
+      }
+    },
+    {
+      "id": "VAL-TRUST-016",
+      "status": "pass",
+      "observations": "Buyer Protection and trust badges were visible to a guest on browse and detail surfaces before login was required.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-CROSS-016-football.png",
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-001-detail-product.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "Trust content was rendered on anonymous route loads"
+      }
+    },
+    {
+      "id": "VAL-CROSS-006",
+      "status": "fail",
+      "observations": "After guest purchase redirect and login, clicking Purchase did not open a dedicated purchase destination or flow; it stayed on the detail page and showed an inline success modal instead.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-TRUST-003-login-purchase-callback.png",
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-CROSS-006-after-login-purchase-destination.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "Post-login return landed on /products/cmn73y3w80007l0khinmfb3ij; subsequent Purchase action remained on same URL"
+      }
+    },
+    {
+      "id": "VAL-CROSS-008",
+      "status": "fail",
+      "observations": "After guest sell redirect and login, clicking For sale did not open a dedicated listing destination or flow; it remained on the detail page and only displayed an inline success modal.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-CROSS-008-after-login-return.png",
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-CROSS-008-after-login-forsale-destination.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "Post-login return landed on /products/cmn73y3w80007l0khinmfb3ij; subsequent For sale action remained on same URL"
+      }
+    },
+    {
+      "id": "VAL-CROSS-016",
+      "status": "pass",
+      "observations": "Guest directly opened /football, /basketball, and /concert without login redirect, and each route showed browseable event inventory with trust content.",
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-CROSS-016-football.png",
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-CROSS-016-basketball.png",
+          "guest-browsing-and-trust-foundation/guest-routes/VAL-CROSS-016-concert.png"
+        ],
+        "consoleErrors": "none observed",
+        "network": "GET /football, /basketball, /concert loaded with corresponding /api/events?type=* requests"
+      }
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The path /Users/wendy/.factory/library/user-testing.md referenced in mission guidance was missing, so no additional flow-validator guidance could be read.",
+      "resolved": false,
+      "resolution": "Proceeded using mission AGENTS.md and validation-contract.md only.",
+      "affectedAssertions": [
+        "VAL-TRUST-001",
+        "VAL-TRUST-002",
+        "VAL-TRUST-003",
+        "VAL-TRUST-004",
+        "VAL-TRUST-005",
+        "VAL-TRUST-016",
+        "VAL-CROSS-006",
+        "VAL-CROSS-008",
+        "VAL-CROSS-016"
+      ]
+    },
+    {
+      "description": "Numeric detail URLs /events/1 and /products/1 returned not-found states because the app uses seeded record IDs rather than simple integers.",
+      "resolved": true,
+      "resolution": "Opened a real detail page by clicking a public product card from the home page and validated the guest/login-gate flows there.",
+      "affectedAssertions": [
+        "VAL-TRUST-001",
+        "VAL-TRUST-002",
+        "VAL-TRUST-003",
+        "VAL-TRUST-004",
+        "VAL-CROSS-006",
+        "VAL-CROSS-008"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 9 assertions: 7 passed and 2 failed. Guest browsing and login gates worked, but the post-login purchase/listing destination assertions failed because both actions stayed on the detail page and surfaced inline success modals instead of entering distinct destination flows."
+}

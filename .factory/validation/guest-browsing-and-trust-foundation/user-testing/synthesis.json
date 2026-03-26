@@ -1,0 +1,62 @@
+{
+  "milestone": "guest-browsing-and-trust-foundation",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 21,
+    "passed": 16,
+    "failed": 5,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-TRUST-001",
+    "VAL-TRUST-002",
+    "VAL-TRUST-003",
+    "VAL-TRUST-004",
+    "VAL-TRUST-005",
+    "VAL-TRUST-006",
+    "VAL-TRUST-008",
+    "VAL-TRUST-009",
+    "VAL-TRUST-010",
+    "VAL-TRUST-011",
+    "VAL-TRUST-012",
+    "VAL-TRUST-015",
+    "VAL-TRUST-016",
+    "VAL-CROSS-005",
+    "VAL-CROSS-010",
+    "VAL-CROSS-016"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-TRUST-007",
+      "reason": "Authenticated account-surface trust coverage could not be validated because /my/tickets returned 404."
+    },
+    {
+      "id": "VAL-TRUST-013",
+      "reason": "Account/order trust messaging could not be validated because /my/tickets returned 404."
+    },
+    {
+      "id": "VAL-TRUST-014",
+      "reason": "Trust naming was inconsistent across reachable surfaces and account copy could not be compared because /my/tickets returned 404."
+    },
+    {
+      "id": "VAL-CROSS-006",
+      "reason": "Guest purchase callback returned to detail page but did not resume a dedicated purchase destination/flow after login."
+    },
+    {
+      "id": "VAL-CROSS-008",
+      "reason": "Guest listing callback returned to detail page but did not resume a dedicated listing destination/flow after login."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null,
+  "flowReports": [
+    ".factory/validation/guest-browsing-and-trust-foundation/user-testing/flows/guest-routes.json",
+    ".factory/validation/guest-browsing-and-trust-foundation/user-testing/flows/trust-admin.json"
+  ],
+  "systemicIssues": [
+    "Authenticated /my/tickets route returned 404 during validation, preventing account trust validation.",
+    "Post-login purchase/sell callback only returned users to the detail page; no dedicated resumed transaction entry flow was available."
+  ]
+}

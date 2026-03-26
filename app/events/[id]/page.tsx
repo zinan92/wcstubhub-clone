@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import Image from 'next/image';
@@ -36,12 +36,14 @@ interface EventDetailPageProps {
 
 export default function EventDetailPage({ params }: EventDetailPageProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const [event, setEvent] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [showForSaleDialog, setShowForSaleDialog] = useState(false);
   const [eventId, setEventId] = useState<string>('');
+  const [intentHandled, setIntentHandled] = useState(false);
 
   useEffect(() => {
     const initParams = async () => {
@@ -73,14 +75,36 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
     fetchEvent();
   }, [eventId]);
 
+  // Handle transaction intent after login
+  useEffect(() => {
+    if (status === 'authenticated' && !intentHandled && eventId) {
+      const action = searchParams.get('action');
+      if (action === 'purchase') {
+        setShowPurchaseDialog(true);
+        setIntentHandled(true);
+        // Clean up URL
+        const url = new URL(window.location.href);
+        url.searchParams.delete('action');
+        router.replace(url.pathname + url.search);
+      } else if (action === 'forsale') {
+        setShowForSaleDialog(true);
+        setIntentHandled(true);
+        // Clean up URL
+        const url = new URL(window.location.href);
+        url.searchParams.delete('action');
+        router.replace(url.pathname + url.search);
+      }
+    }
+  }, [status, searchParams, intentHandled, eventId, router]);
+
   const handleBack = () => {
     router.back();
   };
 
   const handlePurchase = () => {
     if (status !== 'authenticated') {
-      // Redirect to login with callback URL
-      router.push(`/login?callbackUrl=${encodeURIComponent(`/events/${eventId}`)}`);
+      // Redirect to login with callback URL and purchase intent
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/events/${eventId}?action=purchase`)}`);
       return;
     }
     setShowPurchaseDialog(true);
@@ -88,8 +112,8 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
 
   const handleForSale = () => {
     if (status !== 'authenticated') {
-      // Redirect to login with callback URL
-      router.push(`/login?callbackUrl=${encodeURIComponent(`/events/${eventId}`)}`);
+      // Redirect to login with callback URL and listing intent
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/events/${eventId}?action=forsale`)}`);
       return;
     }
     setShowForSaleDialog(true);

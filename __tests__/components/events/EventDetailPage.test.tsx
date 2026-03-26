@@ -6,10 +6,16 @@ import EventDetailPage from '@/app/events/[id]/page';
 // Mock next/navigation
 const mockBack = vi.fn();
 const mockPush = vi.fn();
+const mockReplace = vi.fn();
+const mockGet = vi.fn(() => null);
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
     back: mockBack,
     push: mockPush,
+    replace: mockReplace,
+  }),
+  useSearchParams: () => ({
+    get: mockGet,
   }),
 }));
 

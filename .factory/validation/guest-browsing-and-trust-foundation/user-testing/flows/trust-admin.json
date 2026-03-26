@@ -1,0 +1,167 @@
+{
+  "groupId": "trust-admin",
+  "testedAt": "2026-03-26T06:51:12.063309+00:00",
+  "isolation": {
+    "baseUrl": "http://localhost:3100",
+    "browserSession": "8ee4071ab339__u2",
+    "viewportPublic": "375x812",
+    "viewportAdmin": "1440x900",
+    "credentials": {
+      "user": "test@example.com",
+      "admin": "admin@example.com"
+    }
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-TRUST-006",
+      "status": "pass",
+      "observation": "Guests were redirected from /admin to /admin/login, the normal user was bounced away from /admin to /, and the admin user could access /admin/orders.",
+      "evidence": [
+        "admin-guest-gated-desktop.png",
+        "admin-nonadmin-gated-desktop.png",
+        "admin-login-form.png",
+        "admin-orders-access.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-007",
+      "status": "fail",
+      "observation": "Buyer Protection was visible on home and football detail pages, but the authenticated account surface at /my/tickets returned a 404 instead of showing purchase-trust content.",
+      "evidence": [
+        "home-mobile-annotated.png",
+        "football-detail-authenticated-user.png",
+        "my-tickets-user.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-008",
+      "status": "pass",
+      "observation": "Buyer Protection copy clearly states a 100% Money-Back Guarantee and exposes a buyer protection policy action plus customer service/support language.",
+      "evidence": [
+        "home-mobile-annotated.png",
+        "football-detail-mobile-annotated.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-009",
+      "status": "pass",
+      "observation": "Relevant public football surfaces rendered trust badges including Verified, Buyer Protected, Secure Delivery, and Official on detail pages.",
+      "evidence": [
+        "football-mobile-annotated.png",
+        "football-detail-mobile-annotated.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-010",
+      "status": "pass",
+      "observation": "Trust badges appeared on football/event pages, while the home goods page only showed Buyer Protection copy without the event-only badges, demonstrating conditional rendering by surface/item type.",
+      "evidence": [
+        "home-mobile-annotated.png",
+        "football-mobile-annotated.png",
+        "football-detail-mobile-annotated.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-011",
+      "status": "pass",
+      "observation": "On the mobile football detail page, Official/Buyer Protected/Secure Delivery badges and Buyer Protection copy sat immediately above the For sale and Purchase CTAs.",
+      "evidence": [
+        "football-detail-mobile-annotated.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-012",
+      "status": "pass",
+      "observation": "Refund/guarantee/support messaging was present near purchase CTAs on the football detail page with 100% Guarantee and 24/7 Support blocks adjacent to the action buttons.",
+      "evidence": [
+        "football-detail-mobile-annotated.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-013",
+      "status": "fail",
+      "observation": "Could not verify account/order trust messaging because /my/tickets rendered a 404 after user login instead of an account/order surface.",
+      "evidence": [
+        "my-tickets-user.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-014",
+      "status": "fail",
+      "observation": "Trust naming was not fully consistent: the home page uses Buyer Protection + 100% Money-Back Guarantee, while the detail page adds Official and a separate 100% Guarantee phrasing; account copy could not be compared because the account route 404s.",
+      "evidence": [
+        "home-mobile-annotated.png",
+        "football-detail-mobile-annotated.png",
+        "my-tickets-user.png"
+      ]
+    },
+    {
+      "id": "VAL-TRUST-015",
+      "status": "pass",
+      "observation": "Across the reachable browse and detail journey, trust statements consistently promised buyer protection, guarantee coverage, and support without contradicting delivery/refund claims.",
+      "evidence": [
+        "home-mobile-annotated.png",
+        "football-mobile-annotated.png",
+        "football-detail-mobile-annotated.png"
+      ]
+    },
+    {
+      "id": "VAL-CROSS-005",
+      "status": "pass",
+      "observation": "Support/trust copy was visible during the guest-to-detail purchase journey before login gating, including Buyer Protection, guarantee, and 24/7 support messaging.",
+      "evidence": [
+        "football-list-before-detail.png",
+        "football-detail-mobile-annotated.png",
+        "purchase-login-callback.png"
+      ]
+    },
+    {
+      "id": "VAL-CROSS-010",
+      "status": "pass",
+      "observation": "Admin gating stayed intact across guest, non-admin, and admin checks, with only the admin account able to reach an admin page (/admin/orders).",
+      "evidence": [
+        "admin-guest-gated-desktop.png",
+        "admin-nonadmin-gated-desktop.png",
+        "admin-orders-access.png"
+      ]
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The buyer protection policy button overlays the first football card and blocks direct clicks until dismissed.",
+      "resolved": true,
+      "resolution": "Clicked the buyer protection policy button first, then selected the football event card.",
+      "affectedAssertions": [
+        "VAL-TRUST-007",
+        "VAL-TRUST-008",
+        "VAL-TRUST-009",
+        "VAL-TRUST-011",
+        "VAL-TRUST-012",
+        "VAL-CROSS-005"
+      ]
+    }
+  ],
+  "blockers": [
+    {
+      "description": "Authenticated account evidence was incomplete because /my/tickets returned a 404 instead of an account/order surface.",
+      "affectedAssertions": [
+        "VAL-TRUST-007",
+        "VAL-TRUST-013",
+        "VAL-TRUST-014"
+      ],
+      "quickFixAttempted": "Retried navigation after successful user login; route consistently rendered 404."
+    },
+    {
+      "description": "The canonical /admin route itself returned 404 even for the authenticated admin; admin validation had to use /admin/orders instead.",
+      "affectedAssertions": [
+        "VAL-TRUST-006",
+        "VAL-CROSS-010"
+      ],
+      "quickFixAttempted": "Logged in via /admin/login and retried /admin before validating access on /admin/orders."
+    }
+  ],
+  "summary": "Tested 12 assigned assertions: 8 passed and 4 failed. Main issues were the missing /my/tickets account surface and inconsistent/unfinished trust coverage across account/admin canonical routes."
+}

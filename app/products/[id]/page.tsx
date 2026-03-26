@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
@@ -28,12 +28,14 @@ interface ProductDetailPageProps {
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, status } = useSession();
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
   const [showForSaleDialog, setShowForSaleDialog] = useState(false);
   const [productId, setProductId] = useState<string>('');
+  const [intentHandled, setIntentHandled] = useState(false);
 
   useEffect(() => {
     const initParams = async () => {
@@ -65,14 +67,36 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
     fetchProduct();
   }, [productId]);
 
+  // Handle transaction intent after login
+  useEffect(() => {
+    if (status === 'authenticated' && !intentHandled && productId) {
+      const action = searchParams.get('action');
+      if (action === 'purchase') {
+        setShowPurchaseDialog(true);
+        setIntentHandled(true);
+        // Clean up URL
+        const url = new URL(window.location.href);
+        url.searchParams.delete('action');
+        router.replace(url.pathname + url.search);
+      } else if (action === 'forsale') {
+        setShowForSaleDialog(true);
+        setIntentHandled(true);
+        // Clean up URL
+        const url = new URL(window.location.href);
+        url.searchParams.delete('action');
+        router.replace(url.pathname + url.search);
+      }
+    }
+  }, [status, searchParams, intentHandled, productId, router]);
+
   const handleBack = () => {
     router.back();
   };
 
   const handlePurchase = () => {
     if (status !== 'authenticated') {
-      // Redirect to login with callback URL
-      router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}`)}`);
+      // Redirect to login with callback URL and purchase intent
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}?action=purchase`)}`);
       return;
     }
     setShowPurchaseDialog(true);
@@ -80,8 +104,8 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
 
   const handleForSale = () => {
     if (status !== 'authenticated') {
-      // Redirect to login with callback URL
-      router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}`)}`);
+      // Redirect to login with callback URL and listing intent
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/products/${productId}?action=forsale`)}`);
       return;
     }
     setShowForSaleDialog(true);
