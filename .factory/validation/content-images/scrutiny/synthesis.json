@@ -1,0 +1,51 @@
+{
+  "milestone": "content-images",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0 },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 2,
+    "passed": 1,
+    "failed": 1,
+    "failedFeatures": ["real-product-images-and-seed"]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "real-product-images-and-seed",
+      "severity": "blocking",
+      "description": "VAL-IMG-007 violation: 8 raw <img> tags remain in app/ and components/ directories. Files with remaining <img> tags: components/goods/ProductCard.tsx, app/products/[id]/page.tsx, app/my/orders/page.tsx, app/my/page.tsx, app/my/personal/page.tsx, app/admin/orders/page.tsx, app/admin/users/page.tsx, app/admin/products/page.tsx. The validation assertion requires 'rg \"<img\" --glob \"*.tsx\" app/ components/' to return zero matches. The worker dismissed these as 'pre-existing and outside scope' but the feature description explicitly states 'Replace ALL raw <img> tags with Next.js <Image> component throughout the app'."
+    }
+  ],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Added known issue about empty artistImageUrl in seed data causing latent runtime errors with Next.js Image component in ConcertCard",
+      "sourceFeature": "sports-banners-and-event-images"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add explicit guidance: When a feature description says 'throughout the app' or 'ALL files', workers must use grep/rg to audit the entire codebase for the pattern, not just the files they're already modifying. Example: 'Replace ALL raw <img> tags' means running 'rg \"<img\" --glob \"*.tsx\" app/ components/' and fixing every match.",
+      "evidence": "Feature real-product-images-and-seed worker left 8 raw <img> tags because they only replaced tags in files they were already modifying for other reasons, despite the feature description saying 'Replace ALL raw <img> tags... throughout the app'.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Clarify whether standard Tailwind palette colors (e.g., orange-50, red-500) are acceptable alongside custom design tokens, or whether all colors must map to semantic tokens. Currently AGENTS.md says 'ALWAYS use semantic token classes' but sport-specific accent colors (basketball orange, football green) may not have semantic equivalents.",
+      "evidence": "Feature sports-banners-and-event-images used default Tailwind orange/red colors in BasketballCard (from-orange-50, to-red-50, from-orange-500, to-red-500) because no semantic token existed for basketball-specific theming. These aren't arbitrary hex values but aren't custom tokens either.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "ConcertCard uses black/80 and black/40 opacity variants in gradient overlay classes. Pattern not explicitly blessed in AGENTS.md.",
+      "reason": "Standard Tailwind opacity modifiers on named colors are not arbitrary hex values. They follow Tailwind's built-in syntax and are commonly used for overlays. The AGENTS.md rule targets arbitrary hex like text-[#0066FF], not named color opacity variants."
+    }
+  ],
+  "previousRound": null
+}

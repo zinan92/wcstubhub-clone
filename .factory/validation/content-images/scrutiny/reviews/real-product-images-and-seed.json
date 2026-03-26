@@ -1,0 +1,81 @@
+{
+  "featureId": "real-product-images-and-seed",
+  "reviewedAt": "2026-03-26T01:15:00.000Z",
+  "commitId": "7913f481d36e92d6a7d9b663016bd017ef643675",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "Seed data successfully updated with FIFA World Cup 2026 jersey names and prices in the $27.99-$34.99 range. Picsum.photos and i.pravatar.cc URLs removed from seed data and most component files. DefaultAvatar SVG component created for profile pages. Banner images replaced with gradient components. However, the feature critically fails VAL-IMG-007: 8 raw <img> tags remain across app/ and components/ directories. The feature description explicitly requires replacing ALL raw <img> tags with Next.js <Image>, and AGENTS.md convention states 'NEVER use raw <img> tags'. The worker incorrectly dismissed these as 'pre-existing and outside scope' despite the feature description saying 'throughout the app'. Additionally, one test file still references i.pravatar.cc.",
+    "issues": [
+      {
+        "file": "components/goods/ProductCard.tsx",
+        "line": 23,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for product image. Feature requires ALL <img> tags replaced with Next.js <Image> component. This is a core product display component visible on the main goods page."
+      },
+      {
+        "file": "app/products/[id]/page.tsx",
+        "line": 117,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for product detail image. This is the full-width product image on the detail page - a highly visible component that should use Next.js <Image> with fill and object-cover."
+      },
+      {
+        "file": "app/my/orders/page.tsx",
+        "line": 170,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for order item thumbnail. Should be Next.js <Image> component."
+      },
+      {
+        "file": "app/my/page.tsx",
+        "line": 117,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for user avatar when avatarUrl is present (conditional branch). While the DefaultAvatar fallback was added, the truthy branch still uses raw <img>."
+      },
+      {
+        "file": "app/my/personal/page.tsx",
+        "line": 76,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for user avatar in personal center page (truthy avatarUrl branch). Same issue as app/my/page.tsx."
+      },
+      {
+        "file": "app/admin/orders/page.tsx",
+        "line": 168,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for order item image in admin orders table."
+      },
+      {
+        "file": "app/admin/users/page.tsx",
+        "line": 132,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for user avatar in admin users table."
+      },
+      {
+        "file": "app/admin/products/page.tsx",
+        "line": 303,
+        "severity": "blocking",
+        "description": "Raw <img> tag used for product image in admin products table."
+      },
+      {
+        "file": "__tests__/components/my/PersonalCenterPage.test.tsx",
+        "line": 40,
+        "severity": "non_blocking",
+        "description": "Test file still uses 'https://i.pravatar.cc/150?u=test' as mock avatar URL (lines 40 and 74). While this is test-only and doesn't affect production, it's inconsistent with the goal of removing all placeholder image URLs. The test at line 74 also asserts the src attribute matches this old URL."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "AGENTS.md clearly states 'NEVER use raw <img> tags' and 'ALWAYS use Next.js <Image> component from next/image', yet the worker left 8 raw <img> tags in files they didn't modify. The feature description said 'Replace ALL raw <img> tags... throughout the app' but the worker interpreted this as only applying to files they were already modifying. AGENTS.md could be strengthened to emphasize that image-related features must audit the ENTIRE codebase for raw <img> tags, not just files with other changes.",
+      "evidence": "rg '<img' --glob '*.tsx' app/ components/ returns 8 matches across ProductCard.tsx, products/[id]/page.tsx, my/orders/page.tsx, my/page.tsx, my/personal/page.tsx, admin/orders/page.tsx, admin/users/page.tsx, admin/products/page.tsx. Handoff dismisses these as 'pre-existing and outside scope' but feature description explicitly covers 'throughout the app'."
+    },
+    {
+      "area": "skills",
+      "observation": "The ui-worker skill procedure says to 'Read all files you'll modify' in Step 2 and to follow AGENTS.md conventions in Step 4. The worker followed the procedure for files it chose to modify, but the feature description's scope ('throughout the app') required modifying additional files. The skill could benefit from a step that explicitly verifies global requirements (like 'no raw <img> tags anywhere') using grep across the full codebase before completing.",
+      "evidence": "Skill Step 5 runs automated checks but only 'npx vitest run', 'pnpm typecheck', 'pnpm lint'. Adding a verification step like 'rg <img --glob *.tsx app/ components/' for image features would catch this."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature FAILS due to VAL-IMG-007 violation: 8 raw <img> tags remain in app/ and components/ directories. The feature description explicitly requires replacing ALL raw <img> tags with Next.js <Image> throughout the app, and the validation assertion requires 'rg \"<img\" --glob \"*.tsx\" app/ components/' to return zero matches. The worker only replaced <img> tags in banner and avatar components they were already modifying, leaving ProductCard, ProductDetailPage, orders pages, and admin pages untouched. Seed data updates (VAL-IMG-008), product images (VAL-IMG-001), and default avatar (VAL-IMG-006) were implemented correctly. One test file also retains an i.pravatar.cc reference."
+}
