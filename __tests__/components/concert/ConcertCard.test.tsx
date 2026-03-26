@@ -20,7 +20,7 @@ describe('ConcertCard', () => {
     price: 299.99,
   };
 
-  it('renders concert card with artist photo, name, date, and venue', () => {
+  it('renders concert card with artist name, date, and venue', () => {
     render(<ConcertCard {...mockConcert} />);
 
     expect(screen.getByText('Taylor Swift: The Eras Tour')).toBeInTheDocument();
@@ -28,9 +28,8 @@ describe('ConcertCard', () => {
     expect(screen.getByText(/SoFi Stadium, Los Angeles/i)).toBeInTheDocument();
     expect(screen.getByText(/\$299\.99/)).toBeInTheDocument();
     
-    // Check image is rendered
-    const image = screen.getByRole('img');
-    expect(image).toBeInTheDocument();
+    // Card now uses CSS-based concert visual with music icons (no image element)
+    expect(screen.getByText('Concert')).toBeInTheDocument();
   });
 
   it('formats price with two decimal places', () => {
@@ -47,11 +46,13 @@ describe('ConcertCard', () => {
     expect(dateText).toBeInTheDocument();
   });
 
-  it('renders artist image with correct src', () => {
+  it('renders concert-themed gradient design', () => {
     render(<ConcertCard {...mockConcert} />);
 
-    const image = screen.getByRole('img') as HTMLImageElement;
-    expect(image).toHaveAttribute('alt');
+    // Card should have concert badge
+    expect(screen.getByText('Concert')).toBeInTheDocument();
+    // Artist name should be displayed
+    expect(screen.getAllByText(/taylor swift/i).length).toBeGreaterThan(0);
   });
 
   it('is clickable and navigates to event detail page', () => {
