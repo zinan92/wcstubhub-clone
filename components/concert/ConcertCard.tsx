@@ -38,22 +38,27 @@ export default function ConcertCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all active:scale-[0.98]">
-        {/* Music note decorative elements */}
-        <div className="absolute top-2 right-2 text-6xl opacity-10">🎵</div>
-        <div className="absolute bottom-2 left-2 text-5xl opacity-10">🎤</div>
-        <div className="absolute top-1/2 left-1/4 text-4xl opacity-5 transform -rotate-12">🎸</div>
+      <div className="relative rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all active:scale-[0.98]">
+        {/* Music note decorative elements - more visible */}
+        <div className="absolute top-2 right-2 text-6xl opacity-20 z-0">🎵</div>
+        <div className="absolute bottom-2 left-2 text-5xl opacity-20 z-0">🎤</div>
+        <div className="absolute top-1/2 left-1/4 text-4xl opacity-10 transform -rotate-12 z-0">🎸</div>
 
-        {/* Gradient header section with artist info - enhanced for WCAG AA contrast */}
-        <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-6 text-white">
-          {/* Dark gradient overlay for better text contrast (WCAG AA: 4.5:1) */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/10 to-black/30"></div>
+        {/* Gradient header section with artist info - enhanced for WCAG AA contrast and visual prominence */}
+        <div className="relative bg-gradient-to-br from-purple-600 via-pink-600 to-purple-700 p-6 text-white min-h-[200px] flex items-center justify-center">
+          {/* Enhanced gradient overlay with music emojis backdrop */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-purple-900/20 to-black/40"></div>
+          
+          {/* Additional decorative music emojis in background */}
+          <div className="absolute top-4 left-4 text-5xl opacity-15">🎸</div>
+          <div className="absolute bottom-4 right-4 text-5xl opacity-15">🎤</div>
+          <div className="absolute top-1/3 right-1/4 text-4xl opacity-10">🎶</div>
           
           {/* Content with proper z-index */}
-          <div className="relative z-10">
-            {/* Large music icon */}
-            <div className="flex justify-center mb-3">
-              <div className="text-6xl drop-shadow-[0_2px_8px_rgba(0,0,0,0.3)]">🎵</div>
+          <div className="relative z-10 w-full">
+            {/* Large music icon - more prominent */}
+            <div className="flex justify-center mb-4">
+              <div className="text-7xl drop-shadow-[0_3px_12px_rgba(0,0,0,0.4)]">🎵</div>
             </div>
 
             {/* Artist name - prominent */}

@@ -123,68 +123,70 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-white pb-20 overflow-x-hidden max-w-full">
       {/* Header with Back Button */}
-      <div className="sticky top-0 z-10 bg-white border-b border-gray-200">
-        <div className="px-4 py-3 flex items-center">
+      <div className="sticky top-0 z-10 bg-white border-b border-gray-200 max-w-full">
+        <div className="px-4 py-3 flex items-center max-w-full">
           <button
             onClick={handleBack}
-            className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
             aria-label="Go back"
           >
             <ArrowLeft className="w-6 h-6 text-gray-900" />
           </button>
-          <h1 className="ml-2 text-lg font-semibold text-gray-900 truncate">
+          <h1 className="ml-2 text-lg font-semibold text-gray-900 truncate min-w-0">
             Event Details
           </h1>
         </div>
       </div>
 
-      {/* Event Banner/Image - Full-width at top */}
-      {event.type === 'concert' && event.artistImageUrl ? (
-        <div className="w-full h-[40vh] bg-gray-100 relative overflow-hidden">
-          <Image
-            src={event.artistImageUrl}
-            alt={event.artistName || event.title}
-            fill
-            className="object-cover"
-          />
-          {/* Gradient overlay for better text readability */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        </div>
-      ) : event.type === 'concert' ? (
-        <div className="w-full h-[40vh] bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 flex items-center justify-center relative overflow-hidden">
-          <div className="text-center text-white px-6">
-            <div className="text-6xl mb-4">🎵</div>
-            <h2 className="text-2xl font-bold mb-2">{event.artistName || 'Concert'}</h2>
-            <p className="text-sm opacity-90">Live Performance</p>
+      {/* Event Banner/Image - Full-width at top with max-w-full to prevent overflow */}
+      <div className="w-full max-w-full overflow-hidden">
+        {event.type === 'concert' && event.artistImageUrl ? (
+          <div className="w-full h-[40vh] bg-gray-100 relative overflow-hidden">
+            <Image
+              src={event.artistImageUrl}
+              alt={event.artistName || event.title}
+              fill
+              className="object-cover"
+            />
+            {/* Gradient overlay for better text readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
           </div>
-        </div>
-      ) : (
-        <div className="w-full h-[35vh] bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-          <div className="text-center text-white">
-            {event.type === 'football' || event.type === 'basketball' ? (
-              <div className="flex items-center gap-6 text-5xl">
-                {event.team1Flag && <span>{event.team1Flag}</span>}
-                <span className="text-3xl font-bold">VS</span>
-                {event.team2Flag && <span>{event.team2Flag}</span>}
-              </div>
-            ) : null}
+        ) : event.type === 'concert' ? (
+          <div className="w-full h-[40vh] bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 flex items-center justify-center relative overflow-hidden">
+            <div className="text-center text-white px-6">
+              <div className="text-6xl mb-4">🎵</div>
+              <h2 className="text-2xl font-bold mb-2">{event.artistName || 'Concert'}</h2>
+              <p className="text-sm opacity-90">Live Performance</p>
+            </div>
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="w-full h-[35vh] bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center overflow-hidden">
+            <div className="text-center text-white px-4">
+              {event.type === 'football' || event.type === 'basketball' ? (
+                <div className="flex items-center gap-6 text-5xl flex-wrap justify-center">
+                  {event.team1Flag && <span>{event.team1Flag}</span>}
+                  <span className="text-3xl font-bold">VS</span>
+                  {event.team2Flag && <span>{event.team2Flag}</span>}
+                </div>
+              ) : null}
+            </div>
+          </div>
+        )}
+      </div>
 
       {/* Event Information */}
-      <div className="px-4 py-6">
+      <div className="px-4 py-6 max-w-full overflow-hidden">
         {/* Event Title / Team Names - PROMINENT hierarchy */}
         {event.type === 'football' || event.type === 'basketball' ? (
           <div className="mb-6">
-            <div className="flex items-center justify-center gap-4 mb-3">
-              {event.team1Flag && <span className="text-4xl">{event.team1Flag}</span>}
-              <h2 className="text-2xl font-bold text-gray-900">{event.team1}</h2>
-              <span className="text-gray-400 font-bold text-xl mx-2">VS</span>
-              <h2 className="text-2xl font-bold text-gray-900">{event.team2}</h2>
-              {event.team2Flag && <span className="text-4xl">{event.team2Flag}</span>}
+            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-3 flex-wrap">
+              {event.team1Flag && <span className="text-3xl sm:text-4xl">{event.team1Flag}</span>}
+              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 text-center">{event.team1}</h2>
+              <span className="text-gray-400 font-bold text-lg sm:text-xl mx-1 sm:mx-2">VS</span>
+              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 text-center">{event.team2}</h2>
+              {event.team2Flag && <span className="text-3xl sm:text-4xl">{event.team2Flag}</span>}
             </div>
             <p className="text-center text-base text-gray-600 font-medium">{event.title}</p>
           </div>
@@ -193,7 +195,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             {event.artistName && (
               <p className="text-base font-semibold text-accent-500 mb-2">{event.artistName}</p>
             )}
-            <h2 className="text-3xl font-bold text-gray-900">{event.title}</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 break-words">{event.title}</h2>
           </div>
         )}
 
@@ -231,7 +233,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
         {event.description && (
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-2">About this Event</h3>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">
+            <p className="text-gray-700 leading-relaxed whitespace-pre-wrap break-words">
               {event.description}
             </p>
           </div>
@@ -239,14 +241,14 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
       </div>
 
       {/* Action Buttons - Fixed at Bottom, consistent with product detail */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 pb-20 z-20">
-        <div className="flex gap-3">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 px-4 py-3 pb-20 z-20 max-w-full">
+        <div className="flex gap-3 max-w-full">
           {/* For Sale Button - Using shared Button component */}
           <Button
             onClick={handleForSale}
             variant="outline"
             size="lg"
-            className="flex-1 min-h-[44px]"
+            className="flex-1 min-h-[44px] min-w-0"
           >
             For sale
           </Button>
@@ -256,7 +258,7 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             onClick={handlePurchase}
             variant="primary"
             size="lg"
-            className="flex-1 min-h-[44px]"
+            className="flex-1 min-h-[44px] min-w-0"
           >
             Purchase
           </Button>

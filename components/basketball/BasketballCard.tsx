@@ -31,13 +31,14 @@ export default function BasketballCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900 rounded-xl shadow-card p-6 mb-4 hover:shadow-elevated transition-all overflow-hidden active:scale-[0.98] border border-orange-500/20">
-        {/* Basketball decorative elements */}
-        <div className="absolute top-3 right-3 text-6xl opacity-20">🏀</div>
-        <div className="absolute bottom-3 left-3 text-5xl opacity-15">🏀</div>
+      <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900 rounded-xl shadow-elevated p-6 mb-4 hover:shadow-card transition-all overflow-hidden active:scale-[0.98] border-2 border-orange-500/30">
+        {/* Basketball decorative elements - more prominent */}
+        <div className="absolute top-3 right-3 text-6xl opacity-30">🏀</div>
+        <div className="absolute bottom-3 left-3 text-5xl opacity-25">🏀</div>
         
-        {/* Subtle glow accent */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-24 bg-orange-500/10 rounded-full blur-2xl"></div>
+        {/* Enhanced glow accent for dark theme visibility */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-24 bg-orange-500/20 rounded-full blur-2xl"></div>
+        <div className="absolute bottom-0 right-0 w-32 h-32 bg-red-500/15 rounded-full blur-3xl"></div>
         
         {/* Teams with basketball dark theme */}
         <div className="relative flex items-center justify-between mb-5 z-10">
