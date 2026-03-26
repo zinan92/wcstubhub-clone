@@ -50,7 +50,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
   return (
     <m.div
-      className="grid grid-cols-2 gap-3"
+      className="grid grid-cols-2 gap-4"
       variants={containerVariants}
       initial="hidden"
       animate="visible"

@@ -69,10 +69,10 @@ export default function Home() {
       </div>
 
       {/* Commodities Section */}
-      <div className="px-4 pb-3">
+      <div className="px-4 pb-4">
         <div className="flex items-center gap-2">
           <Package className="w-5 h-5 text-primary-500" />
-          <h2 className="text-lg font-semibold text-gray-900">Commodities</h2>
+          <h2 className="text-xl font-bold text-muted-900">Commodities</h2>
         </div>
       </div>
 

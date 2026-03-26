@@ -18,9 +18,9 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.id}`}
-      className="block bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-all active:scale-[0.98]"
+      className="block bg-white rounded-xl shadow-card border border-muted-200 overflow-hidden hover:shadow-elevated transition-all active:scale-[0.98] duration-200"
     >
-      <div className="aspect-square bg-gray-100 relative">
+      <div className="aspect-square bg-surface-100 relative">
         <Image
           src={product.imageUrl}
           alt={product.name}
@@ -28,11 +28,11 @@ export default function ProductCard({ product }: ProductCardProps) {
           className="object-cover"
         />
       </div>
-      <div className="p-3">
-        <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
+      <div className="p-3.5">
+        <h3 className="text-sm font-medium text-muted-900 line-clamp-2 mb-1.5">
           {product.name}
         </h3>
-        <p className="text-lg font-bold text-primary-500">
+        <p className="text-lg font-bold text-accent-500">
           ${product.price.toFixed(2)}
         </p>
       </div>

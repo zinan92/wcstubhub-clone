@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Trophy, Shirt, Star } from 'lucide-react';
+import { m, AnimatePresence } from 'motion/react';
 
 const banners = [
   {
@@ -32,11 +33,11 @@ export default function BannerCarousel() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
 
-  // Auto-advance every 4 seconds
+  // Auto-advance every 3 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % banners.length);
-    }, 4000);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, []);
@@ -73,13 +74,13 @@ export default function BannerCarousel() {
     <div className="relative w-full">
       {/* Banner container */}
       <div
-        className="relative overflow-hidden rounded-lg"
+        className="relative overflow-hidden rounded-xl"
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
       >
         <div
-          className="flex transition-transform duration-500 ease-out"
+          className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentIndex * 100}%)` }}
         >
           {banners.map((banner) => {
@@ -113,19 +114,32 @@ export default function BannerCarousel() {
         </button>
       </div>
 
-      {/* Dot indicators */}
+      {/* Dot indicators with animation */}
       <div className="flex justify-center gap-2 mt-3">
         {banners.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`rounded-full transition-all active:scale-90 min-h-[44px] flex items-center ${
-              index === currentIndex
-                ? 'bg-primary-500 w-4 h-2'
-                : 'bg-gray-300 w-2 h-2'
-            }`}
+            className="min-h-[44px] flex items-center justify-center p-3 active:scale-90"
             aria-label={`Go to banner ${index + 1}`}
-          />
+          >
+            <m.div
+              className={`rounded-full ${
+                index === currentIndex
+                  ? 'bg-primary-500'
+                  : 'bg-muted-300'
+              }`}
+              animate={{
+                width: index === currentIndex ? 16 : 8,
+                height: index === currentIndex ? 8 : 8,
+                opacity: index === currentIndex ? 1 : 0.6,
+              }}
+              transition={{
+                duration: 0.3,
+                ease: 'easeInOut',
+              }}
+            />
+          </button>
         ))}
       </div>
     </div>
