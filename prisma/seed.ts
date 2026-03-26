@@ -7,6 +7,8 @@ async function main() {
   console.log('Seeding database...');
 
   // Clear existing data (in correct order due to foreign keys)
+  await prisma.listing.deleteMany();
+  await prisma.ownedAsset.deleteMany();
   await prisma.order.deleteMany();
   await prisma.user.deleteMany();
   await prisma.product.deleteMany();
@@ -378,7 +380,7 @@ async function main() {
     },
   });
 
-  // Create orders for test user
+  // Create orders for test user (legacy order model, retained for backwards compatibility)
   await prisma.order.create({
     data: {
       userId: testUser.id,
@@ -410,6 +412,170 @@ async function main() {
       status: 'to_be_paid',
       orderNumber: 'ORD-2026-001235',
       transactionTime: new Date('2026-03-24T10:15:00Z'),
+    },
+  });
+
+  // Create pseudo-owned assets for test user in various statuses
+  const ownedAsset1 = await prisma.ownedAsset.create({
+    data: {
+      userId: testUser.id,
+      itemType: 'event',
+      itemId: 'event-stable-003',
+      itemName: 'Brazil VS Germany',
+      itemImageUrl: '',
+      purchasePrice: 120.00,
+      quantity: 2,
+      quantityAvailable: 2,
+      status: 'delivered',
+      referenceNumber: 'ASSET-2026-00001',
+      purchasedAt: new Date('2026-03-15T10:00:00Z'),
+      deliveredAt: new Date('2026-03-16T14:30:00Z'),
+    },
+  });
+
+  const ownedAsset2 = await prisma.ownedAsset.create({
+    data: {
+      userId: testUser.id,
+      itemType: 'event',
+      itemId: 'event-stable-009',
+      itemName: 'Taylor Swift: The Eras Tour',
+      itemImageUrl: '',
+      purchasePrice: 299.99,
+      quantity: 4,
+      quantityAvailable: 2, // 2 listed, 2 available
+      status: 'listed',
+      referenceNumber: 'ASSET-2026-00002',
+      purchasedAt: new Date('2026-03-18T15:30:00Z'),
+      deliveredAt: new Date('2026-03-19T09:00:00Z'),
+    },
+  });
+
+  await prisma.ownedAsset.create({
+    data: {
+      userId: testUser.id,
+      itemType: 'product',
+      itemId: 'product-stable-004',
+      itemName: 'France National Team #10 Jersey 2026',
+      itemImageUrl: 'https://flagcdn.com/w640/fr.png',
+      purchasePrice: 34.99,
+      quantity: 3,
+      quantityAvailable: 3,
+      status: 'confirmed',
+      referenceNumber: 'ASSET-2026-00003',
+      purchasedAt: new Date('2026-03-22T11:15:00Z'),
+    },
+  });
+
+  await prisma.ownedAsset.create({
+    data: {
+      userId: testUser.id,
+      itemType: 'event',
+      itemId: 'event-stable-007',
+      itemName: 'Golden State Warriors VS Boston Celtics',
+      itemImageUrl: '',
+      purchasePrice: 175.00,
+      quantity: 2,
+      quantityAvailable: 0, // All sold
+      status: 'sold',
+      referenceNumber: 'ASSET-2026-00004',
+      purchasedAt: new Date('2026-03-12T14:00:00Z'),
+      deliveredAt: new Date('2026-03-13T10:00:00Z'),
+    },
+  });
+
+  await prisma.ownedAsset.create({
+    data: {
+      userId: testUser.id,
+      itemType: 'event',
+      itemId: 'event-stable-001',
+      itemName: 'Jordan VS Argentina',
+      itemImageUrl: '',
+      purchasePrice: 89.99,
+      quantity: 1,
+      quantityAvailable: 1,
+      status: 'pending',
+      referenceNumber: 'ASSET-2026-00005',
+      purchasedAt: new Date('2026-03-25T16:45:00Z'),
+    },
+  });
+
+  // Create pseudo listings for test user in various statuses
+  await prisma.listing.create({
+    data: {
+      sellerId: testUser.id,
+      ownedAssetId: ownedAsset2.id,
+      itemType: 'event',
+      itemId: 'event-stable-009',
+      itemName: 'Taylor Swift: The Eras Tour',
+      itemImageUrl: '',
+      askPrice: 349.99, // Listed higher than purchase price
+      quantity: 2,
+      status: 'active',
+      referenceNumber: 'LIST-2026-00001',
+      listedAt: new Date('2026-03-20T10:00:00Z'),
+    },
+  });
+
+  await prisma.listing.create({
+    data: {
+      sellerId: testUser.id,
+      ownedAssetId: ownedAsset1.id,
+      itemType: 'event',
+      itemId: 'event-stable-003',
+      itemName: 'Brazil VS Germany',
+      itemImageUrl: '',
+      askPrice: 150.00,
+      quantity: 1,
+      status: 'sold',
+      referenceNumber: 'LIST-2026-00002',
+      listedAt: new Date('2026-03-17T12:00:00Z'),
+      soldAt: new Date('2026-03-21T14:30:00Z'),
+    },
+  });
+
+  await prisma.listing.create({
+    data: {
+      sellerId: testUser.id,
+      itemType: 'event',
+      itemId: 'event-stable-004',
+      itemName: 'Spain VS France',
+      itemImageUrl: '',
+      askPrice: 125.00,
+      quantity: 2,
+      status: 'cancelled',
+      referenceNumber: 'LIST-2026-00003',
+      listedAt: new Date('2026-03-14T09:00:00Z'),
+      cancelledAt: new Date('2026-03-16T11:00:00Z'),
+    },
+  });
+
+  await prisma.listing.create({
+    data: {
+      sellerId: testUser.id,
+      itemType: 'event',
+      itemId: 'event-stable-006',
+      itemName: 'Los Angeles Lakers VS San Antonio Spurs',
+      itemImageUrl: '',
+      askPrice: 145.00,
+      quantity: 1,
+      status: 'pending_sale',
+      referenceNumber: 'LIST-2026-00004',
+      listedAt: new Date('2026-03-23T13:00:00Z'),
+    },
+  });
+
+  await prisma.listing.create({
+    data: {
+      sellerId: testUser.id,
+      itemType: 'product',
+      itemId: 'product-stable-002',
+      itemName: 'Germany Away Kit 2026',
+      itemImageUrl: 'https://flagcdn.com/w640/de.png',
+      askPrice: 35.00,
+      quantity: 1,
+      status: 'draft',
+      referenceNumber: 'LIST-2026-00005',
+      listedAt: new Date('2026-03-24T15:00:00Z'),
     },
   });
 

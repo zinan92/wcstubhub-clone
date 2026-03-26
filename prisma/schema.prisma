@@ -11,21 +11,23 @@ datasource db {
 }
 
 model User {
-  id                 String   @id @default(cuid())
-  email              String?  @unique
-  phone              String?  @unique
+  id                 String        @id @default(cuid())
+  email              String?       @unique
+  phone              String?       @unique
   password           String
   name               String?
-  role               String   @default("user")
-  vipLevel           Int      @default(1)
-  balance            Float    @default(0)
-  sharesHeld         Int      @default(0)
-  integrationPoints  Int      @default(0)
-  creditPoints       Int      @default(0)
-  inviteCode         String?  @unique
+  role               String        @default("user")
+  vipLevel           Int           @default(1)
+  balance            Float         @default(0)
+  sharesHeld         Int           @default(0)
+  integrationPoints  Int           @default(0)
+  creditPoints       Int           @default(0)
+  inviteCode         String?       @unique
   avatarUrl          String?
-  createdAt          DateTime @default(now())
+  createdAt          DateTime      @default(now())
   orders             Order[]
+  ownedAssets        OwnedAsset[]
+  listings           Listing[]
 }
 
 model Product {
@@ -80,6 +82,8 @@ enum OrderStatus {
   paid
 }
 
+// Legacy Order model - retained for backwards compatibility
+// New pseudo transactions use OwnedAsset and Listing models
 model Order {
   id              String      @id @default(cuid())
   userId          String
@@ -96,6 +100,69 @@ model Order {
   orderNumber     String      @unique
   transactionTime DateTime
   createdAt       DateTime    @default(now())
+}
+
+// Lifecycle statuses for owned assets (pseudo purchases)
+enum OwnedAssetStatus {
+  pending       // Purchase initiated but not confirmed
+  confirmed     // Purchase confirmed, awaiting delivery
+  delivered     // Asset delivered to owner
+  listed        // Asset is currently listed for sale
+  sold          // Asset has been sold to another user
+  cancelled     // Purchase was cancelled
+}
+
+// Lifecycle statuses for listings (pseudo sell-side)
+enum ListingStatus {
+  draft         // Listing being created
+  active        // Listing is live and available
+  pending_sale  // Sale initiated but not confirmed
+  sold          // Listing successfully sold
+  cancelled     // Listing cancelled by seller
+  expired       // Listing expired
+}
+
+// Pseudo-owned asset model - represents tickets/items owned by users after purchase
+model OwnedAsset {
+  id                String           @id @default(cuid())
+  userId            String
+  user              User             @relation(fields: [userId], references: [id])
+  itemType          ItemType
+  itemId            String           // Reference to Product or Event
+  itemName          String
+  itemImageUrl      String
+  purchasePrice     Float
+  quantity          Int
+  quantityAvailable Int              // How many are still owned vs listed
+  status            OwnedAssetStatus
+  referenceNumber   String           @unique
+  purchasedAt       DateTime
+  deliveredAt       DateTime?
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  listings          Listing[]        // Listings created from this owned asset
+}
+
+// Pseudo-listing model - represents user-created listings for sale
+model Listing {
+  id              String        @id @default(cuid())
+  sellerId        String
+  seller          User          @relation(fields: [sellerId], references: [id])
+  ownedAssetId    String?       // Optional link to owned asset if listing from owned inventory
+  ownedAsset      OwnedAsset?   @relation(fields: [ownedAssetId], references: [id])
+  itemType        ItemType
+  itemId          String        // Reference to Product or Event
+  itemName        String
+  itemImageUrl    String
+  askPrice        Float
+  quantity        Int
+  status          ListingStatus
+  referenceNumber String        @unique
+  listedAt        DateTime
+  soldAt          DateTime?
+  cancelledAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
 }
 
 model VipTier {
