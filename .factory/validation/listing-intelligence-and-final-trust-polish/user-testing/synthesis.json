@@ -1,0 +1,35 @@
+{
+  "milestone": "listing-intelligence-and-final-trust-polish",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-CROSS-001",
+    "VAL-CROSS-002",
+    "VAL-CROSS-003",
+    "VAL-CROSS-004",
+    "VAL-CROSS-011",
+    "VAL-CROSS-012",
+    "VAL-CROSS-013",
+    "VAL-CROSS-015"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null,
+  "details": {
+    "VAL-CROSS-001": "All 4 listing intelligence badge types (Best Value, Selling Fast, Only X left, Verified Listing) render on browse cards across home, football, basketball, and concert pages at 375px mobile viewport.",
+    "VAL-CROSS-002": "Intelligence badges persist from browse cards to detail pages. Verified for Brazil jersey (Only 7 left + Verified) and Jordan vs Argentina (Selling Fast + Verified).",
+    "VAL-CROSS-003": "Urgency counts match API source: Brazil jersey shows 'Only 7 left' matching API remainingQty=7; Brazil vs Germany shows 'Only 320 left' matching API remainingQty=320.",
+    "VAL-CROSS-004": "Delivery timing visible before purchase on event detail pages ('Delivery & Timing' with e-ticket info) and product detail pages ('Delivery & Shipping' with shipping info).",
+    "VAL-CROSS-011": "All browse pages load correctly with product/event data, intelligence labels, and trust badges. Detail navigation and back navigation work. No console errors.",
+    "VAL-CROSS-012": "Account surfaces (My, Orders, Tickets, Listings) load with populated data for test user. Admin dashboard and orders load with stats and data for admin user. No console errors.",
+    "VAL-CROSS-013": "Multiple badges on same card at 375px remain readable and non-overlapping, using flex-wrap layout with clear spacing and distinct colors.",
+    "VAL-CROSS-015": "Full validator suite passes: 46 test files (326 tests), typecheck clean, lint clean."
+  }
+}

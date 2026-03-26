@@ -1,0 +1,64 @@
+{
+  "groupId": "regression",
+  "testedAt": "2026-03-26T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "6a207d0bead4__u2",
+    "testUser": "test@example.com",
+    "adminUser": "admin@example.com",
+    "viewport": "375x812 for user pages, 1280x800 for admin pages"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-CROSS-011": {
+      "status": "pass",
+      "evidence": "All browse pages (Goods /, Football /football, Basketball /basketball, Concert /concert) loaded successfully at 375x812 with product/event cards showing images, team names, dates, prices, and listing intelligence labels (Best Value, Selling Fast, Verified Listing, Only X left). Clicked product card navigated to /products/product-stable-005 with full detail page (name, price, availability, description, trust badges, CTAs). Clicked football event navigated to /events/event-stable-001 with full event details (teams, date, venue, price, availability, badges, CTAs). Back navigation returned to /football correctly. No console errors detected.",
+      "screenshots": [
+        "VAL-CROSS-011-home-goods.png",
+        "VAL-CROSS-011-football.png",
+        "VAL-CROSS-011-basketball.png",
+        "VAL-CROSS-011-concert.png",
+        "VAL-CROSS-011-product-detail.png",
+        "VAL-CROSS-011-event-detail.png",
+        "VAL-CROSS-011-event-detail-scrolled.png",
+        "VAL-CROSS-011-back-navigation.png"
+      ],
+      "steps": [
+        { "action": "Navigate to / (Goods) at 375x812", "expected": "Products load with images, prices, intelligence labels", "observed": "Products loaded with jersey images, prices ($28.99-$34.99), and labels (Best Value, Selling Fast, Verified Listing, Only 7 left)" },
+        { "action": "Navigate to /football", "expected": "Event cards with team names, dates, prices", "observed": "4 football events loaded with flags, team names, dates, venues, prices, and trust badges" },
+        { "action": "Navigate to /basketball", "expected": "Event cards with team names, dates, prices", "observed": "Basketball events loaded with team names, dates, venues, prices, and trust badges" },
+        { "action": "Navigate to /concert", "expected": "Event cards with artist names, dates, prices", "observed": "Concert events loaded with artist names, dates, venues, and prices" },
+        { "action": "Click USA National Team Jersey product card", "expected": "Detail page loads with product info", "observed": "Navigated to /products/product-stable-005 with name, $28.99 price, 60 units remaining, description, Best Value label, Buyer Protection and Secure Delivery badges" },
+        { "action": "Click Jordan VS Argentina event card from football", "expected": "Detail page loads with event info", "observed": "Navigated to /events/event-stable-001 with team flags, date (Jun 16, 2026), venue, $89.99 price, 2500 tickets, Selling Fast/Verified badges, Delivery & Timing info" },
+        { "action": "Press browser back button", "expected": "Returns to /football listing", "observed": "Returned to /football with events still displayed" },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors" }
+      ]
+    },
+    "VAL-CROSS-012": {
+      "status": "pass",
+      "evidence": "Logged in as test@example.com: Account landing (/my) loaded with user profile, stats (Balance $35,640, Shares 300, Points 3240), and navigation menu (My Tickets, My Listings, Order record). Order history (/my/orders) loaded with 2 orders showing item details, prices, quantities, statuses (To be paid, Paid), order numbers, and dates. My Tickets (/my/tickets) loaded with owned assets showing statuses (Pending, Confirmed, Listed for Sale), reference numbers, purchase dates, quantities. My Listings (/my/listings) loaded with listings showing statuses (Draft, Pending Sale, Active), reference numbers, listed dates, values. Logged in as admin@example.com: Admin dashboard (/admin/dashboard) loaded with stats (4 Users, 6 Products, 12 Events, 2 Orders, 5 Owned Assets, 5 Listings) and quick actions. Admin orders (/admin/orders) loaded with order table showing order numbers, user emails, item names, prices, quantities, statuses, dates, and status filter. No console errors detected.",
+      "screenshots": [
+        "VAL-CROSS-012-account-landing.png",
+        "VAL-CROSS-012-orders.png",
+        "VAL-CROSS-012-my-tickets.png",
+        "VAL-CROSS-012-my-listings.png",
+        "VAL-CROSS-012-admin-dashboard.png",
+        "VAL-CROSS-012-admin-orders.png"
+      ],
+      "steps": [
+        { "action": "Login as test@example.com", "expected": "Redirect to home page", "observed": "Logged in successfully, redirected to /" },
+        { "action": "Navigate to /my", "expected": "Account landing page loads", "observed": "Loaded with user profile (test@example.com, VIP 2), stats, and menu items" },
+        { "action": "Navigate to /my/orders", "expected": "Order history loads with data", "observed": "Loaded with 2 orders (Phoenix Suns VS Los Angeles Lakers, Argentina Home Jersey 2026) with statuses, prices, quantities" },
+        { "action": "Navigate to /my/tickets", "expected": "My Tickets loads with owned assets", "observed": "Loaded with multiple owned assets showing Pending/Confirmed/Listed for Sale statuses, reference numbers, dates" },
+        { "action": "Navigate to /my/listings", "expected": "My Listings loads with listings", "observed": "Loaded with multiple listings showing Draft/Pending Sale/Active statuses, reference numbers, dates, values" },
+        { "action": "Clear cookies and login as admin@example.com", "expected": "Admin login succeeds", "observed": "Logged in as admin, redirected to /" },
+        { "action": "Navigate to /admin/dashboard", "expected": "Admin dashboard loads with stats", "observed": "Dashboard loaded with Total Users: 4, Products: 6, Events: 12, Orders: 2, Owned Assets: 5, Listings: 5, plus Quick Actions" },
+        { "action": "Navigate to /admin/orders", "expected": "Admin orders page loads with data", "observed": "Order Management page loaded with 2 orders showing full details, status badges, and status filter dropdown" },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors" }
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 2 assertions: 2 passed. VAL-CROSS-011 (browse regression) confirmed all listing pages (Goods, Football, Basketball, Concert) load correctly with product/event data, listing intelligence labels, and trust badges at 375x812 mobile viewport. Detail page navigation and back navigation work correctly. VAL-CROSS-012 (account/admin regression) confirmed account landing, order history, My Tickets, My Listings all load with populated data for test user, and admin dashboard and order management load with correct stats and data for admin user."
+}

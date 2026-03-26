@@ -1,0 +1,71 @@
+{
+  "groupId": "listing-intelligence",
+  "testedAt": "2026-03-26T10:15:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "6a207d0bead4__u1",
+    "viewport": "375x812",
+    "authRequired": false
+  },
+  "toolsUsed": ["agent-browser", "curl"],
+  "assertions": {
+    "VAL-CROSS-001": {
+      "status": "pass",
+      "evidence": "All four listing intelligence badge types render correctly on browse cards across all category pages. Best Value: seen on home (Argentina, USA jerseys), football (Algeria vs Austria), basketball (Suns vs Lakers), concert (Ed Sheeran). Selling Fast: seen on home (France, Germany), football (Jordan vs Argentina, Spain vs France), concert (Taylor Swift). Only X left: seen on home (Brazil jersey 'Only 7 left'), football (Brazil vs Germany 'Only 320 left'). Verified Listing: seen on multiple cards across all pages. All badges are clearly visible with distinct colors and icons at 375px mobile viewport.",
+      "screenshots": [
+        "VAL-CROSS-001-home-page.png",
+        "VAL-CROSS-001-home-scrolled.png",
+        "VAL-CROSS-001-home-brazil-argentina.png",
+        "VAL-CROSS-001-football-page.png",
+        "VAL-CROSS-001-football-scrolled.png",
+        "VAL-CROSS-001-football-more.png",
+        "VAL-CROSS-001-football-spain-france.png",
+        "VAL-CROSS-001-basketball-page.png",
+        "VAL-CROSS-001-basketball-scrolled.png",
+        "VAL-CROSS-001-concert-page.png",
+        "VAL-CROSS-001-concert-scrolled.png"
+      ]
+    },
+    "VAL-CROSS-002": {
+      "status": "pass",
+      "evidence": "Opening a listing from a browse card preserves the same intelligence signals on the detail page. Tested Brazil Home Jersey (product-stable-003): browse card shows 'Only 7 left' + 'Verified Listing', detail page shows the same two badges plus '7 units remaining' availability text. Tested Jordan vs Argentina event (event-stable-001): browse card shows 'Selling Fast' + 'Verified Listing', detail page shows the same two badges plus '2500 tickets remaining' and additional trust badges (Verified, Buyer Protection, Secure Delivery).",
+      "screenshots": [
+        "VAL-CROSS-002-browse-card-brazil.png",
+        "VAL-CROSS-002-detail-brazil.png",
+        "VAL-CROSS-002-detail-brazil-top.png",
+        "VAL-CROSS-002-browse-card-jordan-argentina.png",
+        "VAL-CROSS-002-detail-jordan-argentina.png",
+        "VAL-CROSS-002-detail-jordan-argentina-badges.png"
+      ]
+    },
+    "VAL-CROSS-003": {
+      "status": "pass",
+      "evidence": "Numeric urgency copy matches API/DB source values. Product product-stable-003 (Brazil jersey): UI shows 'Only 7 left', API GET /api/products/product-stable-003 returns remainingQty=7, urgencyThreshold=10. Since 7 <= 10, urgency badge is correctly shown with accurate count. Event event-stable-003 (Brazil vs Germany): UI shows 'Only 320 left', API GET /api/events/event-stable-003 returns remainingQty=320, urgencyThreshold=500. Since 320 <= 500, urgency badge is correctly shown with accurate count.",
+      "screenshots": [
+        "VAL-CROSS-001-home-brazil-argentina.png",
+        "VAL-CROSS-001-football-more.png",
+        "VAL-CROSS-002-detail-brazil-top.png"
+      ]
+    },
+    "VAL-CROSS-004": {
+      "status": "pass",
+      "evidence": "Delivery timing messaging is visible on detail pages before any purchase interaction. Event detail page (Jordan vs Argentina) shows a 'Delivery & Timing' section with text: 'Tickets will be delivered electronically within 24 hours of purchase. E-tickets are available for immediate mobile entry.' Product detail page (Brazil jersey) shows a 'Delivery & Shipping' section with text: 'Fast and secure delivery with tracking. Most items ship within 1-2 business days and arrive in 3-5 business days.' Both sections are visible above the For Sale/Purchase buttons, before any purchase intent action.",
+      "screenshots": [
+        "VAL-CROSS-004-delivery-timing-event.png",
+        "VAL-CROSS-002-detail-brazil.png"
+      ]
+    },
+    "VAL-CROSS-013": {
+      "status": "pass",
+      "evidence": "At 375px mobile viewport, cards with multiple trust/intelligence badges remain readable and non-overlapping. Home page: Brazil jersey card shows 'Only 7 left' and 'Verified Listing' stacked vertically with clear spacing. Argentina jersey card shows 'Best Value' and 'Verified Listing' stacked vertically. Football page: Jordan vs Argentina card shows 'Selling Fast' and 'Verified Listing' side by side with no overlap. Basketball page: Suns vs Lakers card shows 'Best Value' and 'Verified Listing' side by side with clear spacing. All badge text is fully readable at mobile width with distinct colors (green for Best Value, red for Selling Fast, yellow for urgency, blue for Verified Listing).",
+      "screenshots": [
+        "VAL-CROSS-013-multi-badge-home-375px.png",
+        "VAL-CROSS-013-multi-badge-basketball-375px.png",
+        "VAL-CROSS-013-multi-badge-football-375px.png"
+      ]
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. Listing intelligence badges (Best Value, Selling Fast, Only X left, Verified Listing) render correctly on browse cards across all category pages, persist on detail pages, show data-accurate urgency counts matching API source values, delivery timing is visible before purchase intent, and multiple badges do not overlap at 375px mobile width."
+}
