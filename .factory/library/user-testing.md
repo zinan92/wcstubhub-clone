@@ -28,8 +28,29 @@ Testing surface, required testing skills/tools, resource cost classification per
 - Admin pages are desktop-friendly; use default viewport
 - Bottom tab navigation is the primary navigation mechanism for user pages
 - Floating customer service icon is non-functional placeholder
-- Purchase/For Sale buttons show confirmation dialogs (mock actions)
-- **All pages require authentication** — the app redirects unauthenticated users to /login. There are no public pages. Always log in first before testing any page.
+- Purchase/For Sale buttons trigger auth gates for guests and show pseudo transaction flows for authenticated users
+
+### Guest Browsing Boundaries
+
+**Public pages (no authentication required):**
+- `/` - Home page
+- `/football` - Football events listing
+- `/basketball` - Basketball events listing
+- `/concert` - Concert events listing
+- `/products/[id]` - Product detail pages
+- `/events/[id]` - Event detail pages
+- `/login` - Login page
+- `/register` - Registration page
+
+**Auth-protected pages (redirect to /login with callback):**
+- `/my` - Account landing page
+- `/my/**` - All account subpages (orders, profile, VIP, etc.)
+- `/admin/**` - Admin panel and all admin pages
+
+**Auth gates during interaction:**
+- Purchase action on detail pages - guests redirected to login with callbackUrl
+- For Sale action on detail pages - guests redirected to login with callbackUrl
+- After login, users return to the original detail page to complete their intended action
 
 ## Flow Validator Guidance: Web Browser
 

@@ -25,6 +25,9 @@ interface Event {
   price: number;
   remainingQty: number;
   description?: string;
+  isOfficial: boolean;
+  isBuyerProtected: boolean;
+  hasSecureDelivery: boolean;
 }
 
 interface EventDetailPageProps {
@@ -252,10 +255,19 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           </div>
         )}
 
-        {/* Trust Badges */}
-        <div className="mb-6">
-          <TrustBadgesGroup badges={['official', 'buyer-protected', 'secure-delivery']} size="sm" />
-        </div>
+        {/* Trust Badges - Conditionally rendered */}
+        {(event.isOfficial || event.isBuyerProtected || event.hasSecureDelivery) && (
+          <div className="mb-6">
+            <TrustBadgesGroup 
+              badges={[
+                ...(event.isOfficial ? ['official' as const] : []),
+                ...(event.isBuyerProtected ? ['buyer-protected' as const] : []),
+                ...(event.hasSecureDelivery ? ['secure-delivery' as const] : []),
+              ]} 
+              size="sm" 
+            />
+          </div>
+        )}
 
         {/* Buyer Protection - Compact */}
         <div className="mb-6">

@@ -62,6 +62,9 @@ async function main() {
       category: 'Football Jersey',
       stock: 100,
       remainingQty: 85,
+      isVerified: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -74,6 +77,9 @@ async function main() {
       category: 'Football Jersey',
       stock: 120,
       remainingQty: 95,
+      isVerified: false,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -86,6 +92,9 @@ async function main() {
       category: 'Football Jersey',
       stock: 90,
       remainingQty: 78,
+      isVerified: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -98,6 +107,9 @@ async function main() {
       category: 'Football Jersey',
       stock: 80,
       remainingQty: 65,
+      isVerified: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -110,6 +122,9 @@ async function main() {
       category: 'Football Jersey',
       stock: 75,
       remainingQty: 60,
+      isVerified: false,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -122,6 +137,9 @@ async function main() {
       category: 'Football Jersey',
       stock: 110,
       remainingQty: 92,
+      isVerified: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -139,6 +157,9 @@ async function main() {
       price: 89.99,
       description: 'International friendly match between Jordan and World Cup champions Argentina.',
       remainingQty: 2500,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -155,6 +176,9 @@ async function main() {
       price: 75.00,
       description: 'International friendly between Algeria and Austria national teams.',
       remainingQty: 3200,
+      isOfficial: false,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -171,6 +195,9 @@ async function main() {
       price: 120.00,
       description: 'Epic rivalry: Brazil vs Germany. Classic international showdown.',
       remainingQty: 5000,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -187,6 +214,9 @@ async function main() {
       price: 110.00,
       description: 'UEFA Nations League: Spain hosts World Cup champions France.',
       remainingQty: 4200,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -202,6 +232,9 @@ async function main() {
       price: 145.00,
       description: 'NBA Western Conference clash: Suns take on the Lakers.',
       remainingQty: 1800,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -216,6 +249,9 @@ async function main() {
       price: 135.00,
       description: 'Lakers host the Spurs in a historic rivalry matchup.',
       remainingQty: 2100,
+      isOfficial: false,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -230,6 +266,9 @@ async function main() {
       price: 175.00,
       description: 'NBA Finals rematch: Warriors vs Celtics. Championship contenders collide.',
       remainingQty: 1500,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -244,6 +283,9 @@ async function main() {
       price: 155.00,
       description: 'Eastern Conference showdown: Bucks take on the Nets.',
       remainingQty: 1900,
+      isOfficial: false,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -259,6 +301,9 @@ async function main() {
       price: 299.99,
       description: 'Taylor Swift brings The Eras Tour to Los Angeles. A journey through her entire discography.',
       remainingQty: 800,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -273,6 +318,9 @@ async function main() {
       price: 189.99,
       description: 'Ed Sheeran performs hits from his Mathematics album series and greatest hits.',
       remainingQty: 1200,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 
@@ -287,6 +335,9 @@ async function main() {
       price: 249.99,
       description: 'The Weeknd performs After Hours and Dawn FM albums with stunning visuals.',
       remainingQty: 950,
+      isOfficial: false,
+      isBuyerProtected: true,
+      hasSecureDelivery: true,
     },
   });
 
@@ -301,6 +352,9 @@ async function main() {
       price: 349.99,
       description: 'Queen Bey brings the Renaissance World Tour to Atlanta with spectacular production.',
       remainingQty: 600,
+      isOfficial: true,
+      isBuyerProtected: true,
+      hasSecureDelivery: false,
     },
   });
 

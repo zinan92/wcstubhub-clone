@@ -99,11 +99,12 @@ export const config = {
     /*
      * Match all request paths except:
      * - /api/auth/* (NextAuth API routes)
-     * - /api/auth/register (registration endpoint)
+     * - /api/products/* (public product APIs)
+     * - /api/events/* (public event APIs)
      * - /_next/* (Next.js internals)
      * - /favicon.ico, /robots.txt (static files)
      * - /public/* (static files)
      */
-    '/((?!api/auth|_next|favicon.ico|robots.txt|.*\\..*$).*)',
+    '/((?!api/auth|api/products|api/events|_next|favicon.ico|robots.txt|.*\\..*$).*)',
   ],
 };

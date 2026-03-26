@@ -29,15 +29,18 @@ model User {
 }
 
 model Product {
-  id            String   @id @default(cuid())
-  name          String
-  description   String
-  imageUrl      String
-  price         Float
-  category      String
-  stock         Int
-  remainingQty  Int
-  createdAt     DateTime @default(now())
+  id                String   @id @default(cuid())
+  name              String
+  description       String
+  imageUrl          String
+  price             Float
+  category          String
+  stock             Int
+  remainingQty      Int
+  isVerified        Boolean  @default(false)
+  isBuyerProtected  Boolean  @default(true)
+  hasSecureDelivery Boolean  @default(false)
+  createdAt         DateTime @default(now())
 }
 
 enum EventType {
@@ -47,21 +50,24 @@ enum EventType {
 }
 
 model Event {
-  id              String    @id @default(cuid())
-  title           String
-  type            EventType
-  team1           String?
-  team2           String?
-  team1Flag       String?
-  team2Flag       String?
-  artistName      String?
-  artistImageUrl  String?
-  date            DateTime
-  venue           String
-  price           Float
-  description     String?
-  remainingQty    Int
-  createdAt       DateTime  @default(now())
+  id                String    @id @default(cuid())
+  title             String
+  type              EventType
+  team1             String?
+  team2             String?
+  team1Flag         String?
+  team2Flag         String?
+  artistName        String?
+  artistImageUrl    String?
+  date              DateTime
+  venue             String
+  price             Float
+  description       String?
+  remainingQty      Int
+  isOfficial        Boolean   @default(false)
+  isBuyerProtected  Boolean   @default(true)
+  hasSecureDelivery Boolean   @default(false)
+  createdAt         DateTime  @default(now())
 }
 
 enum ItemType {

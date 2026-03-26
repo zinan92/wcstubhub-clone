@@ -17,6 +17,9 @@ interface Product {
   imageUrl: string;
   description: string;
   remainingQty: number;
+  isVerified: boolean;
+  isBuyerProtected: boolean;
+  hasSecureDelivery: boolean;
 }
 
 interface ProductDetailPageProps {
@@ -171,10 +174,19 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           </p>
         </div>
 
-        {/* Trust Badges */}
-        <div className="mb-6">
-          <TrustBadgesGroup badges={['verified', 'buyer-protected', 'secure-delivery']} size="sm" />
-        </div>
+        {/* Trust Badges - Conditionally rendered */}
+        {(product.isVerified || product.isBuyerProtected || product.hasSecureDelivery) && (
+          <div className="mb-6">
+            <TrustBadgesGroup 
+              badges={[
+                ...(product.isVerified ? ['verified' as const] : []),
+                ...(product.isBuyerProtected ? ['buyer-protected' as const] : []),
+                ...(product.hasSecureDelivery ? ['secure-delivery' as const] : []),
+              ]} 
+              size="sm" 
+            />
+          </div>
+        )}
 
         {/* Buyer Protection - Compact */}
         <div className="mb-6">

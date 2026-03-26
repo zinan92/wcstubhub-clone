@@ -1,0 +1,51 @@
+{
+  "featureId": "guest-browsing-and-trust-foundation",
+  "reviewedAt": "2026-03-26T00:00:00Z",
+  "commitId": "e571f30d",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The feature correctly opens public browse/detail routes and adds reusable trust UI, but it does not fully satisfy the required trust/account coverage or conditional-accuracy expectations. Trust architecture was only added to home, detail, and /my/orders surfaces, while other protected account surfaces remain unchanged, and badges are rendered unconditionally rather than based on underlying item data.",
+    "issues": [
+      {
+        "file": "app/products/[id]/page.tsx",
+        "line": 176,
+        "severity": "blocking",
+        "description": "Product detail always renders the same trust badges (`verified`, `buyer-protected`, `secure-delivery`) for every product. The feature explicitly fulfills VAL-TRUST-010, which requires badges to appear only when the underlying condition is true; there is no product trust metadata or conditional branching here, so ineligible items cannot suppress these badges."
+      },
+      {
+        "file": "app/events/[id]/page.tsx",
+        "line": 257,
+        "severity": "blocking",
+        "description": "Event detail always renders `official`, `buyer-protected`, and `secure-delivery` badges for every event. This makes the trust signals unconditional and prevents the implementation from satisfying conditionally accurate badge behavior required by VAL-TRUST-010."
+      },
+      {
+        "file": "app/my/orders/page.tsx",
+        "line": 235,
+        "severity": "blocking",
+        "description": "Trust/support copy was only added to `/my/orders`, but the feature description requires trust architecture on purchase/account surfaces broadly. Other `/my/**` account pages remain unchanged, so the implementation does not fully deliver trust messaging across account surfaces as described."
+      },
+      {
+        "file": "__tests__/components/goods/ProductDetailPage.test.tsx",
+        "line": 1,
+        "severity": "non_blocking",
+        "description": "Updated detail-page tests still only exercise authenticated sessions and success-modal behavior. There is no component- or integration-level test asserting guest CTA clicks redirect to `/login?callbackUrl=...`, so the new auth-gating behavior is only lightly covered outside of manual notes and placeholder cross-area tests."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "knowledge",
+      "observation": "`.factory/library/user-testing.md` still states that all pages require authentication and there are no public pages, which conflicts with this milestone's guest-browsing rules.",
+      "evidence": "/Users/wendy/wcstubhub-clone/.factory/library/user-testing.md:20-21 says all pages require authentication, while middleware.ts now allows `/`, `/football`, `/basketball`, `/concert`, `/products/*`, and `/events/*` to be public."
+    },
+    {
+      "area": "skills",
+      "observation": "The marketplace worker skill requires agent-browser verification for guest browse and gated transaction flows, but the handoff reports no interactive checks and only curl-based verification.",
+      "evidence": "/Users/wendy/wcstubhub-clone/.factory/skills/marketplace-worker/SKILL.md says to use agent-browser for guest browsing and gated transaction flows; handoff file 2026-03-26T06-05-07-020Z__guest-browsing-and-trust-foundation__924e7289-aa44-4908-9f93-7500b1074f23.json has `interactiveChecks: []`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Scrutiny failed. Public-route access and CTA callback redirects were implemented, but trust badges are unconditional on both product and event detail pages, and trust messaging was not extended across account surfaces as described. I also noted stale shared-state guidance in `.factory/library/user-testing.md` and a mismatch between the marketplace-worker skill's required browser verification and the worker handoff."
+}

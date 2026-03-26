@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import DefaultAvatar from '@/components/ui/DefaultAvatar';
 import { useToast } from '@/components/ui/Toast';
+import { BuyerProtection, TrustMessaging } from '@/components/trust';
 
 interface UserProfile {
   id: string;
@@ -223,6 +224,16 @@ export default function MyPage() {
             </m.div>
           </AnimatePresence>
         </div>
+      </div>
+
+      {/* Trust and Support Messaging */}
+      <div className="px-4 mt-6 space-y-4">
+        <div className="bg-white rounded-xl shadow-soft p-4 space-y-3">
+          <TrustMessaging variant="support" />
+          <TrustMessaging variant="refund" />
+          <TrustMessaging variant="guarantee" />
+        </div>
+        <BuyerProtection variant="compact" />
       </div>
 
       {/* Logout Button */}

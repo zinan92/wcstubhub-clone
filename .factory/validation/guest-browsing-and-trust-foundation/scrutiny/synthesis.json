@@ -1,0 +1,55 @@
+{
+  "milestone": "guest-browsing-and-trust-foundation",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0 },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "failedFeatures": ["guest-browsing-and-trust-foundation"]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "guest-browsing-and-trust-foundation",
+      "severity": "blocking",
+      "description": "Product detail always renders trust badges without checking product-specific eligibility, so trust badge visibility is not conditionally accurate."
+    },
+    {
+      "featureId": "guest-browsing-and-trust-foundation",
+      "severity": "blocking",
+      "description": "Event detail always renders trust badges without checking event-specific eligibility, so trust badge visibility is not conditionally accurate."
+    },
+    {
+      "featureId": "guest-browsing-and-trust-foundation",
+      "severity": "blocking",
+      "description": "Trust/support messaging was only added to /my/orders rather than broadly across account surfaces, leaving the feature short of its stated account-surface trust coverage."
+    }
+  ],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Reinforce that milestone feature handoffs must include evidence for every surface named in the feature description, especially when wording says trust content should appear on account surfaces broadly rather than a single page.",
+      "evidence": "The guest-browsing-and-trust-foundation feature handoff claimed account-surface trust coverage, but scrutiny found trust/support copy only on /my/orders while other /my/** surfaces were unchanged.",
+      "isSystemic": false
+    },
+    {
+      "target": "marketplace-worker skill",
+      "suggestion": "Tighten completion guidance so required agent-browser checks are mandatory evidence in the handoff whenever the skill says browser verification is required.",
+      "evidence": "The marketplace-worker skill requires agent-browser validation for guest browsing and gated transaction flows, but the completed feature handoff reported no interactiveChecks and only curl-based verification.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "Update .factory/library/user-testing.md to remove the claim that all pages require authentication.",
+      "reason": "recommend-to-orchestrator-needed: this is a real issue but outside scrutiny's apply-now scope for this run because the mission result is failing and the observed mismatch should be handled alongside the milestone fix work."
+    }
+  ],
+  "previousRound": null
+}
