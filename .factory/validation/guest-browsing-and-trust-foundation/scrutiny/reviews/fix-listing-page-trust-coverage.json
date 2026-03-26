@@ -1,0 +1,15 @@
+{
+  "featureId": "fix-listing-page-trust-coverage",
+  "reviewedAt": "2026-03-26T06:41:27Z",
+  "commitId": "24dc46790eb65223bcb6da65b222fd8570a4384d",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "The fix adds visible Buyer Protection and trust badges to all three public listing pages, placing them above the card grids so guests see trust signals before interacting with listings. The implementation matches the stated scope, uses existing trust components, and the handoff includes agent-browser evidence for desktop and 375px mobile views.",
+    "issues": []
+  },
+  "sharedStateObservations": [],
+  "addressesFailureFrom": null,
+  "summary": "Reviewed the transcript skeleton, handoff, and commit diff for fix-listing-page-trust-coverage. The implementation satisfies the listing-page trust coverage requirements for football, basketball, and concert surfaces, and I found no blocking or non-blocking defects in scope."
+}

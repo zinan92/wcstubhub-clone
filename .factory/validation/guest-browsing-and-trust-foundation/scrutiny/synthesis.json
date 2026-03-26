@@ -1,7 +1,7 @@
 {
   "milestone": "guest-browsing-and-trust-foundation",
-  "round": 1,
-  "status": "fail",
+  "round": 3,
+  "status": "pass",
   "validatorsRun": {
     "test": {
       "passed": true,
@@ -20,29 +20,21 @@
     }
   },
   "reviewsSummary": {
-    "total": 2,
-    "passed": 1,
-    "failed": 1,
-    "failedFeatures": [
-      "guest-browsing-and-trust-foundation"
-    ]
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "failedFeatures": []
   },
-  "blockingIssues": [
-    {
-      "featureId": "guest-browsing-and-trust-foundation",
-      "severity": "blocking",
-      "description": "Trust architecture was not added to the football, basketball, or concert listing pages, so required listing-surface Buyer Protection / trust messaging coverage remains incomplete."
-    }
-  ],
+  "blockingIssues": [],
   "appliedUpdates": [],
   "suggestedGuidanceUpdates": [
     {
       "target": "skills",
-      "suggestion": "Reinforce in marketplace-worker review expectations that milestone handoffs must include agent-browser interactive evidence whenever the skill requires browser validation, and scrutiny should treat missing browser evidence as a procedural issue even when curl checks pass.",
-      "evidence": "The original feature review for guest-browsing-and-trust-foundation found the worker handoff relied only on curl-based verification despite marketplace-worker requiring agent-browser validation; the subsequent fix feature corrected this by including browser evidence.",
+      "suggestion": "Reinforce that workers must include agent-browser verification evidence when a skill requires browser validation, and scrutiny should flag missing interactive evidence even if non-browser checks passed.",
+      "evidence": "The rerun review for guest-browsing-and-trust-foundation notes that the original worker handoff omitted the marketplace-worker skill's required agent-browser evidence even though the later fix feature supplied it. See .factory/validation/guest-browsing-and-trust-foundation/scrutiny/reviews/guest-browsing-and-trust-foundation.json and the original handoff in the mission handoffs directory.",
       "isSystemic": false
     }
   ],
   "rejectedObservations": [],
-  "previousRound": null
+  "previousRound": ".factory/validation/guest-browsing-and-trust-foundation/scrutiny/synthesis.json"
 }
