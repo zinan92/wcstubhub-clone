@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Package } from 'lucide-react';
+import { AnimatePresence, m } from 'motion/react';
 import BannerCarousel from '@/components/goods/BannerCarousel';
 import SearchBar from '@/components/goods/SearchBar';
 import ProductGrid from '@/components/goods/ProductGrid';
@@ -77,15 +78,32 @@ export default function Home() {
 
       {/* Product Grid */}
       <div className="px-4">
-        {isLoading ? (
-          <div className="grid grid-cols-2 gap-4">
-            {[...Array(6)].map((_, i) => (
-              <ProductCardSkeleton key={i} />
-            ))}
-          </div>
-        ) : (
-          <ProductGrid products={filteredProducts} />
-        )}
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <m.div
+              key="skeleton"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="grid grid-cols-2 gap-4"
+            >
+              {[...Array(6)].map((_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </m.div>
+          ) : (
+            <m.div
+              key="content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <ProductGrid products={filteredProducts} />
+            </m.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Floating Customer Service Icon */}

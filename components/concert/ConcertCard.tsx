@@ -38,7 +38,7 @@ export default function ConcertCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all">
+      <div className="relative bg-gradient-to-br from-purple-50 via-pink-50 to-purple-50 rounded-xl shadow-card overflow-hidden mb-4 hover:shadow-elevated transition-all active:scale-[0.98]">
         {/* Music note decorative elements */}
         <div className="absolute top-2 right-2 text-6xl opacity-10">🎵</div>
         <div className="absolute bottom-2 left-2 text-5xl opacity-10">🎤</div>

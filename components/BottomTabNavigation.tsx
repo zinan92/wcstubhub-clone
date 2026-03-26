@@ -34,7 +34,7 @@ export default function BottomTabNavigation() {
             <Link
               key={tab.path}
               href={tab.path}
-              className="flex flex-col items-center justify-center flex-1 h-full relative min-h-[44px] min-w-[44px]"
+              className="flex flex-col items-center justify-center flex-1 h-full relative min-h-[44px] min-w-[44px] transition-all active:scale-95"
             >
               {active && (
                 <m.div

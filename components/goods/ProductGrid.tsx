@@ -1,5 +1,6 @@
 'use client';
 
+import { m } from 'motion/react';
 import ProductCard from './ProductCard';
 
 interface Product {
@@ -40,11 +41,39 @@ export default function ProductGrid({ products }: ProductGridProps) {
     );
   }
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.05,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.3,
+      },
+    },
+  };
+
   return (
-    <div className="grid grid-cols-2 gap-3">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+    <m.div
+      className="grid grid-cols-2 gap-3"
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+    >
+      {products.map((product, index) => (
+        <m.div key={product.id} variants={itemVariants}>
+          <ProductCard product={product} />
+        </m.div>
       ))}
-    </div>
+    </m.div>
   );
 }

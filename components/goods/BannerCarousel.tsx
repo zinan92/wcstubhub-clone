@@ -99,14 +99,14 @@ export default function BannerCarousel() {
         {/* Navigation arrows */}
         <button
           onClick={goToPrevious}
-          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition"
+          className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Previous banner"
         >
           <ChevronLeft className="w-5 h-5 text-gray-800" />
         </button>
         <button
           onClick={goToNext}
-          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition"
+          className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-1 rounded-full shadow-md transition-all active:scale-90 min-h-[44px] min-w-[44px] flex items-center justify-center"
           aria-label="Next banner"
         >
           <ChevronRight className="w-5 h-5 text-gray-800" />
@@ -119,10 +119,10 @@ export default function BannerCarousel() {
           <button
             key={index}
             onClick={() => setCurrentIndex(index)}
-            className={`w-2 h-2 rounded-full transition-all ${
+            className={`rounded-full transition-all active:scale-90 min-h-[44px] flex items-center ${
               index === currentIndex
-                ? 'bg-primary-500 w-4'
-                : 'bg-gray-300'
+                ? 'bg-primary-500 w-4 h-2'
+                : 'bg-gray-300 w-2 h-2'
             }`}
             aria-label={`Go to banner ${index + 1}`}
           />

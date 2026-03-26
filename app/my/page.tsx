@@ -4,6 +4,7 @@ import { useSession, signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { AnimatePresence, m } from 'motion/react';
 import {
   User,
   CreditCard,
@@ -80,22 +81,24 @@ export default function MyPage() {
     { label: 'Language', href: '/my/language', icon: Languages, color: 'text-indigo-500' },
   ];
 
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-gray-50 pb-20">
-        <div className="animate-pulse">
-          <div className="h-48 bg-gradient-to-br from-blue-600 to-cyan-500" />
-          <div className="p-4 space-y-4">
-            <div className="h-24 bg-gray-200 rounded-lg" />
-            <div className="space-y-2">
-              {[...Array(8)].map((_, i) => (
-                <div key={i} className="h-14 bg-gray-200 rounded-lg" />
-              ))}
-            </div>
+  const skeletonContent = (
+    <main className="min-h-screen bg-gray-50 pb-20">
+      <div className="animate-pulse">
+        <div className="h-48 bg-gradient-to-br from-blue-600 to-cyan-500" />
+        <div className="p-4 space-y-4">
+          <div className="h-24 bg-gray-200 rounded-lg" />
+          <div className="space-y-2">
+            {[...Array(8)].map((_, i) => (
+              <div key={i} className="h-14 bg-gray-200 rounded-lg" />
+            ))}
           </div>
         </div>
-      </main>
-    );
+      </div>
+    </main>
+  );
+
+  if (loading) {
+    return skeletonContent;
   }
 
   if (!profile) {
@@ -168,28 +171,57 @@ export default function MyPage() {
 
       {/* Menu List */}
       <div className="px-4 space-y-2">
-        {menuItems.map((item) => (
-          <Link
-            key={item.label}
-            href={item.href}
-            className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow"
+        <AnimatePresence mode="wait">
+          <m.div
+            key="menu"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  staggerChildren: 0.03,
+                },
+              },
+            }}
+            className="space-y-2"
           >
-            <div className="flex items-center justify-between p-4">
-              <div className="flex items-center gap-3">
-                <item.icon className={`w-6 h-6 ${item.color}`} />
-                <span className="text-gray-900 font-medium">{item.label}</span>
-              </div>
-              <ChevronRight className="w-5 h-5 text-gray-400" />
-            </div>
-          </Link>
-        ))}
+            {menuItems.map((item) => (
+              <m.div
+                key={item.label}
+                variants={{
+                  hidden: { opacity: 0, x: -20 },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    transition: { duration: 0.2 },
+                  },
+                }}
+              >
+                <Link
+                  href={item.href}
+                  className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+                >
+                  <div className="flex items-center justify-between p-4">
+                    <div className="flex items-center gap-3">
+                      <item.icon className={`w-6 h-6 ${item.color}`} />
+                      <span className="text-gray-900 font-medium">{item.label}</span>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-400" />
+                  </div>
+                </Link>
+              </m.div>
+            ))}
+          </m.div>
+        </AnimatePresence>
       </div>
 
       {/* Logout Button */}
       <div className="px-4 mt-6">
         <button
           onClick={handleLogout}
-          className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-colors"
+          className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-all active:scale-[0.98]"
         >
           Log out
         </button>

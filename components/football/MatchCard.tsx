@@ -35,7 +35,7 @@ export default function MatchCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="bg-white rounded-xl shadow-card p-5 mb-4 hover:shadow-elevated transition-all">
+      <div className="bg-white rounded-xl shadow-card p-5 mb-4 hover:shadow-elevated transition-all active:scale-[0.98]">
         {/* Teams with prominent flags in VS layout */}
         <div className="flex items-center justify-between mb-4">
           {/* Team 1 */}

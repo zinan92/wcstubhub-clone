@@ -31,7 +31,7 @@ export default function BasketballCard({
 
   return (
     <Link href={`/events/${id}`}>
-      <div className="relative bg-gradient-to-br from-orange-50 to-red-50 rounded-xl shadow-card p-5 mb-4 hover:shadow-elevated transition-all overflow-hidden">
+      <div className="relative bg-gradient-to-br from-orange-50 to-red-50 rounded-xl shadow-card p-5 mb-4 hover:shadow-elevated transition-all overflow-hidden active:scale-[0.98]">
         {/* Basketball decorative elements */}
         <div className="absolute top-2 right-2 text-6xl opacity-10">🏀</div>
         <div className="absolute bottom-2 left-2 text-4xl opacity-10">🏀</div>

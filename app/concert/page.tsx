@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Music } from 'lucide-react';
+import { AnimatePresence, m } from 'motion/react';
 import SearchBar from '@/components/goods/SearchBar';
 import ConcertCard from '@/components/concert/ConcertCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
@@ -88,30 +89,74 @@ export default function ConcertPage() {
 
       {/* Concert Cards */}
       <div className="px-4">
-        {isLoading ? (
-          <div className="space-y-4">
-            {[...Array(4)].map((_, i) => (
-              <MatchCardSkeleton key={i} />
-            ))}
-          </div>
-        ) : filteredEvents.length === 0 ? (
-          <div className="text-center py-12">
-            <p className="text-gray-500">No concerts found</p>
-          </div>
-        ) : (
-          filteredEvents.map((event) => (
-            <ConcertCard
-              key={event.id}
-              id={event.id}
-              artistName={event.artistName}
-              title={event.title}
-              artistImageUrl={event.artistImageUrl}
-              date={event.date}
-              venue={event.venue}
-              price={event.price}
-            />
-          ))
-        )}
+        <AnimatePresence mode="wait">
+          {isLoading ? (
+            <m.div
+              key="skeleton"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="space-y-4"
+            >
+              {[...Array(4)].map((_, i) => (
+                <MatchCardSkeleton key={i} />
+              ))}
+            </m.div>
+          ) : filteredEvents.length === 0 ? (
+            <m.div
+              key="empty"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="text-center py-12"
+            >
+              <p className="text-gray-500">No concerts found</p>
+            </m.div>
+          ) : (
+            <m.div
+              key="content"
+              initial="hidden"
+              animate="visible"
+              exit={{ opacity: 0 }}
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.05,
+                  },
+                },
+              }}
+              className="space-y-4"
+            >
+              {filteredEvents.map((event) => (
+                <m.div
+                  key={event.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: {
+                      opacity: 1,
+                      y: 0,
+                      transition: { duration: 0.3 },
+                    },
+                  }}
+                >
+                  <ConcertCard
+                    id={event.id}
+                    artistName={event.artistName}
+                    title={event.title}
+                    artistImageUrl={event.artistImageUrl}
+                    date={event.date}
+                    venue={event.venue}
+                    price={event.price}
+                  />
+                </m.div>
+              ))}
+            </m.div>
+          )}
+        </AnimatePresence>
       </div>
     </main>
   );
