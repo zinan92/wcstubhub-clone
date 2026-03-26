@@ -99,47 +99,41 @@ export default function OrderRecordPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-20">
+    <main className="min-h-screen bg-surface-50 pb-20">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+      <div className="bg-white border-b border-muted-200 sticky top-0 z-10 shadow-soft">
         <div className="px-4 py-4 flex items-center gap-3">
           <button
             onClick={() => router.back()}
-            className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-1.5 hover:bg-surface-100 rounded-full transition-colors active:scale-95"
             aria-label="Go back"
           >
-            <ArrowLeft className="w-6 h-6 text-gray-700" />
+            <ArrowLeft className="w-6 h-6 text-muted-700" />
           </button>
-          <h1 className="text-xl font-semibold text-gray-900">Order</h1>
+          <h1 className="text-xl font-bold text-muted-900">Order Records</h1>
         </div>
 
-        {/* Tabs */}
-        <div className="flex border-b border-gray-200">
+        {/* Tabs with pill indicator */}
+        <div className="flex px-4 pb-1 gap-2">
           <button
             onClick={() => handleTabChange('purchase')}
-            className={`flex-1 py-3 text-center font-medium transition-colors relative ${
+            className={`flex-1 py-2.5 text-center font-semibold transition-all rounded-lg ${
               activeTab === 'purchase'
-                ? 'text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-primary-500 text-white shadow-sm'
+                : 'text-muted-600 hover:bg-surface-100'
             }`}
           >
             Purchase
-            {activeTab === 'purchase' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />
-            )}
           </button>
           <button
             onClick={() => handleTabChange('sale')}
-            className={`flex-1 py-3 text-center font-medium transition-colors relative ${
+            className={`flex-1 py-2.5 text-center font-semibold transition-all rounded-lg ${
               activeTab === 'sale'
-                ? 'text-blue-600'
-                : 'text-gray-500 hover:text-gray-700'
+                ? 'bg-primary-500 text-white shadow-sm'
+                : 'text-muted-600 hover:bg-surface-100'
             }`}
           >
-            For sale
-            {activeTab === 'sale' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-600" />
-            )}
+            For Sale
           </button>
         </div>
       </div>
@@ -148,27 +142,20 @@ export default function OrderRecordPage() {
       <div className="p-4">
         {loading ? (
           <div className="text-center py-12">
-            <p className="text-gray-500">Loading...</p>
+            <p className="text-muted-500">Loading...</p>
           </div>
         ) : orders.length > 0 ? (
-          <div className="space-y-4">
+          <div className="space-y-3">
             {orders.map((order) => (
               <div
                 key={order.id}
-                className="bg-white rounded-lg shadow-sm overflow-hidden"
+                className="bg-white rounded-xl shadow-card overflow-hidden"
               >
-                {/* Badge */}
-                <div className="px-4 pt-3 pb-2">
-                  <span className="inline-block px-3 py-1 text-xs font-medium rounded-full bg-blue-100 text-blue-600">
-                    Purchase
-                  </span>
-                </div>
-
                 {/* Order Content */}
-                <div className="px-4 pb-4">
-                  <div className="flex gap-3">
-                    {/* Item Image */}
-                    <div className="w-20 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100 relative">
+                <div className="p-4">
+                  <div className="flex gap-4">
+                    {/* Item Thumbnail - prominent */}
+                    <div className="w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-surface-100 relative shadow-sm">
                       {order.itemImageUrl ? (
                         <Image
                           src={order.itemImageUrl}
@@ -177,58 +164,54 @@ export default function OrderRecordPage() {
                           className="object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                          <Package className="w-8 h-8 text-gray-400" />
+                        <div className="w-full h-full bg-surface-200 flex items-center justify-center">
+                          <Package className="w-8 h-8 text-muted-400" />
                         </div>
                       )}
                     </div>
 
                     {/* Item Details */}
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-gray-900 mb-2 line-clamp-2">
-                        {order.itemName}
-                      </h3>
+                      {/* Title and Status Badge */}
+                      <div className="flex items-start justify-between gap-2 mb-3">
+                        <h3 className="font-semibold text-muted-900 line-clamp-2 flex-1">
+                          {order.itemName}
+                        </h3>
+                        {getStatusLabel(order.status)}
+                      </div>
                       
-                      <div className="space-y-1 text-sm">
+                      <div className="space-y-1.5 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-gray-500">Purchase price:</span>
-                          <span className="font-medium text-blue-600">
+                          <span className="text-muted-600">Price:</span>
+                          <span className="font-bold text-primary-600">
                             {formatCurrency(order.purchasePrice)}
                           </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-500">Purchase quantity:</span>
-                          <span className="text-gray-900">{order.quantity}</span>
+                          <span className="text-muted-600">Quantity:</span>
+                          <span className="text-muted-900 font-medium">{order.quantity}</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-gray-500">Current price:</span>
-                          <span className="font-medium text-blue-600">
+                          <span className="text-muted-600">Current:</span>
+                          <span className="font-semibold text-accent-600">
                             {formatCurrency(order.currentPrice)}
                           </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-gray-500">Shares held:</span>
-                          <span className="text-gray-900">{order.sharesHeld}</span>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Status and Info */}
-                  <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
-                    <div className="flex justify-between items-center">
-                      <span className="text-sm text-gray-500">Status:</span>
-                      {getStatusLabel(order.status)}
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Transaction time:</span>
-                      <span className="text-gray-900">
+                  {/* Additional Info */}
+                  <div className="mt-4 pt-4 border-t border-muted-100 space-y-1.5 text-xs text-muted-600">
+                    <div className="flex justify-between">
+                      <span>Time:</span>
+                      <span className="text-muted-900 font-mono">
                         {formatDateTime(order.transactionTime)}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Order number:</span>
-                      <span className="text-gray-900 font-mono">
+                    <div className="flex justify-between">
+                      <span>Order #:</span>
+                      <span className="text-muted-900 font-mono">
                         {order.orderNumber}
                       </span>
                     </div>

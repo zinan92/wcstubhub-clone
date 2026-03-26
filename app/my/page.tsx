@@ -113,118 +113,123 @@ export default function MyPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 pb-20">
-      {/* Blue Gradient Header */}
-      <div className="bg-gradient-to-br from-blue-600 to-cyan-500 px-4 pt-6 pb-8">
+    <main className="min-h-screen bg-surface-50 pb-20">
+      {/* Gradient Header */}
+      <div className="bg-gradient-to-br from-primary-600 via-primary-500 to-accent-500 px-4 pt-6 pb-10">
         <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-3">
-            {/* Avatar */}
-            <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 relative">
+          <div className="flex items-center gap-4">
+            {/* Avatar - min 64px, border-radius-full */}
+            <div className="w-20 h-20 rounded-full overflow-hidden flex-shrink-0 relative border-4 border-white/30 shadow-lg">
               {profile.avatarUrl ? (
                 <Image src={profile.avatarUrl} alt="Avatar" fill className="object-cover" />
               ) : (
-                <DefaultAvatar className="w-16 h-16" />
+                <DefaultAvatar className="w-20 h-20" />
               )}
             </div>
             
             <div className="text-white">
-              <p className="text-sm opacity-90">Account</p>
-              <p className="font-medium">{profile.email}</p>
+              <p className="text-sm opacity-90 font-medium">Account</p>
+              <p className="font-semibold text-base">{profile.email}</p>
             </div>
           </div>
 
           {/* VIP Badge */}
-          <div className="bg-white bg-opacity-20 px-3 py-1 rounded-full">
-            <p className="text-white text-sm font-medium">VIP:{profile.vipLevel}</p>
+          <div className="bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full border border-white/30">
+            <p className="text-white text-sm font-semibold">VIP {profile.vipLevel}</p>
           </div>
         </div>
 
         {/* Invite Code & Credit Points */}
-        <div className="flex gap-4 text-white text-sm">
+        <div className="flex gap-6 text-white text-sm">
           <div>
-            <p className="opacity-80">Invite code</p>
-            <p className="font-medium">{profile.inviteCode || 'N/A'}</p>
+            <p className="opacity-80 mb-1">Invite code</p>
+            <p className="font-semibold text-base">{profile.inviteCode || 'N/A'}</p>
           </div>
           <div>
-            <p className="opacity-80">Credit points</p>
-            <p className="font-medium">{profile.creditPoints}</p>
+            <p className="opacity-80 mb-1">Credit points</p>
+            <p className="font-semibold text-base">{profile.creditPoints}</p>
           </div>
         </div>
       </div>
 
-      {/* Balance Dashboard */}
-      <div className="px-4 -mt-4 mb-4">
-        <div className="bg-white rounded-lg shadow-sm p-4">
-          <div className="grid grid-cols-3 divide-x divide-gray-200">
-            <div className="text-center">
-              <p className="text-xs text-gray-500 mb-1">Available balance</p>
-              <p className="text-base font-semibold text-gray-900">{formatCurrency(profile.balance)}</p>
+      {/* Stat Cards with shadows */}
+      <div className="px-4 -mt-6 mb-6">
+        <div className="bg-white rounded-xl shadow-card p-5">
+          <div className="grid grid-cols-3 divide-x divide-muted-200">
+            <div className="text-center px-2">
+              <p className="text-xs text-muted-500 mb-1.5 font-medium">Balance</p>
+              <p className="text-lg font-bold text-primary-600">{formatCurrency(profile.balance)}</p>
             </div>
-            <div className="text-center">
-              <p className="text-xs text-gray-500 mb-1">Shares held</p>
-              <p className="text-base font-semibold text-gray-900">{profile.sharesHeld}</p>
+            <div className="text-center px-2">
+              <p className="text-xs text-muted-500 mb-1.5 font-medium">Shares</p>
+              <p className="text-lg font-bold text-primary-600">{profile.sharesHeld}</p>
             </div>
-            <div className="text-center">
-              <p className="text-xs text-gray-500 mb-1">Integration points</p>
-              <p className="text-base font-semibold text-gray-900">{profile.integrationPoints}</p>
+            <div className="text-center px-2">
+              <p className="text-xs text-muted-500 mb-1.5 font-medium">Points</p>
+              <p className="text-lg font-bold text-primary-600">{profile.integrationPoints}</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Menu List */}
-      <div className="px-4 space-y-2">
-        <AnimatePresence mode="wait">
-          <m.div
-            key="menu"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: {
-                  staggerChildren: 0.03,
-                },
-              },
-            }}
-            className="space-y-2"
-          >
-            {menuItems.map((item) => (
-              <m.div
-                key={item.label}
-                variants={{
-                  hidden: { opacity: 0, x: -20 },
-                  visible: {
-                    opacity: 1,
-                    x: 0,
-                    transition: { duration: 0.2 },
+      {/* Menu List - with consistent padding, dividers */}
+      <div className="px-4">
+        <div className="bg-white rounded-xl shadow-soft overflow-hidden">
+          <AnimatePresence mode="wait">
+            <m.div
+              key="menu"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.025,
                   },
-                }}
-              >
-                <Link
-                  href={item.href}
-                  className="block bg-white rounded-lg shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+                },
+              }}
+            >
+              {menuItems.map((item, index) => (
+                <m.div
+                  key={item.label}
+                  variants={{
+                    hidden: { opacity: 0, x: -10 },
+                    visible: {
+                      opacity: 1,
+                      x: 0,
+                      transition: { duration: 0.2 },
+                    },
+                  }}
                 >
-                  <div className="flex items-center justify-between p-4">
+                  <Link
+                    href={item.href}
+                    className="flex items-center justify-between px-4 py-4 hover:bg-surface-50 active:bg-surface-100 transition-colors"
+                  >
                     <div className="flex items-center gap-3">
-                      <item.icon className={`w-6 h-6 ${item.color}`} />
-                      <span className="text-gray-900 font-medium">{item.label}</span>
+                      <div className={`w-9 h-9 rounded-lg bg-${item.color.replace('text-', '')}-100 flex items-center justify-center`}>
+                        <item.icon className={`w-5 h-5 ${item.color}`} />
+                      </div>
+                      <span className="text-muted-900 font-medium">{item.label}</span>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-gray-400" />
-                  </div>
-                </Link>
-              </m.div>
-            ))}
-          </m.div>
-        </AnimatePresence>
+                    <ChevronRight className="w-5 h-5 text-muted-400" />
+                  </Link>
+                  {/* Divider between items */}
+                  {index < menuItems.length - 1 && (
+                    <div className="mx-4 border-t border-muted-200" />
+                  )}
+                </m.div>
+              ))}
+            </m.div>
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Logout Button */}
       <div className="px-4 mt-6">
         <button
           onClick={handleLogout}
-          className="w-full bg-red-500 hover:bg-red-600 text-white font-medium py-3 px-4 rounded-lg transition-all active:scale-[0.98]"
+          className="w-full bg-error-500 hover:bg-error-600 text-white font-semibold py-3.5 px-4 rounded-xl shadow-soft transition-all active:scale-[0.98]"
         >
           Log out
         </button>

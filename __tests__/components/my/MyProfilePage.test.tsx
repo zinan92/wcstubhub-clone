@@ -57,7 +57,7 @@ describe('MyProfilePage', () => {
     
     await waitFor(() => {
       expect(screen.getByText('test@example.com')).toBeInTheDocument();
-      expect(screen.getByText(/VIP:2/)).toBeInTheDocument();
+      expect(screen.getByText(/VIP 2/)).toBeInTheDocument();
     });
   });
 

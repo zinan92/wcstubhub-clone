@@ -37,7 +37,7 @@ describe('OrderRecordPage', () => {
 
     render(<OrderRecordPage />);
 
-    expect(screen.getByText('Order')).toBeInTheDocument();
+    expect(screen.getByText('Order Records')).toBeInTheDocument();
   });
 
   it('renders Purchase and For sale tabs', async () => {
@@ -50,7 +50,7 @@ describe('OrderRecordPage', () => {
 
     await waitFor(() => {
       expect(screen.getByText('Purchase')).toBeInTheDocument();
-      expect(screen.getByText('For sale')).toBeInTheDocument();
+      expect(screen.getByText('For Sale')).toBeInTheDocument();
     });
   });
 
@@ -64,7 +64,7 @@ describe('OrderRecordPage', () => {
 
     await waitFor(() => {
       const purchaseTab = screen.getByText('Purchase').closest('button');
-      expect(purchaseTab).toHaveClass('text-blue-600');
+      expect(purchaseTab).toHaveClass('bg-primary-500');
     });
   });
 
@@ -172,7 +172,7 @@ describe('OrderRecordPage', () => {
       expect(screen.getByText('Test Product')).toBeInTheDocument();
     });
 
-    const forSaleTab = screen.getByText('For sale');
+    const forSaleTab = screen.getByText('For Sale');
     fireEvent.click(forSaleTab);
 
     await waitFor(() => {
@@ -236,8 +236,8 @@ describe('OrderRecordPage', () => {
       expect(screen.getByText('Test Product')).toBeInTheDocument();
     });
 
-    // Switch to For sale
-    fireEvent.click(screen.getByText('For sale'));
+    // Switch to For Sale
+    fireEvent.click(screen.getByText('For Sale'));
     await waitFor(() => {
       expect(screen.getByText('No orders yet')).toBeInTheDocument();
     });

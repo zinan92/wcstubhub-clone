@@ -74,7 +74,7 @@ describe('VipUpgradeSystemPage', () => {
       expect(screen.queryByText(/loading/i)).not.toBeInTheDocument();
     });
     
-    expect(screen.getByRole('heading', { name: /vip upgrade system/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /vip tiers/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/go back/i)).toBeInTheDocument();
   });
 
@@ -110,11 +110,26 @@ describe('VipUpgradeSystemPage', () => {
       expect(screen.getAllByText(/VIP1/)[0]).toBeInTheDocument();
     });
 
-    // Check threshold descriptions (using more flexible regex)
-    expect(screen.getByText(/spending over \$1K/i)).toBeInTheDocument();
-    expect(screen.getByText(/spending over \$5K/i)).toBeInTheDocument();
-    expect(screen.getByText(/spending over \$10K/i)).toBeInTheDocument();
-    expect(screen.getByText(/spending over \$10M/i)).toBeInTheDocument();
+    // Check threshold descriptions (text is split across elements with span, use getAllByText)
+    const tier1Text = screen.getAllByText((content, element) => {
+      return (element?.tagName === 'P' && element?.textContent?.includes('spending over $1K')) ?? false;
+    });
+    expect(tier1Text[0]).toBeInTheDocument();
+    
+    const tier2Text = screen.getAllByText((content, element) => {
+      return (element?.tagName === 'P' && element?.textContent?.includes('spending over $5K')) ?? false;
+    });
+    expect(tier2Text[0]).toBeInTheDocument();
+    
+    const tier3Text = screen.getAllByText((content, element) => {
+      return (element?.tagName === 'P' && element?.textContent?.includes('spending over $10K')) ?? false;
+    });
+    expect(tier3Text[0]).toBeInTheDocument();
+    
+    const tier8Text = screen.getAllByText((content, element) => {
+      return (element?.tagName === 'P' && element?.textContent?.includes('spending over $10M')) ?? false;
+    });
+    expect(tier8Text[0]).toBeInTheDocument();
   });
 
   it('indicates current user VIP tier', async () => {
