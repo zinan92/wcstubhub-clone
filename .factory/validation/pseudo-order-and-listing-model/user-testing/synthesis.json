@@ -1,0 +1,26 @@
+{
+  "milestone": "pseudo-order-and-listing-model",
+  "round": 1,
+  "status": "pass",
+  "assertionsSummary": {
+    "total": 9,
+    "passed": 9,
+    "failed": 0,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-MODEL-001",
+    "VAL-MODEL-002",
+    "VAL-MODEL-003",
+    "VAL-MODEL-004",
+    "VAL-MODEL-005",
+    "VAL-MODEL-006",
+    "VAL-MODEL-014",
+    "VAL-MODEL-015",
+    "VAL-MODEL-016"
+  ],
+  "failedAssertions": [],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}

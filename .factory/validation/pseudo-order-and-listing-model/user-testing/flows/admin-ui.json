@@ -1,0 +1,59 @@
+{
+  "groupId": "admin-ui",
+  "testedAt": "2026-03-26T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "credentials": "admin@example.com / admin123",
+    "browserSession": "7f6d611163c8__admin",
+    "viewport": "default (desktop)"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-MODEL-014",
+      "title": "Admin can view pseudo transaction records",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login form displayed", "observed": "Login form displayed with email and password fields" },
+        { "action": "Login as admin@example.com / admin123", "expected": "Redirect to home page", "observed": "Redirected to http://localhost:3100/" },
+        { "action": "Navigate to /admin/owned-assets", "expected": "Owned assets management page with table of records", "observed": "Page loaded with title 'Owned Assets Management' and table showing 5 assets with columns: REFERENCE, USER, ITEM NAME, PURCHASE PRICE, QUANTITY, AVAILABLE, STATUS" },
+        { "action": "Verify owned asset record data fields", "expected": "Records with user info, quantity, price, and status", "observed": "Records show: ASSET-2026-00005 (test@example.com, Jordan VS Argentina, $89.99, qty 1, avail 1, Pending), ASSET-2026-00003 (test@example.com, France National Team #10 Jersey 2026, $34.99, qty 3, avail 3, Confirmed), ASSET-2026-00002 (test@example.com, Taylor Swift: The Eras Tour, $299.99, qty 4, avail 2, Listed), ASSET-2026-00001 (test@example.com, Brazil VS Germany, $120.00, qty 2, avail 2, Delivered)" },
+        { "action": "Navigate to /admin/listings", "expected": "Listings management page with table of records", "observed": "Page loaded with title 'Listings Management' and table showing 5 listings with columns: REFERENCE, SELLER, ITEM NAME, ASK PRICE, QUANTITY, STATUS, LISTED" },
+        { "action": "Verify listing record data fields", "expected": "Records with seller, quantity, ask price, and status", "observed": "Records show: LIST-2026-00005 (test@example.com, Germany Away Kit 2026, $35.00, qty 1, Draft), LIST-2026-00004 (test@example.com, Los Angeles Lakers VS San Antonio Spurs, $145.00, qty 1, Pending Sale), LIST-2026-00001 (test@example.com, Taylor Swift: The Eras Tour, $349.99, qty 2, Active), LIST-2026-00002 (test@example.com, Brazil VS Germany, $150.00, qty 1, Sold)" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-order-and-listing-model/admin-ui/VAL-MODEL-014-owned-assets-page.png",
+          "pseudo-order-and-listing-model/admin-ui/VAL-MODEL-014-owned-assets-scrolled.png",
+          "pseudo-order-and-listing-model/admin-ui/VAL-MODEL-014-listings-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /admin/owned-assets -> 200, GET /admin/listings -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-015",
+      "title": "Admin supports pseudo transaction status filtering",
+      "status": "pass",
+      "steps": [
+        { "action": "On /admin/owned-assets, identify filtering controls", "expected": "Status filter dropdown present", "observed": "Status Filter dropdown with options: All, Pending, Confirmed, Delivered, Listed, Sold, Cancelled" },
+        { "action": "Select 'Pending' from owned assets status filter", "expected": "Table filters to show only Pending assets", "observed": "Table filtered from 5 assets to 1 asset. Badge changed to '1 Assets'. Only ASSET-2026-00005 (Jordan VS Argentina, Pending) shown" },
+        { "action": "On /admin/listings, identify filtering controls", "expected": "Status filter dropdown present", "observed": "Status Filter dropdown with options: All, Draft, Active, Pending Sale, Sold, Cancelled, Expired" },
+        { "action": "Select 'Active' from listings status filter", "expected": "Table filters to show only Active listings", "observed": "Table filtered from 5 listings to 1 listing. Badge changed to '1 Listings'. Only LIST-2026-00001 (Taylor Swift: The Eras Tour, Active) shown" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "pseudo-order-and-listing-model/admin-ui/VAL-MODEL-015-owned-assets-filtered-pending.png",
+          "pseudo-order-and-listing-model/admin-ui/VAL-MODEL-015-listings-filtered-active.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Filter applied client-side, no additional network requests needed"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 2 assertions: 2 passed. Both admin pages (Owned Assets and Listings) display pseudo transaction records with meaningful data fields including user/seller, quantity, price, and lifecycle status. Both pages support filtering by lifecycle status via dropdown controls with multiple status options."
+}

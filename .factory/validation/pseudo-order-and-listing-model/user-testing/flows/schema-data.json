@@ -1,0 +1,132 @@
+{
+  "groupId": "schema-data",
+  "testedAt": "2026-03-26T00:00:00.000Z",
+  "isolation": {
+    "database": "/Users/wendy/wcstubhub-clone/prisma/dev.db",
+    "prismaSchema": "/Users/wendy/wcstubhub-clone/prisma/schema.prisma",
+    "testUser": "test@example.com",
+    "readOnly": true
+  },
+  "toolsUsed": ["sqlite3", "file-read"],
+  "assertions": [
+    {
+      "id": "VAL-MODEL-001",
+      "title": "Persisted pseudo-owned asset model exists",
+      "status": "pass",
+      "steps": [
+        { "action": "Read prisma/schema.prisma", "expected": "OwnedAsset model defined", "observed": "OwnedAsset model found with 15 fields including userId, itemType, itemId, purchasePrice, quantity, quantityAvailable, status, referenceNumber" },
+        { "action": "Check DB schema via sqlite3 .schema OwnedAsset", "expected": "OwnedAsset table exists with FK to User", "observed": "Table exists with all fields and FK constraint OwnedAsset_userId_fkey" },
+        { "action": "Verify separation from Order model", "expected": "OwnedAsset is separate entity", "observed": "OwnedAsset is a separate model with its own enum, relations, and fields not present in Order" }
+      ],
+      "evidence": {
+        "files": ["pseudo-order-and-listing-model/schema-data/VAL-MODEL-001-schema-owned-asset.txt"],
+        "consoleErrors": "N/A (schema inspection)",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-002",
+      "title": "Persisted pseudo-listing model exists",
+      "status": "pass",
+      "steps": [
+        { "action": "Read prisma/schema.prisma", "expected": "Listing model defined", "observed": "Listing model found with 16 fields including sellerId, itemType, itemId, askPrice, quantity, status, referenceNumber" },
+        { "action": "Check DB schema via sqlite3 .schema Listing", "expected": "Listing table exists with FK to User", "observed": "Table exists with all fields and FK constraints to User and OwnedAsset" },
+        { "action": "Verify separation from Order and catalog models", "expected": "Listing is separate from Order, Product, Event", "observed": "Listing is a dedicated model with seller relation, own enum, and no overlap with Order" }
+      ],
+      "evidence": {
+        "files": ["pseudo-order-and-listing-model/schema-data/VAL-MODEL-002-schema-listing.txt"],
+        "consoleErrors": "N/A (schema inspection)",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-003",
+      "title": "Lifecycle statuses cover pseudo transactions",
+      "status": "pass",
+      "steps": [
+        { "action": "Read OwnedAssetStatus enum in schema", "expected": "At minimum: pending, active, sold, delivered, cancelled equivalents", "observed": "6 statuses: pending, confirmed, delivered, listed, sold, cancelled" },
+        { "action": "Read ListingStatus enum in schema", "expected": "At minimum: pending, active, sold, delivered, cancelled equivalents", "observed": "6 statuses: draft, active, pending_sale, sold, cancelled, expired" },
+        { "action": "Verify combined coverage", "expected": "All required lifecycle stages covered", "observed": "All required stages covered: pending (OwnedAsset), active (Listing), sold (both), delivered (OwnedAsset), cancelled (both), plus extras: confirmed, listed, draft, pending_sale, expired" }
+      ],
+      "evidence": {
+        "files": ["pseudo-order-and-listing-model/schema-data/VAL-MODEL-003-lifecycle-enums.txt"],
+        "consoleErrors": "N/A (schema inspection)",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-004",
+      "title": "Owned assets and listings are relationally linked",
+      "status": "pass",
+      "steps": [
+        { "action": "Check Listing.ownedAssetId FK in schema", "expected": "FK from Listing to OwnedAsset", "observed": "Listing has ownedAssetId String? with @relation(fields: [ownedAssetId], references: [id]) to OwnedAsset" },
+        { "action": "Check OwnedAsset.listings relation", "expected": "One-to-many from OwnedAsset to Listing", "observed": "OwnedAsset has listings Listing[] field" },
+        { "action": "Check User relations", "expected": "User links to both models", "observed": "User has ownedAssets OwnedAsset[] and listings Listing[]" },
+        { "action": "Verify DB FK constraints", "expected": "FK constraints in SQLite schema", "observed": "Listing_ownedAssetId_fkey and Listing_sellerId_fkey and OwnedAsset_userId_fkey all present" },
+        { "action": "Verify seed data links", "expected": "Some listings linked to owned assets", "observed": "LIST-2026-00001 linked to ASSET-2026-00002, LIST-2026-00002 linked to ASSET-2026-00001" }
+      ],
+      "evidence": {
+        "files": ["pseudo-order-and-listing-model/schema-data/VAL-MODEL-004-relational-links.txt"],
+        "consoleErrors": "N/A (schema inspection)",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-005",
+      "title": "Seed data includes pseudo-owned assets",
+      "status": "pass",
+      "steps": [
+        { "action": "Query OwnedAsset table", "expected": "Records for non-admin test user", "observed": "5 OwnedAsset records all belonging to test@example.com (role=user, not admin)" },
+        { "action": "Check realistic quantities", "expected": "Realistic qty values", "observed": "Quantities range from 1 to 4" },
+        { "action": "Check realistic prices", "expected": "Realistic price values", "observed": "Prices range from $34.99 to $299.99" },
+        { "action": "Check status variety", "expected": "Multiple statuses", "observed": "5 distinct statuses: pending, confirmed, delivered, listed, sold" }
+      ],
+      "evidence": {
+        "files": ["pseudo-order-and-listing-model/schema-data/VAL-MODEL-005-seed-owned-assets.txt"],
+        "consoleErrors": "N/A (DB query)",
+        "network": "N/A",
+        "dbQuery": "SELECT * FROM OwnedAsset -> 5 rows"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-006",
+      "title": "Seed data includes pseudo listings in multiple states",
+      "status": "pass",
+      "steps": [
+        { "action": "Query Listing table grouped by status", "expected": "More than one distinct status", "observed": "5 distinct statuses: active (1), cancelled (1), draft (1), pending_sale (1), sold (1)" },
+        { "action": "Query Listing table for details", "expected": "Meaningful listing records", "observed": "5 Listing records with realistic prices ($35-$349.99), quantities (1-2), and item references" }
+      ],
+      "evidence": {
+        "files": ["pseudo-order-and-listing-model/schema-data/VAL-MODEL-006-seed-listings.txt"],
+        "consoleErrors": "N/A (DB query)",
+        "network": "N/A",
+        "dbQuery": "SELECT status, COUNT(*) FROM Listing GROUP BY status -> 5 distinct statuses"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-MODEL-016",
+      "title": "Legacy thin Order model is no longer the sole transaction source",
+      "status": "pass",
+      "steps": [
+        { "action": "Read Order model in schema", "expected": "Order exists but is marked legacy", "observed": "Order model has comment: 'Legacy Order model - retained for backwards compatibility' and 'New pseudo transactions use OwnedAsset and Listing models'" },
+        { "action": "Compare Order vs new models", "expected": "New models are richer and separate", "observed": "Order has 2-state enum (to_be_paid, paid). OwnedAsset has 6-state enum. Listing has 6-state enum. Both new models have richer fields and relations." },
+        { "action": "Verify coexistence strategy", "expected": "Clear separation with migration intent", "observed": "Schema comments explicitly state Order is legacy and new transactions use OwnedAsset/Listing. Both old and new models coexist." }
+      ],
+      "evidence": {
+        "files": ["pseudo-order-and-listing-model/schema-data/VAL-MODEL-016-legacy-order-separation.txt"],
+        "consoleErrors": "N/A (schema inspection)",
+        "network": "N/A"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 7 assertions: all 7 passed. The Prisma schema defines OwnedAsset and Listing as dedicated persisted models with rich lifecycle enums (6 statuses each), proper relational links (User->OwnedAsset->Listing with FK constraints), and explicit separation from the legacy Order model. Seed data includes 5 owned assets and 5 listings for the non-admin test user with realistic data across multiple lifecycle states."
+}
