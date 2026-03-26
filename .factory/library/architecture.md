@@ -37,3 +37,13 @@ Architectural decisions, patterns discovered, and conventions.
 
 - **SessionProvider**: The `LayoutWrapper` component wraps the app in a NextAuth `SessionProvider`, enabling client-side `useSession()` hooks throughout the application. Multiple pages (login, my/page, my/orders, my/vip, my/personal) rely on `useSession()` for auth state. The `signIn()` function works via direct API calls, and middleware handles server-side route protection.
 - **API validation**: Input validation in API routes (e.g., `/api/auth/register`) is currently hand-written (no schema validation library like zod). The email/phone format validation is permissive — Prisma unique constraints provide a safety net.
+
+## API Error Handling
+
+- **Custom error classes**: Business logic errors in API routes use typed error classes defined in `lib/errors.ts` (e.g., `OwnedAssetNotFoundError`, `InsufficientQuantityError`). Catch blocks use `instanceof` checks instead of string-matching error messages. New API routes with business logic errors should follow this pattern.
+- **Error class hierarchy**: All custom errors extend a base `AppError` class. A `ValidationError` class is also defined but currently unused.
+
+## Account Page Error State Pattern
+
+- **Error vs empty state**: Account pages (My Tickets, My Listings) distinguish between "no data" and "fetch failure" using a separate `error` state variable. HTTP errors get a specific server message; network errors get a connection-specific message. Future account pages should follow this same pattern.
+- **Retry mechanism**: Error states include a "Try Again" button that currently uses `window.location.reload()` for simplicity.
