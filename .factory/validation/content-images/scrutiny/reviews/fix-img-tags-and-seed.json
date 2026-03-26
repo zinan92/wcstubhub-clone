@@ -1,0 +1,44 @@
+{
+  "featureId": "fix-img-tags-and-seed",
+  "reviewedAt": "2026-03-26T01:50:00.000Z",
+  "commitId": "9a75986",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "All 8 files identified in the prior failure (ProductCard.tsx, products/[id]/page.tsx, my/orders/page.tsx, my/page.tsx, my/personal/page.tsx, admin/orders/page.tsx, admin/users/page.tsx, admin/products/page.tsx) have been successfully updated to use Next.js <Image> component instead of raw <img> tags. The worker correctly used the `fill` prop with `object-cover` class pattern across all replacements, wrapping images in relative-positioned containers. Empty artistImageUrl in seed data was fixed with picsum.photos placeholder URLs for all 4 concert events. ConcertCard.tsx has fallback logic for empty artistImageUrl. Tests updated: PersonalCenterPage.test.tsx now uses picsum.photos instead of i.pravatar.cc, and ProductDetailPage.test.tsx no longer asserts on transformed src attributes. next.config.ts remotePatterns correctly includes picsum.photos. rg '<img' returns zero matches across app/ and components/ .tsx files. All verification requirements from the prior failure are satisfied.",
+    "issues": [
+      {
+        "file": "app/my/orders/page.tsx",
+        "line": 175,
+        "severity": "non_blocking",
+        "description": "Good defensive coding: added conditional rendering for empty itemImageUrl with a Package icon fallback. This goes beyond the minimum fix requirement and handles an edge case gracefully."
+      },
+      {
+        "file": "__tests__/components/goods/ProductDetailPage.test.tsx",
+        "line": 52,
+        "severity": "non_blocking",
+        "description": "The src assertion was removed and replaced with a comment explaining why. While this is correct (Next.js Image transforms src), the test now only verifies the image exists by alt text without checking any src-related attribute. This is acceptable since the Image component's src transformation is a framework behavior, not application logic."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The pattern for replacing <img> with Next.js <Image> using fill+object-cover is now consistently applied across the entire codebase. AGENTS.md already documents this convention ('ALWAYS use Next.js Image component', 'Use fill with object-cover for responsive images in containers'). The fix worker followed these conventions correctly, wrapping each Image in a relative-positioned container div with explicit dimensions.",
+      "evidence": "All 8 modified files use the same pattern: <div className=\"w-X h-X relative ...\"><Image src={...} alt={...} fill className=\"object-cover\" /></div>"
+    },
+    {
+      "area": "conventions",
+      "observation": "When using Next.js <Image> with fill, tests cannot directly assert on the src attribute because Next.js transforms it. The worker updated tests to verify image presence via alt text instead. This testing pattern for Next.js Image should be documented so future workers don't waste time debugging src assertion failures.",
+      "evidence": "ProductDetailPage.test.tsx line 52-53: comment explains why src assertion was removed. PersonalCenterPage.test.tsx line 72-73: same pattern."
+    },
+    {
+      "area": "skills",
+      "observation": "The ui-worker skill's Step 5 verification commands (vitest, typecheck, lint) are adequate. The worker also correctly ran the feature-specific verification command 'rg <img --glob *.tsx app/ components/' as specified in the feature's verificationSteps. The skill procedure was followed correctly this time - no deviations reported.",
+      "evidence": "Handoff verification.commandsRun includes both standard checks and feature-specific rg checks. skillFeedback.followedProcedure: true with no deviations."
+    }
+  ],
+  "addressesFailureFrom": "/Users/wendy/wcstubhub-clone/.factory/validation/content-images/scrutiny/reviews/real-product-images-and-seed.json",
+  "summary": "PASS. The fix feature successfully addresses all issues from the prior failure of real-product-images-and-seed. All 8 files that previously contained raw <img> tags now use Next.js <Image> component with the fill+object-cover pattern. Zero raw <img> tags remain in app/ and components/ .tsx files (verified via rg). Empty artistImageUrl in seed data replaced with picsum.photos URLs for all 4 concert entries. ConcertCard has fallback rendering for empty artistImageUrl. PersonalCenterPage test updated to use picsum.photos instead of i.pravatar.cc. next.config.ts remotePatterns includes picsum.photos. All 278 tests pass, typecheck clean. No regressions introduced."
+}
