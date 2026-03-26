@@ -1,0 +1,52 @@
+{
+  "milestone": "mobile-ux",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0 },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Updated architecture.md Layout Conventions to document that tab bar is also hidden on /products/* and /events/* detail pages (not just auth and admin pages)",
+      "sourceFeature": "page-transitions-and-tab-bar"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Clarify press feedback convention: Accept both Tailwind `active:scale-[0.98]` classes AND motion `whileTap={{ scale: 0.97 }}` as valid approaches. whileTap is preferred for elements already using motion components, while Tailwind active: is acceptable for simpler elements. Currently AGENTS.md only documents whileTap.",
+      "evidence": "Feature skeleton-loading-and-transitions predominantly used Tailwind active:scale-[0.98] on ProductCard, MatchCard, BasketballCard, ConcertCard instead of the documented whileTap pattern. Both work correctly but the convention is unclear.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention for skeleton-to-content transitions: All data-fetching pages should use AnimatePresence mode='wait' with keyed m.div wrappers around loading/content states for smooth cross-fade. Simple conditional early returns should be avoided for consistency.",
+      "evidence": "4 of 5 tab pages (/, /football, /basketball, /concert) use AnimatePresence cross-fade pattern, but /my page uses simple early return without cross-fade. Inconsistency was flagged in skeleton-loading-and-transitions review.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Expand semantic token guidance to explicitly cover neutral/gray colors. Current guidance says 'ALWAYS use semantic token classes' with examples only for brand colors (text-primary, bg-accent). Workers may not realize gray utilities (bg-gray-100, text-gray-400) should also use surface-*/muted-* tokens.",
+      "evidence": "EmptyState component (toast-modal-empty-states feature) uses bg-gray-100, text-gray-400, text-gray-900 instead of semantic surface/muted tokens despite tailwind.config.ts defining them.",
+      "isSystemic": true
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Document known limitation: toast notifications shown before signOut() redirect may not be visible to users due to page navigation destroying the toast DOM. Recommend using a cookie or query parameter approach to show toasts on the destination page after redirect.",
+      "evidence": "app/my/page.tsx:63 calls showToast() immediately before signOut({ callbackUrl: '/login' }), which triggers redirect. The toast is briefly created then destroyed.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [],
+  "previousRound": null
+}

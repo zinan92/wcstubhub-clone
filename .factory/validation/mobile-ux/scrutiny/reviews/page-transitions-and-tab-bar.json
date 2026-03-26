@@ -1,0 +1,34 @@
+{
+  "featureId": "page-transitions-and-tab-bar",
+  "reviewedAt": "2026-03-26T03:45:00.000Z",
+  "commitId": "a42f05e447886f33f6d8f67d0768a48bcbbe82c3",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Implementation fully covers all 4 requirements from the feature description and all 6 expected behaviors. (1) app/template.tsx correctly creates a page transition using m.div with fade + slide-up (opacity 0→1, y 20→0) at 300ms with easeOut, using 'use client' and importing m from 'motion/react'. The template.tsx renders inside the LazyMotion provider (via LayoutWrapper in layout.tsx), so m components work correctly. (2) BottomTabNavigation.tsx redesigned with bg-white/80 + backdrop-blur-xl for frosted glass, layoutId='activeTabIndicator' with spring animation for the active tab indicator bar, scale animation (active: 1, inactive: 0.9) on tab icons, and min-h-[44px] min-w-[44px] touch targets on each Link. (3) globals.css has scroll-behavior: smooth on html element. (4) LayoutWrapper correctly hides tab bar on /login, /register, /admin/*, /products/*, and /events/* while showing on the 5 main tab routes. Tests updated to match new DOM structure (color classes on text elements instead of link elements). All 278 tests pass, typecheck clean, lint clean. Visual verification via agent-browser confirms animations, frosted glass, indicator animation, and tab bar hiding.",
+    "issues": [
+      {
+        "file": "components/BottomTabNavigation.tsx",
+        "line": 48,
+        "severity": "non_blocking",
+        "description": "Inactive tab icons are scaled to 0.9 permanently via m.div animate={{ scale: active ? 1 : 0.9 }}. This means all inactive icons are always 10% smaller than their natural size. While this creates visual hierarchy, it means the component never renders icons at their design-intended default size for 4 out of 5 tabs at any given time. A subtle effect but worth noting as a deliberate choice."
+      },
+      {
+        "file": "app/template.tsx",
+        "line": 8,
+        "severity": "non_blocking",
+        "description": "The enter-only animation (no exit animation or AnimatePresence) means when navigating away, the old page content disappears instantly while the new page fades/slides in. This is consistent with the architecture decision documented in architecture.md ('No exit animations - FrozenRouter pattern too fragile') and is acceptable, but worth noting that page transitions are entrance-only."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "architecture.md's LayoutWrapper section says tab bar is hidden on 'Auth pages (/login, /register) and admin pages (/admin/*)' but the implementation now also hides on /products/* and /events/* detail pages. The documentation should be updated to reflect the expanded hiding logic.",
+      "evidence": "components/LayoutWrapper.tsx lines 14-18 now include pathname.startsWith('/products/') and pathname.startsWith('/events/'), but .factory/library/architecture.md 'Layout Conventions' section only mentions auth and admin pages."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature passes review. All 4 requirements fully implemented: (1) app/template.tsx with m.div fade+slide-up at 300ms, (2) BottomTabNavigation with frosted glass (backdrop-blur-xl + bg-white/80), layoutId animated indicator, scale animation on icons, and 44px+ touch targets, (3) scroll-behavior: smooth on html, (4) tab bar hidden on non-tab pages. Code follows AGENTS.md conventions (m components, motion/react imports, semantic Tailwind classes). Tests updated and all 278 pass. Two non-blocking observations: permanently scaled-down inactive icons and entrance-only transitions. One shared state observation: architecture.md should be updated to document the expanded tab bar hiding paths."
+}

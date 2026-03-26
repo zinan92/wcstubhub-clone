@@ -1,0 +1,51 @@
+{
+  "featureId": "toast-modal-empty-states",
+  "reviewedAt": "2026-03-26T02:10:00.000Z",
+  "commitId": "7aa85e86",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Feature implementation covers all four requirements: (1) toast notifications for login/logout/registration via useToast hook, (2) all modal dialogs replaced with AnimatedModal (product detail purchase/for-sale, event detail, admin delete confirmations), (3) EmptyState component created and applied to search results (goods, football, basketball, concert) and orders page, (4) floating CS button polished with shadow-elevated, min 48px, and whileTap animation. Tests updated correctly (278 pass). All old-style raw modal divs (fixed inset-0 bg-black bg-opacity) have been fully eliminated from the codebase. The AnimatedModal correctly provides slide-up animation with spring physics and backdrop fade.",
+    "issues": [
+      {
+        "file": "app/my/page.tsx",
+        "line": 63,
+        "severity": "non_blocking",
+        "description": "Logout toast is shown before signOut() which triggers a full page redirect. The toast will be briefly visible then destroyed on navigation. This may result in the user not seeing the toast message depending on redirect timing. Consider showing the toast on the destination page (/login) instead, or using a cookie-based approach."
+      },
+      {
+        "file": "app/basketball/page.tsx",
+        "line": 116,
+        "severity": "non_blocking",
+        "description": "Basketball empty state uses Package icon while football uses Trophy. A more contextually appropriate icon (e.g., Trophy or a basketball-related icon) would be more consistent. The handoff summary claims 'contextually appropriate icons (Package, Trophy, Music)' but basketball got the generic Package icon instead of Trophy."
+      },
+      {
+        "file": "components/ui/EmptyState.tsx",
+        "line": 1,
+        "severity": "non_blocking",
+        "description": "EmptyState has 'use client' directive but uses no client-side features (no hooks, event handlers, or browser APIs). It's a pure render component and could be a server component. Harmless since it's always rendered inside client components, but unnecessary."
+      },
+      {
+        "file": "components/ui/EmptyState.tsx",
+        "line": 14,
+        "severity": "non_blocking",
+        "description": "EmptyState uses standard Tailwind gray classes (bg-gray-100, text-gray-400, text-gray-900, text-gray-500) instead of the project's semantic color tokens (surface-*, muted-*). AGENTS.md recommends semantic token classes. Not a functional issue but inconsistent with project conventions."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "EmptyState component uses standard Tailwind gray utilities (bg-gray-100, text-gray-400, text-gray-900) rather than the project's semantic surface/muted tokens. AGENTS.md says 'ALWAYS use semantic token classes' but the existing guidance examples only show text-primary, bg-accent — it doesn't explicitly call out gray/neutral colors. Workers may interpret this as only applying to brand colors. The convention could be more explicit about neutral/gray colors using surface-* or muted-* tokens.",
+      "evidence": "components/ui/EmptyState.tsx lines 14-17 use bg-gray-100, text-gray-400, text-gray-900, text-gray-500. Compare to tailwind.config.ts which defines surface and muted color palettes with equivalent shades."
+    },
+    {
+      "area": "conventions",
+      "observation": "The logout toast pattern (showToast before signOut redirect) is a questionable UX pattern that should be documented as a known limitation or have a recommended approach in AGENTS.md — e.g., using a cookie/query param to show the toast on the landing page after redirect.",
+      "evidence": "app/my/page.tsx:63 — showToast() called immediately before signOut({ callbackUrl: '/login' }), which triggers a full page redirect that will destroy the toast DOM."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature passes review. All four sub-requirements are implemented: toast notifications on login/logout/registration, all modals replaced with AnimatedModal (slide-up animation), EmptyState component created and applied to 5 locations (goods search, football, basketball, concert, orders), and floating CS button polished with shadow-elevated/48px/whileTap. 19 files changed with 248 additions and 143 deletions. All 278 tests pass, typecheck and lint clean. Four non-blocking issues noted: logout toast may not be visible due to redirect timing, basketball uses generic Package icon, EmptyState has unnecessary 'use client', and gray Tailwind utilities used instead of semantic tokens."
+}

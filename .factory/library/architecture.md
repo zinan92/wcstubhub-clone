@@ -31,7 +31,7 @@ Architectural decisions, patterns discovered, and conventions.
 ## Layout Conventions
 
 - **Bottom padding on user pages**: All user-facing pages (those with bottom tab bar) MUST use `pb-20` (or equivalent ~5rem bottom padding) to prevent content from being hidden behind the fixed bottom tab navigation bar.
-- **LayoutWrapper**: The root layout uses a client-side `LayoutWrapper` component that conditionally shows/hides the `BottomTabNavigation` based on the current route. Auth pages (`/login`, `/register`) and admin pages (`/admin/*`) do not show the tab bar.
+- **LayoutWrapper**: The root layout uses a client-side `LayoutWrapper` component that conditionally shows/hides the `BottomTabNavigation` based on the current route. Auth pages (`/login`, `/register`), admin pages (`/admin/*`), product detail pages (`/products/*`), and event detail pages (`/events/*`) do not show the tab bar. Only the 5 main tab routes show it.
 
 ## Auth Patterns
 
