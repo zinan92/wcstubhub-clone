@@ -352,11 +352,10 @@ describe('MyListingsPage', () => {
     render(<MyListingsPage />);
 
     await waitFor(() => {
-      // BuyerProtection component should be rendered
-      const buyerProtection = document.querySelector('[class*="buyer-protection"]') || 
-                             document.body.textContent?.includes('Buyer Protection') ||
-                             document.body.textContent?.includes('100% Buyer Guarantee');
-      expect(buyerProtection).toBeTruthy();
+      // BuyerProtection component should be rendered with specific elements
+      expect(screen.getByText('Buyer Protection')).toBeInTheDocument();
+      expect(screen.getByText('100% Money-Back Guarantee. Every purchase is protected.')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /learn more/i })).toBeInTheDocument();
     });
   });
 
@@ -396,5 +395,36 @@ describe('MyListingsPage', () => {
     expect(screen.getByText('Active')).toBeInTheDocument();
     // Reference shows listing prefix
     expect(screen.getByText('LIST-001')).toBeInTheDocument();
+  });
+
+  it('displays error state when fetch fails with HTTP error', async () => {
+    global.fetch = vi.fn(() =>
+      Promise.resolve({
+        ok: false,
+        status: 500,
+      })
+    ) as any;
+
+    render(<MyListingsPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Unable to Load Listings')).toBeInTheDocument();
+      expect(screen.getByText('Failed to load listings. Please try again.')).toBeInTheDocument();
+      expect(screen.getByText('Try Again')).toBeInTheDocument();
+    });
+  });
+
+  it('displays error state when fetch fails with network error', async () => {
+    global.fetch = vi.fn(() =>
+      Promise.reject(new Error('Network error'))
+    ) as any;
+
+    render(<MyListingsPage />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Unable to Load Listings')).toBeInTheDocument();
+      expect(screen.getByText('Unable to connect. Please check your connection and try again.')).toBeInTheDocument();
+      expect(screen.getByText('Try Again')).toBeInTheDocument();
+    });
   });
 });

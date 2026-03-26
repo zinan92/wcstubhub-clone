@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { prisma } from '@/lib/prisma';
 import { Prisma } from '@prisma/client';
+import { OwnedAssetNotFoundError, InsufficientQuantityError } from '@/lib/errors';
 
 // GET /api/user/listings - Fetch authenticated user's listings
 export async function GET(request: NextRequest) {
@@ -103,11 +104,11 @@ export async function POST(request: NextRequest) {
         });
 
         if (!ownedAsset) {
-          throw new Error('Owned asset not found or does not belong to user');
+          throw new OwnedAssetNotFoundError();
         }
 
         if (ownedAsset.quantityAvailable < quantity) {
-          throw new Error('Insufficient quantity available for listing');
+          throw new InsufficientQuantityError();
         }
 
         // Update owned asset to mark quantity as listed
@@ -142,20 +143,19 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error creating listing:', error);
     
-    // Handle custom business logic errors
-    if (error instanceof Error) {
-      if (error.message === 'Owned asset not found or does not belong to user') {
-        return NextResponse.json(
-          { error: error.message },
-          { status: 404 }
-        );
-      }
-      if (error.message === 'Insufficient quantity available for listing') {
-        return NextResponse.json(
-          { error: error.message },
-          { status: 400 }
-        );
-      }
+    // Handle custom business logic errors with type-safe error classes
+    if (error instanceof OwnedAssetNotFoundError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 404 }
+      );
+    }
+    
+    if (error instanceof InsufficientQuantityError) {
+      return NextResponse.json(
+        { error: error.message },
+        { status: 400 }
+      );
     }
     
     // Handle Prisma unique constraint violation

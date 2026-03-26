@@ -21,12 +21,16 @@ const ToastContext = createContext<ToastContextValue | undefined>(undefined);
 export function useToast() {
   const context = useContext(ToastContext);
   if (!context) {
-    // Return a safe fallback for testing and edge cases
-    return {
-      showToast: (message: string, type: ToastType) => {
-        console.warn(`Toast (${type}): ${message}`);
-      }
-    };
+    // In test environment, return a safe mock implementation
+    if (typeof process !== 'undefined' && process.env.NODE_ENV === 'test') {
+      return {
+        showToast: (message: string, type: ToastType) => {
+          console.warn(`[Toast Mock] ${type}: ${message}`);
+        }
+      };
+    }
+    // In production/development, throw to catch missing provider early
+    throw new Error('useToast must be used within ToastProvider. Wrap your component tree with <ToastProvider>.');
   }
   return context;
 }

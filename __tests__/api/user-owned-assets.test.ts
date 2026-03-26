@@ -248,4 +248,33 @@ describe('POST /api/user/owned-assets', () => {
     const data = await response.json();
     expect(data.error).toBe('Quantity must be greater than 0');
   });
+
+  it('returns 400 for invalid purchase price', async () => {
+    vi.mocked(getServerSession).mockResolvedValue({
+      user: { email: 'test@example.com' },
+    } as any);
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({ id: 'user-1' } as any);
+
+    const requestBody = {
+      itemType: 'event',
+      itemId: 'event-1',
+      itemName: 'Test Event',
+      itemImageUrl: '/test.jpg',
+      purchasePrice: 0, // invalid purchase price
+      quantity: 2,
+    };
+
+    const request = new NextRequest('http://localhost:3100/api/user/owned-assets', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(requestBody),
+    });
+    const response = await POST(request);
+
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data.error).toBe('Purchase price must be greater than 0');
+  });
 });

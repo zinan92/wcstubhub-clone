@@ -268,4 +268,153 @@ describe('POST /api/user/listings', () => {
     const data = await response.json();
     expect(data.error).toBe('Ask price must be greater than 0');
   });
+
+  it('creates listing with ownedAssetId and updates owned asset quantity', async () => {
+    const mockUser = { id: 'user-1', email: 'test@example.com' };
+    const mockOwnedAsset = {
+      id: 'asset-1',
+      userId: 'user-1',
+      quantityAvailable: 5,
+      status: 'confirmed',
+    };
+    const mockListing = {
+      id: 'listing-1',
+      sellerId: 'user-1',
+      ownedAssetId: 'asset-1',
+      itemType: 'event',
+      itemId: 'event-1',
+      itemName: 'Test Event',
+      itemImageUrl: '/test.jpg',
+      askPrice: 120,
+      quantity: 2,
+      status: 'active',
+      referenceNumber: 'LST-20260326-ABC123',
+      listedAt: new Date(),
+      soldAt: null,
+      cancelledAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    vi.mocked(getServerSession).mockResolvedValue({
+      user: { email: 'test@example.com' },
+    } as any);
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any);
+    
+    // Mock $transaction to execute the callback with proper owned asset validation
+    vi.mocked(prisma.$transaction).mockImplementation(async (callback: any) => {
+      const tx = {
+        listing: {
+          create: vi.fn().mockResolvedValue(mockListing),
+        },
+        ownedAsset: {
+          findFirst: vi.fn().mockResolvedValue(mockOwnedAsset),
+          update: vi.fn().mockResolvedValue({
+            ...mockOwnedAsset,
+            quantityAvailable: 3,
+          }),
+        },
+      };
+      return callback(tx);
+    });
+
+    const request = new NextRequest('http://localhost:3100/api/user/listings', {
+      method: 'POST',
+      body: JSON.stringify({
+        itemType: 'event',
+        itemId: 'event-1',
+        itemName: 'Test Event',
+        itemImageUrl: '/test.jpg',
+        askPrice: 120,
+        quantity: 2,
+        ownedAssetId: 'asset-1',
+      }),
+    });
+    const response = await POST(request);
+
+    expect(response.status).toBe(201);
+    const data = await response.json();
+    expect(data.id).toBe('listing-1');
+    expect(data.ownedAssetId).toBe('asset-1');
+  });
+
+  it('returns 404 when ownedAssetId does not exist or does not belong to user', async () => {
+    const mockUser = { id: 'user-1', email: 'test@example.com' };
+
+    vi.mocked(getServerSession).mockResolvedValue({
+      user: { email: 'test@example.com' },
+    } as any);
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any);
+    
+    // Mock $transaction to simulate owned asset not found
+    vi.mocked(prisma.$transaction).mockImplementation(async (callback: any) => {
+      const tx = {
+        ownedAsset: {
+          findFirst: vi.fn().mockResolvedValue(null),
+        },
+      };
+      return callback(tx);
+    });
+
+    const request = new NextRequest('http://localhost:3100/api/user/listings', {
+      method: 'POST',
+      body: JSON.stringify({
+        itemType: 'event',
+        itemId: 'event-1',
+        itemName: 'Test Event',
+        itemImageUrl: '/test.jpg',
+        askPrice: 120,
+        quantity: 2,
+        ownedAssetId: 'asset-999',
+      }),
+    });
+    const response = await POST(request);
+
+    expect(response.status).toBe(404);
+    const data = await response.json();
+    expect(data.error).toBe('Owned asset not found or does not belong to user');
+  });
+
+  it('returns 400 when insufficient quantity available in owned asset', async () => {
+    const mockUser = { id: 'user-1', email: 'test@example.com' };
+    const mockOwnedAsset = {
+      id: 'asset-1',
+      userId: 'user-1',
+      quantityAvailable: 1, // Only 1 available, but trying to list 2
+      status: 'confirmed',
+    };
+
+    vi.mocked(getServerSession).mockResolvedValue({
+      user: { email: 'test@example.com' },
+    } as any);
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser as any);
+    
+    // Mock $transaction to simulate insufficient quantity
+    vi.mocked(prisma.$transaction).mockImplementation(async (callback: any) => {
+      const tx = {
+        ownedAsset: {
+          findFirst: vi.fn().mockResolvedValue(mockOwnedAsset),
+        },
+      };
+      return callback(tx);
+    });
+
+    const request = new NextRequest('http://localhost:3100/api/user/listings', {
+      method: 'POST',
+      body: JSON.stringify({
+        itemType: 'event',
+        itemId: 'event-1',
+        itemName: 'Test Event',
+        itemImageUrl: '/test.jpg',
+        askPrice: 120,
+        quantity: 2,
+        ownedAssetId: 'asset-1',
+      }),
+    });
+    const response = await POST(request);
+
+    expect(response.status).toBe(400);
+    const data = await response.json();
+    expect(data.error).toBe('Insufficient quantity available for listing');
+  });
 });
