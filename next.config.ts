@@ -1,9 +1,6 @@
 import type { NextConfig } from "next";
-import path from "path";
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
-  outputFileTracingRoot: path.join(__dirname, './'),
   images: {
     remotePatterns: [
       {
@@ -11,6 +8,11 @@ const nextConfig: NextConfig = {
         hostname: 'flagcdn.com',
       },
     ],
+  },
+  // Include the SQLite database in serverless function bundles for Vercel
+  outputFileTracingIncludes: {
+    '/api/*': ['./prisma/dev.db'],
+    '/*': ['./prisma/dev.db'],
   },
 };
 
