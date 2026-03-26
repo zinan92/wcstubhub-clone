@@ -1,0 +1,56 @@
+{
+  "milestone": "page-polish",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 20,
+    "passed": 14,
+    "failed": 6,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-ADD-001",
+    "VAL-ADD-002",
+    "VAL-CROSS-001",
+    "VAL-CROSS-002",
+    "VAL-CROSS-005",
+    "VAL-CROSS-007",
+    "VAL-VIS-001",
+    "VAL-VIS-002",
+    "VAL-VIS-003",
+    "VAL-VIS-004",
+    "VAL-VIS-005",
+    "VAL-VIS-008",
+    "VAL-VIS-010",
+    "VAL-VIS-011"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-CROSS-004",
+      "reason": "Event detail page exceeded viewport width by 1px at mobile size."
+    },
+    {
+      "id": "VAL-CROSS-006",
+      "reason": "A directly tested event detail ID returned 'Event not found', so not all tested event-detail functionality behaved cleanly."
+    },
+    {
+      "id": "VAL-VIS-006",
+      "reason": "Basketball cards did not present the distinctive polished card treatment required by the assertion."
+    },
+    {
+      "id": "VAL-VIS-007",
+      "reason": "Concert cards lacked the specified imagery and overlay-based visual treatment."
+    },
+    {
+      "id": "VAL-VIS-009",
+      "reason": "Expected styled order cards with thumbnails, price, and badges were not visible in the tested mobile flows."
+    },
+    {
+      "id": "VAL-VIS-012",
+      "reason": "Event detail lacked the specified full-width hero image and also overflowed horizontally by 1px."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}
