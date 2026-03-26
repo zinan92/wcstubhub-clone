@@ -1,6 +1,6 @@
 # wcstubhub-clone
 
-A sports merchandise and event ticket marketplace, built as a clone of wcstubhub.com (SAE-A Trading). Users can browse and purchase goods, football and basketball event tickets, and concert tickets. Includes a full admin panel for managing products, events, users, and orders.
+A premium mobile-first ticket marketplace and sports merchandise platform, built as a clone of wcstubhub.com (SAE-A Trading). Users can browse and purchase goods, football and basketball event tickets, and concert tickets with full guest access, trust architecture, listing intelligence badges, and multi-step transaction flows. Includes a comprehensive admin panel and account center with ticket/listing management.
 
 ## Tech Stack
 
@@ -48,10 +48,10 @@ pnpm db:seed
 ### Run the Dev Server
 
 ```bash
-PORT=3100 pnpm dev
+pnpm dev
 ```
 
-The app will be available at [http://localhost:3100](http://localhost:3100).
+The app will be available at [http://localhost:3000](http://localhost:3000).
 
 ## Available Scripts
 
@@ -72,6 +72,7 @@ wcstubhub-clone/
 ├── app/
 │   ├── page.tsx                # Home (Goods tab)
 │   ├── layout.tsx              # Root layout
+│   ├── template.tsx            # Page transition animations
 │   ├── football/               # Football events tab
 │   ├── basketball/             # Basketball events tab
 │   ├── concert/                # Concert events tab
@@ -79,7 +80,9 @@ wcstubhub-clone/
 │   ├── products/               # Product detail pages
 │   ├── login/                  # Login page
 │   ├── register/               # Registration page
-│   ├── my/                     # Profile tab and settings
+│   ├── my/                     # Account center
+│   │   ├── tickets/            # My Tickets (purchased)
+│   │   ├── listings/           # My Listings (for sale)
 │   │   ├── orders/             # Order history
 │   │   ├── vip/                # VIP membership info
 │   │   ├── personal/           # Personal info
@@ -94,26 +97,28 @@ wcstubhub-clone/
 │   │   ├── products/           # Product management (CRUD)
 │   │   ├── events/             # Event management (CRUD)
 │   │   ├── users/              # User management
-│   │   └── orders/             # Order management
+│   │   ├── orders/             # Order management
+│   │   ├── owned-assets/       # Owned asset management
+│   │   └── listings/           # Listing management
 │   └── api/                    # API routes
 │       ├── auth/               # NextAuth endpoints
 │       ├── products/           # Product API
 │       ├── events/             # Event API
-│       ├── user/               # User API
+│       ├── user/               # User API (orders, owned-assets, listings)
 │       ├── vip-tiers/          # VIP tier API
 │       └── admin/              # Admin API routes
 ├── components/                 # Shared UI components
 │   ├── ui/                     # Design system primitives
-│   │   ├── AnimatedModal.tsx   # Animated modal with backdrop
-│   │   ├── Button.tsx          # Styled button component
-│   │   ├── Skeleton.tsx        # Skeleton loading placeholders
-│   │   └── Toast.tsx           # Toast notification system
-│   ├── BottomTabNavigation.tsx # Frosted glass bottom tab bar
-│   ├── LayoutWrapper.tsx       # Layout wrapper
+│   ├── trust/                  # Trust architecture components
+│   ├── listing-intelligence/   # Listing intelligence badges
+│   ├── purchase/               # Multi-step purchase flow
+│   ├── listing/                # Multi-step listing flow
 │   ├── goods/                  # Goods page components
 │   ├── football/               # Football page components
 │   ├── basketball/             # Basketball page components
-│   └── concert/                # Concert page components
+│   ├── concert/                # Concert page components
+│   ├── BottomTabNavigation.tsx # Frosted glass bottom tab bar
+│   └── LayoutWrapper.tsx       # Layout wrapper
 ├── lib/
 │   ├── auth.ts                 # NextAuth configuration
 │   └── prisma.ts               # Prisma client singleton
@@ -121,8 +126,8 @@ wcstubhub-clone/
 │   ├── schema.prisma           # Database schema
 │   └── seed.ts                 # Database seed script
 ├── types/                      # TypeScript type definitions
-├── __tests__/                  # Test suite (36 files, 250+ tests)
-│   ├── api/                    # API route tests
+├── __tests__/                  # Test suite (47 files, 354 tests)
+│   ├── api/                    # API route tests (incl. admin/)
 │   ├── components/             # Component tests
 │   ├── layouts/                # Layout tests
 │   └── cross-area-flows.test.tsx
@@ -132,22 +137,50 @@ wcstubhub-clone/
 
 ## Features
 
-### User-Facing
+### Marketplace Browsing
 
-- **Goods tab (Home):** Browse FIFA World Cup 2026 jersey merchandise with real product images (country flag CDN), sports-themed gradient banners, categories, and detailed product pages
+- **Goods tab (Home):** Browse FIFA World Cup 2026 jersey merchandise with real product images, sports-themed gradient banners, categories, and detailed product pages
 - **Football tab:** Upcoming football matches displayed as country-flag VS layout cards with staggered entrance animations
 - **Basketball tab:** Basketball games in distinctive dark-themed cards with staggered animations
 - **Concert tab:** Music events presented in purple gradient concert cards
+- **Guest access:** Full marketplace browsing without authentication; auth required only for transactions
 - **Product/Event detail pages:** Polished detail pages with image galleries, pricing, and remaining quantity
-- **User authentication:** Premium login and registration pages with gradient backgrounds and animated transitions
+
+### Trust Architecture
+
+- **Buyer Protection:** Trust header with buyer protection messaging on detail pages
+- **Trust Badges:** Verified Seller, Official Merchandise, and Secure Delivery badges
+- **Trust Messaging:** Contextual trust signals throughout the purchase flow
+
+### Listing Intelligence
+
+- **Best Value:** Algorithmic badge highlighting best-priced listings
+- **Selling Fast / Only X Left:** Urgency indicators based on stock and sales velocity
+- **Verified Listing:** Badge for listings that meet verification criteria
+
+### Transaction Flows
+
+- **Multi-step purchase:** Quantity selection → order summary → confirmation with persisted DB writes
+- **Multi-step listing:** Create listing flow with quantity, pricing, summary, and confirmation steps
+- **Order tracking:** Full status lifecycle (pending, confirmed, shipped, delivered, cancelled)
+
+### Account Center
+
+- **My Tickets:** View purchased tickets with status tracking and error/retry states
+- **My Listings:** View and manage created listings with lifecycle status indicators
 - **Profile (My tab):** Account info, VIP level with tier gradients, balance, points, and order history
-- **Order management:** Track purchase and sale orders with status indicators
 - **Settings:** Personal info, bank card, security, notifications, language, company info
+
+### Authentication
+
+- **Login/Register:** Premium pages with gradient backgrounds and animated transitions
+- **NextAuth.js:** Session-based auth with credential provider
+- **VIP Tiers:** Tiered membership system with level-based perks
 
 ### Design System and UX
 
 - **Design tokens:** 6 semantic color groups (primary, accent, success, warning, error, surface), custom shadows (soft, card, elevated), and border-radius tokens (card, modal) defined in Tailwind config
-- **Shared UI components:** AnimatedModal, Toast notifications, Skeleton loading placeholders, and styled Button -- all in `components/ui/`
+- **Shared UI components:** AnimatedModal, Toast notifications, Skeleton loading placeholders, and styled Button in `components/ui/`
 - **Page transitions:** Animated route transitions via `app/template.tsx` using Motion (Framer Motion v12)
 - **Mobile-first navigation:** Frosted glass bottom tab bar (`backdrop-blur-xl`) with animated active indicators and 44px+ touch targets
 - **Loading states:** Skeleton placeholders replace spinners across all data-fetching pages
@@ -157,20 +190,24 @@ wcstubhub-clone/
 
 ### Admin Panel
 
-- **Dashboard:** Overview of platform metrics, styled with the shared design tokens
+- **Dashboard:** Overview of platform metrics with styled cards
 - **Product management:** Create, read, update, and delete merchandise listings
 - **Event management:** Create, read, update, and delete football, basketball, and concert events
 - **User management:** View and manage registered users
 - **Order management:** View and manage all orders
+- **Owned Assets:** View and manage user-owned assets (purchased items)
+- **Listings:** View and manage marketplace listings
 
 ## Data Model
 
-The database includes five main models:
+The database includes seven main models:
 
 - **User** -- Accounts with email/phone, VIP level, balance, points, and invite codes
 - **Product** -- Merchandise items with name, description, image, price, category, and stock
 - **Event** -- Football, basketball, or concert events with teams/artists, venue, date, and price
 - **Order** -- Purchase records linking users to products or events with status tracking
+- **OwnedAsset** -- User-owned tickets/merchandise with lifecycle status (active, used, expired, transferred)
+- **Listing** -- Marketplace listings for resale with status (draft, active, sold, cancelled, expired)
 - **VipTier** -- VIP level definitions with thresholds
 
 ## Test Credentials
