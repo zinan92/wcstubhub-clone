@@ -1,12 +1,15 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { SessionProvider } from 'next-auth/react';
 import EventDetailPage from '@/app/events/[id]/page';
 
 // Mock next/navigation
 const mockBack = vi.fn();
+const mockPush = vi.fn();
 vi.mock('next/navigation', () => ({
   useRouter: () => ({
     back: mockBack,
+    push: mockPush,
   }),
 }));
 
@@ -42,9 +45,18 @@ const mockConcertEvent = {
 // Mock fetch
 global.fetch = vi.fn();
 
+const renderWithSession = (component: React.ReactElement, session: any = { user: { email: 'test@example.com' }, expires: '2099-01-01' }) => {
+  return render(
+    <SessionProvider session={session}>
+      {component}
+    </SessionProvider>
+  );
+};
+
 describe('EventDetailPage', () => {
   beforeEach(() => {
     mockBack.mockClear();
+    mockPush.mockClear();
     vi.clearAllMocks();
   });
 
@@ -54,7 +66,7 @@ describe('EventDetailPage', () => {
       json: async () => mockFootballEvent,
     });
 
-    render(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
+    renderWithSession(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Jordan')).toBeInTheDocument();
@@ -76,7 +88,7 @@ describe('EventDetailPage', () => {
       json: async () => mockFootballEvent,
     });
 
-    render(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
+    renderWithSession(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Jordan')).toBeInTheDocument();
@@ -94,7 +106,7 @@ describe('EventDetailPage', () => {
       json: async () => mockFootballEvent,
     });
 
-    render(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
+    renderWithSession(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Jordan')).toBeInTheDocument();
@@ -110,7 +122,7 @@ describe('EventDetailPage', () => {
       json: async () => mockFootballEvent,
     });
 
-    render(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
+    renderWithSession(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Jordan')).toBeInTheDocument();
@@ -130,7 +142,7 @@ describe('EventDetailPage', () => {
       json: async () => mockFootballEvent,
     });
 
-    render(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
+    renderWithSession(<EventDetailPage params={Promise.resolve({ id: 'football-1' })} />);
 
     await waitFor(() => {
       expect(screen.getByText('Jordan')).toBeInTheDocument();

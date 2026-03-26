@@ -2,11 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 import AnimatedModal from '@/components/ui/AnimatedModal';
 import Button from '@/components/ui/Button';
+import { BuyerProtection, TrustBadgesGroup, TrustMessaging } from '@/components/trust';
 
 interface Event {
   id: string;
@@ -31,6 +33,7 @@ interface EventDetailPageProps {
 
 export default function EventDetailPage({ params }: EventDetailPageProps) {
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [event, setEvent] = useState<Event | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showPurchaseDialog, setShowPurchaseDialog] = useState(false);
@@ -72,10 +75,20 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
   };
 
   const handlePurchase = () => {
+    if (status !== 'authenticated') {
+      // Redirect to login with callback URL
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/events/${eventId}`)}`);
+      return;
+    }
     setShowPurchaseDialog(true);
   };
 
   const handleForSale = () => {
+    if (status !== 'authenticated') {
+      // Redirect to login with callback URL
+      router.push(`/login?callbackUrl=${encodeURIComponent(`/events/${eventId}`)}`);
+      return;
+    }
     setShowForSaleDialog(true);
   };
 
@@ -238,6 +251,22 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             </p>
           </div>
         )}
+
+        {/* Trust Badges */}
+        <div className="mb-6">
+          <TrustBadgesGroup badges={['official', 'buyer-protected', 'secure-delivery']} size="sm" />
+        </div>
+
+        {/* Buyer Protection - Compact */}
+        <div className="mb-6">
+          <BuyerProtection variant="compact" />
+        </div>
+
+        {/* Trust Messaging near CTA */}
+        <div className="mb-24 space-y-3">
+          <TrustMessaging variant="guarantee" />
+          <TrustMessaging variant="support" />
+        </div>
       </div>
 
       {/* Action Buttons - Fixed at Bottom, consistent with product detail */}

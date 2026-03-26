@@ -80,3 +80,10 @@ This mission is a VISUAL overhaul. Validation focuses on:
 - **No functional regression:** Login, navigation, data fetching, modals all work as before.
 - **No horizontal overflow:** At 375px, no page should scroll horizontally.
 - **Design token compliance:** No hard-coded hex colors in components (verified via grep).
+
+
+## Trust & Transaction Mission Notes
+- Public guest validation is required on home, category, and detail pages.
+- Account and admin surfaces remain auth-protected.
+- Validate pseudo purchase and pseudo listing persistence through account surfaces.
+- Keep max concurrent browser validators at 2.

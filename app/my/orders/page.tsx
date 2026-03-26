@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { ArrowLeft, Package } from 'lucide-react';
 import Image from 'next/image';
 import EmptyState from '@/components/ui/EmptyState';
+import { BuyerProtection, TrustMessaging } from '@/components/trust';
 
 interface Order {
   id: string;
@@ -228,6 +229,13 @@ export default function OrderRecordPage() {
             subtext="Your orders will appear here"
           />
         )}
+
+        {/* Trust and Support Messaging */}
+        <div className="mt-6 space-y-4">
+          <TrustMessaging variant="support" />
+          <TrustMessaging variant="refund" />
+          <BuyerProtection variant="compact" />
+        </div>
       </div>
     </main>
   );

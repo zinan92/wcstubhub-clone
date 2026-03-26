@@ -8,6 +8,7 @@ import SearchBar from '@/components/goods/SearchBar';
 import ProductGrid from '@/components/goods/ProductGrid';
 import FloatingCustomerService from '@/components/goods/FloatingCustomerService';
 import { ProductCardSkeleton } from '@/components/ui/Skeleton';
+import { BuyerProtection } from '@/components/trust';
 
 interface Product {
   id: string;
@@ -104,6 +105,11 @@ export default function Home() {
             </m.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Buyer Protection Section */}
+      <div className="px-4 pt-6 pb-4">
+        <BuyerProtection variant="compact" />
       </div>
 
       {/* Floating Customer Service Icon */}

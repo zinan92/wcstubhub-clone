@@ -44,14 +44,38 @@ export default withAuth(
       authorized: ({ token, req }) => {
         const { pathname } = req.nextUrl;
 
-        // Allow access to login and register pages without authentication
-        if (pathname === '/login' || pathname === '/register' || pathname === '/admin/login') {
+        // Public routes accessible to guests
+        const publicRoutes = [
+          '/',
+          '/football',
+          '/basketball',
+          '/concert',
+          '/login',
+          '/register',
+          '/admin/login',
+        ];
+
+        // Allow public routes without authentication
+        if (publicRoutes.includes(pathname)) {
+          return true;
+        }
+
+        // Allow public detail pages for products and events
+        if (pathname.startsWith('/products/') || pathname.startsWith('/events/')) {
           return true;
         }
 
         // For admin routes, handle in middleware function above
         // Return true here to let middleware handle the role check
         if (pathname.startsWith('/admin')) {
+          return true;
+        }
+
+        // Protect /my/** routes - require authentication
+        if (pathname.startsWith('/my')) {
+          if (!token) {
+            return false; // This triggers redirect to signIn page with callbackUrl
+          }
           return true;
         }
 

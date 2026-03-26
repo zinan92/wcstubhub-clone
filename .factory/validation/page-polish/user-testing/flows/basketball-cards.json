@@ -1,0 +1,43 @@
+{
+  "groupId": "basketball-cards",
+  "testedAt": "2026-03-26T00:00:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "9717ba3ecb62__u1",
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "credentials": {
+      "email": "test@example.com"
+    }
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-VIS-006",
+      "status": "pass",
+      "reason": "At 375px mobile viewport, basketball event cards render as rounded elevated containers with a dark-to-orange gradient background, 12px border radius, visible shadow, and orange-accent border. The basketball cards are visually distinct from football cards, which use a lighter flag-focused match layout without the same dark gradient card treatment. Screenshots confirm the polished container, shadow/elevation, differentiated background treatment, and contrast versus football cards.",
+      "evidence": {
+        "screenshots": [
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/page-polish/basketball-cards/VAL-VIS-006-login.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/page-polish/basketball-cards/VAL-VIS-006-football-reference.png",
+          "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/evidence/page-polish/basketball-cards/VAL-VIS-006-basketball-page.png"
+        ],
+        "consoleErrors": "none; console showed only React DevTools info plus Next.js smooth-scroll and Fast Refresh development warnings",
+        "network": "No tracked requests captured by agent-browser network requests during this validation"
+      },
+      "observations": [
+        "Basketball card anchor elements use classes including bg-gradient-to-br from-gray-900 via-gray-800 to-orange-900 rounded-xl shadow-elevated border-2 border-orange-500/30.",
+        "Computed styles on basketball cards showed 12px border radius and box shadows up to rgba(0, 0, 0, 0.16) 0px 8px 32px 0px.",
+        "Basketball page had no horizontal overflow at 375px (scrollWidth 375, clientWidth 375).",
+        "Football reference cards did not present the same dark gradient/orange-accent card treatment, making basketball cards visually distinct."
+      ]
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Validated 1 assertion (VAL-VIS-006): passed. Basketball cards have a distinctive polished design and are visually differentiated from football cards at 375px."
+}

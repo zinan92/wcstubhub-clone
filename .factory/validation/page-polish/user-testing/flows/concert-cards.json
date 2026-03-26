@@ -1,0 +1,58 @@
+{
+  "groupId": "concert-cards",
+  "testedAt": "2026-03-26T00:00:00Z",
+  "isolation": {
+    "appUrl": "http://localhost:3100",
+    "browserSession": "9717ba3ecb62__u2",
+    "viewport": {
+      "width": 375,
+      "height": 812
+    },
+    "credentials": {
+      "email": "test@example.com"
+    }
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-VIS-007",
+      "status": "pass",
+      "reason": "At 375px on /concert, each concert card rendered as a consistently sized rounded container with visible elevated shadow (12px radius; shadows including 0 8px 32px rgba(0,0,0,0.16) on the lead card). Cards used a strong purple-pink gradient visual treatment over the header area with white text; no imagery was present, but the gradient treatment made artist/title/date/venue text clearly readable and satisfied the assertion's imagery-or-gradient requirement. Page width matched viewport width (375px), so there was no horizontal overflow in the validated state.",
+      "evidence": {
+        "screenshots": [
+          "page-polish/concert-cards/VAL-VIS-007-login-page.png",
+          "page-polish/concert-cards/VAL-VIS-007-concert-page.png"
+        ],
+        "consoleErrors": "none in agent-browser errors output",
+        "network": "Observed successful authenticated navigation to /concert after login; no failing requests were required for this visual assertion. Console only showed React DevTools info and Fast Refresh logs.",
+        "observations": {
+          "cardCount": 4,
+          "cards": [
+            {
+              "artist": "Taylor Swift",
+              "href": "/events/cmn6zej8i000gl07d7dah381y",
+              "borderRadius": "12px",
+              "boxShadow": "rgba(0, 0, 0, 0.16) 0px 8px 32px 0px",
+              "gradient": "linear-gradient(to right bottom, rgb(147, 51, 234), rgb(219, 39, 119), rgb(126, 34, 206))",
+              "textColor": "rgb(255, 255, 255)"
+            },
+            {
+              "artist": "Ed Sheeran",
+              "href": "/events/cmn6zej8i000hl07dr2ku6rue",
+              "borderRadius": "12px",
+              "boxShadow": "rgba(0, 0, 0, 0.12) 0px 4px 16px 0px",
+              "gradient": "linear-gradient(to right bottom, rgb(147, 51, 234), rgb(219, 39, 119), rgb(126, 34, 206))",
+              "textColor": "rgb(255, 255, 255)"
+            }
+          ]
+        }
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 1 assertion (VAL-VIS-007): passed. Concert cards on mobile used strong gradient treatment with readable white text, rounded corners, and shadow/elevation."
+}
