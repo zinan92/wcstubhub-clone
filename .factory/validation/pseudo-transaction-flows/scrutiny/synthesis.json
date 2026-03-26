@@ -1,45 +1,39 @@
 {
   "milestone": "pseudo-transaction-flows",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "validatorsRun": {
-    "test": { "passed": false, "command": "npx vitest run", "exitCode": 1, "details": "304 passed, 3 failed (2 in ProductDetailPage.test.tsx, 1 in EventDetailPage.test.tsx). Failures: tests still assert on old 'Purchase request submitted successfully' modal text that was replaced by the new PurchaseFlowModal multi-step flow." },
+    "test": { "passed": true, "command": "npx vitest run", "exitCode": 0, "details": "44 test files, 307 tests passed, 0 failed" },
     "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
     "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
   },
   "reviewsSummary": {
     "total": 1,
-    "passed": 0,
-    "failed": 1,
-    "failedFeatures": ["pseudo-transaction-flows"]
+    "passed": 1,
+    "failed": 0,
+    "failedFeatures": []
   },
-  "blockingIssues": [
-    {
-      "featureId": "pseudo-transaction-flows",
-      "severity": "blocking",
-      "description": "3 pre-existing component tests broken by the modal-to-flow replacement. Tests in __tests__/components/goods/ProductDetailPage.test.tsx (lines 74, 87) and __tests__/components/events/EventDetailPage.test.tsx (line 95) still assert on 'Purchase request submitted successfully' text from the old simple dialog. The new PurchaseFlowModal shows 'Purchase Items/Tickets' and 'Select the quantity you want to purchase' as the first step. Tests must be updated to match the new multi-step flow behavior (quantity → summary → confirm → success)."
-    }
-  ],
+  "blockingIssues": [],
   "nonBlockingIssues": [
     {
-      "featureId": "pseudo-transaction-flows",
+      "featureId": "fix-broken-purchase-tests-and-quality",
       "severity": "non_blocking",
-      "description": "No validation that purchasePrice is a positive number in POST /api/user/owned-assets. The listings route correctly validates askPrice > 0, but the owned-assets route lacks equivalent validation for purchasePrice."
+      "description": "useToast hook was changed from throwing when outside ToastProvider to silently falling back to console.warn. This prevents test crashes but could mask real errors if a component is ever rendered outside the provider in production."
     },
     {
-      "featureId": "pseudo-transaction-flows",
+      "featureId": "fix-broken-purchase-tests-and-quality",
       "severity": "non_blocking",
-      "description": "The ownedAsset quantity check and update in POST /api/user/listings is not wrapped in a Prisma transaction. Under concurrent requests, a race condition could allow over-listing."
+      "description": "No test was added for the new purchasePrice > 0 validation in POST /api/user/owned-assets. The validation is correctly implemented but lacks dedicated test coverage."
     },
     {
-      "featureId": "pseudo-transaction-flows",
+      "featureId": "fix-broken-purchase-tests-and-quality",
       "severity": "non_blocking",
-      "description": "Error handling in PurchaseFlowModal.tsx and ListingEntryModal.tsx uses alert() instead of the project's existing Toast component."
+      "description": "No test exercises the $transaction with ownedAssetId path in POST /api/user/listings, which is the primary race condition prevention scenario."
     },
     {
-      "featureId": "pseudo-transaction-flows",
+      "featureId": "fix-broken-purchase-tests-and-quality",
       "severity": "non_blocking",
-      "description": "Reference number generation uses Math.random() which is not cryptographically secure. crypto.randomUUID() would be more robust."
+      "description": "String-based error matching in catch blocks for transaction errors is fragile; custom error classes would be more robust."
     }
   ],
   "appliedUpdates": [],
@@ -47,25 +41,35 @@
     {
       "target": "AGENTS.md",
       "suggestion": "Add to Testing & Validation Guidance: 'When modifying existing UI components or replacing UI behavior, workers MUST update all existing component tests that assert on the changed behavior. Run the full test suite after implementation and fix any test regressions before completing the feature.'",
-      "evidence": "Feature pseudo-transaction-flows replaced the simple Purchase confirmation dialog with a multi-step PurchaseFlowModal but did not update 3 pre-existing component tests (ProductDetailPage.test.tsx, EventDetailPage.test.tsx) that assert on the old modal text. Worker handoff claimed all 307 tests passed, indicating the test suite was not run correctly after the final changes.",
+      "evidence": "Feature pseudo-transaction-flows replaced the simple Purchase confirmation dialog with a multi-step PurchaseFlowModal but did not update 3 pre-existing component tests. This required a dedicated fix feature (fix-broken-purchase-tests-and-quality) to resolve the test failures.",
       "isSystemic": true
     },
     {
       "target": "AGENTS.md",
       "suggestion": "Add to UX Guidance: 'Use the project Toast component (components/ui/Toast) for user-facing error messages. Do not use browser alert() in production components.'",
-      "evidence": "PurchaseFlowModal.tsx and ListingEntryModal.tsx both use alert() for error feedback, while the project has a Toast component available in components/ui/. Architecture.md lists Toast as a shared UI component.",
+      "evidence": "PurchaseFlowModal.tsx and ListingEntryModal.tsx both originally used alert() for error feedback. The fix feature replaced these with the Toast component. Documenting this convention prevents recurrence.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add to Data Modeling Guidance: 'When adding validation to API routes, always add corresponding test cases that exercise the validation boundaries (e.g., invalid values returning 400).'",
+      "evidence": "Fix feature added purchasePrice > 0 validation to POST /api/user/owned-assets but did not add a test for it. The $transaction wrapping in listings route also lacks a test for the ownedAssetId path.",
       "isSystemic": false
     }
   ],
   "rejectedObservations": [
     {
-      "observation": "Skill procedure step 2 doesn't explicitly mention updating existing tests for UI changes",
-      "reason": "This is a general software engineering expectation rather than a skill-specific gap. The AGENTS.md suggestion above covers this more appropriately as project-level guidance."
+      "observation": "Worker skipped agent-browser verification for the fix feature",
+      "reason": "Justified - this was a test fix + minor code quality feature. Browser verification would not have revealed any additional issues since all changes were in test files, API route validation, and internal component error handling."
     },
     {
-      "observation": "Architecture.md lists Toast as a shared UI component but the new flow modals use alert() for error feedback instead",
-      "reason": "Duplicate of the AGENTS.md suggestion above about using Toast instead of alert()."
+      "observation": "The useToast fallback behavior change is a project-wide contract change that should be documented",
+      "reason": "Already captured as a non-blocking issue and the tradeoff is reasonable since ToastProvider wraps the entire app in LayoutWrapper.tsx. Documenting hook fallback conventions is too granular for AGENTS.md."
+    },
+    {
+      "observation": "String-based error matching pattern needs convention guidance in AGENTS.md",
+      "reason": "This is a pre-existing pattern, not introduced by the fix. Too granular for project-level guidance; would be better addressed in a future refactoring milestone if the pattern becomes widespread."
     }
   ],
-  "previousRound": null
+  "previousRound": ".factory/validation/pseudo-transaction-flows/scrutiny/synthesis-round1.json"
 }
