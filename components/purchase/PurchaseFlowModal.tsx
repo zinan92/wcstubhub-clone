@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import AnimatedModal from '@/components/ui/AnimatedModal';
 import Button from '@/components/ui/Button';
 
-interface ListingEntryModalProps {
+interface PurchaseFlowModalProps {
   isOpen: boolean;
   onClose: () => void;
   itemId: string;
@@ -18,7 +18,7 @@ interface ListingEntryModalProps {
 
 type FlowStep = 'quantity' | 'summary' | 'confirm' | 'success';
 
-export default function ListingEntryModal({
+export default function PurchaseFlowModal({
   isOpen,
   onClose,
   itemId,
@@ -27,11 +27,10 @@ export default function ListingEntryModal({
   itemImageUrl,
   maxQuantity,
   itemType,
-}: ListingEntryModalProps) {
+}: PurchaseFlowModalProps) {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState<FlowStep>('quantity');
   const [quantity, setQuantity] = useState(1);
-  const [askPrice, setAskPrice] = useState(itemPrice);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleQuantityNext = () => {
@@ -47,7 +46,7 @@ export default function ListingEntryModal({
   const handleConfirm = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/user/listings', {
+      const response = await fetch('/api/user/owned-assets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,19 +56,19 @@ export default function ListingEntryModal({
           itemId,
           itemName,
           itemImageUrl,
-          askPrice,
+          purchasePrice: itemPrice,
           quantity,
         }),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create listing');
+        throw new Error('Failed to create purchase');
       }
 
       setCurrentStep('success');
     } catch (error) {
-      console.error('Error creating listing:', error);
-      alert('Failed to create listing. Please try again.');
+      console.error('Error creating purchase:', error);
+      alert('Failed to complete purchase. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
@@ -79,16 +78,14 @@ export default function ListingEntryModal({
     // Reset state
     setCurrentStep('quantity');
     setQuantity(1);
-    setAskPrice(itemPrice);
-    // Redirect to My Listings
-    router.push('/my/listings');
+    // Redirect to My Tickets
+    router.push('/my/tickets');
   };
 
   const handleCancel = () => {
     // Reset state
     setCurrentStep('quantity');
     setQuantity(1);
-    setAskPrice(itemPrice);
     onClose();
   };
 
@@ -103,10 +100,10 @@ export default function ListingEntryModal({
   const renderQuantityStep = () => (
     <div className="p-6">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        Create Listing
+        Purchase {itemType === 'event' ? 'Tickets' : 'Items'}
       </h3>
       <p className="text-gray-700 mb-4">
-        List your {itemType === 'event' ? 'tickets' : 'items'} for sale
+        Select the quantity you want to purchase
       </p>
 
       <div className="mb-4">
@@ -117,6 +114,15 @@ export default function ListingEntryModal({
       </div>
 
       <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Price per {itemType === 'event' ? 'ticket' : 'item'}
+        </label>
+        <p className="text-gray-900 font-semibold text-xl text-primary-600">
+          ${itemPrice.toFixed(2)}
+        </p>
+      </div>
+
+      <div className="mb-6">
         <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">
           Quantity (max {maxQuantity})
         </label>
@@ -129,24 +135,6 @@ export default function ListingEntryModal({
           onChange={(e) => setQuantity(parseInt(e.target.value) || 1)}
           className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
         />
-      </div>
-
-      <div className="mb-6">
-        <label htmlFor="askPrice" className="block text-sm font-medium text-gray-700 mb-2">
-          Ask Price (per {itemType === 'event' ? 'ticket' : 'item'})
-        </label>
-        <div className="relative">
-          <span className="absolute left-3 top-2 text-gray-500">$</span>
-          <input
-            id="askPrice"
-            type="number"
-            min="0.01"
-            step="0.01"
-            value={askPrice}
-            onChange={(e) => setAskPrice(parseFloat(e.target.value) || itemPrice)}
-            className="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500"
-          />
-        </div>
       </div>
 
       <div className="flex gap-3">
@@ -163,7 +151,7 @@ export default function ListingEntryModal({
           variant="primary"
           size="lg"
           className="flex-1 min-h-[44px]"
-          disabled={quantity <= 0 || quantity > maxQuantity || askPrice <= 0}
+          disabled={quantity <= 0 || quantity > maxQuantity}
         >
           Next
         </Button>
@@ -172,15 +160,15 @@ export default function ListingEntryModal({
   );
 
   const renderSummaryStep = () => {
-    const totalValue = quantity * askPrice;
-    
+    const totalPrice = quantity * itemPrice;
+
     return (
       <div className="p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Listing Summary
+          Order Summary
         </h3>
         <p className="text-gray-700 mb-6">
-          Review your listing details
+          Review your order details
         </p>
 
         <div className="bg-gray-50 rounded-lg p-4 mb-6 space-y-3">
@@ -194,11 +182,11 @@ export default function ListingEntryModal({
           </div>
           <div className="flex justify-between">
             <span className="text-gray-600">Price per unit</span>
-            <span className="text-gray-900 font-medium">${askPrice.toFixed(2)}</span>
+            <span className="text-gray-900 font-medium">${itemPrice.toFixed(2)}</span>
           </div>
           <div className="border-t border-gray-200 pt-3 flex justify-between">
-            <span className="text-gray-900 font-semibold">Total Value</span>
-            <span className="text-primary-600 font-bold text-lg">${totalValue.toFixed(2)}</span>
+            <span className="text-gray-900 font-semibold">Total</span>
+            <span className="text-primary-600 font-bold text-lg">${totalPrice.toFixed(2)}</span>
           </div>
         </div>
 
@@ -225,23 +213,23 @@ export default function ListingEntryModal({
   };
 
   const renderConfirmStep = () => {
-    const totalValue = quantity * askPrice;
+    const totalPrice = quantity * itemPrice;
 
     return (
       <div className="p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4">
-          Confirm Listing
+          Confirm Purchase
         </h3>
         <p className="text-gray-700 mb-6">
-          Are you ready to list your {itemType === 'event' ? 'tickets' : 'items'} for sale?
+          Are you ready to complete your purchase?
         </p>
 
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
           <p className="text-sm text-blue-800 mb-2">
-            <strong>Total Value:</strong> ${totalValue.toFixed(2)}
+            <strong>Total:</strong> ${totalPrice.toFixed(2)}
           </p>
           <p className="text-sm text-blue-800">
-            This is a pseudo listing flow. Your listing will be recorded and visible in My Listings.
+            This is a pseudo purchase flow. Your order will be recorded and visible in My Tickets.
           </p>
         </div>
 
@@ -262,7 +250,7 @@ export default function ListingEntryModal({
             className="flex-1 min-h-[44px]"
             disabled={isSubmitting}
           >
-            {isSubmitting ? 'Creating...' : 'Confirm Listing'}
+            {isSubmitting ? 'Processing...' : 'Confirm Purchase'}
           </Button>
         </div>
       </div>
@@ -278,10 +266,10 @@ export default function ListingEntryModal({
           </svg>
         </div>
         <h3 className="text-lg font-semibold text-gray-900 mb-3">
-          Listing Created!
+          Purchase Complete!
         </h3>
         <p className="text-gray-700 mb-6">
-          Your {itemType === 'event' ? 'tickets' : 'items'} are now listed for sale
+          Your {itemType === 'event' ? 'tickets' : 'items'} have been added to My Tickets
         </p>
       </div>
 
@@ -291,7 +279,7 @@ export default function ListingEntryModal({
         size="lg"
         className="w-full min-h-[44px]"
       >
-        View My Listings
+        View My Tickets
       </Button>
     </div>
   );

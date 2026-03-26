@@ -3,62 +3,62 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { ArrowLeft, Ticket } from 'lucide-react';
+import { ArrowLeft, Tag } from 'lucide-react';
 import Image from 'next/image';
 import EmptyState from '@/components/ui/EmptyState';
 import { BuyerProtection } from '@/components/trust';
 
-interface OwnedAsset {
+interface Listing {
   id: string;
   itemType: 'product' | 'event';
   itemId: string;
   itemName: string;
   itemImageUrl: string;
-  purchasePrice: number;
+  askPrice: number;
   quantity: number;
-  quantityAvailable: number;
   status: string;
   referenceNumber: string;
-  purchasedAt: string;
-  deliveredAt?: string | null;
+  listedAt: string;
+  soldAt?: string | null;
+  cancelledAt?: string | null;
 }
 
-export default function MyTicketsPage() {
+export default function MyListingsPage() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [ownedAssets, setOwnedAssets] = useState<OwnedAsset[]>([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const fetchOwnedAssets = async () => {
+    const fetchListings = async () => {
       try {
-        const response = await fetch('/api/user/owned-assets');
+        const response = await fetch('/api/user/listings');
         if (response.ok) {
           const data = await response.json();
-          setOwnedAssets(data);
+          setListings(data);
         } else {
-          console.error('Failed to fetch owned assets');
+          console.error('Failed to fetch listings');
         }
       } catch (error) {
-        console.error('Error fetching owned assets:', error);
+        console.error('Error fetching listings:', error);
       } finally {
         setIsLoading(false);
       }
     };
 
     if (session) {
-      fetchOwnedAssets();
+      fetchListings();
     }
   }, [session]);
 
   const getStatusBadge = (status: string) => {
     const statusMap: Record<string, { label: string; className: string }> = {
-      pending: { label: 'Pending', className: 'bg-yellow-100 text-yellow-700' },
-      confirmed: { label: 'Confirmed', className: 'bg-green-100 text-green-700' },
-      delivered: { label: 'Delivered', className: 'bg-blue-100 text-blue-700' },
-      listed: { label: 'Listed for Sale', className: 'bg-purple-100 text-purple-700' },
-      sold: { label: 'Sold', className: 'bg-gray-100 text-gray-700' },
+      draft: { label: 'Draft', className: 'bg-gray-100 text-gray-700' },
+      active: { label: 'Active', className: 'bg-green-100 text-green-700' },
+      pending_sale: { label: 'Pending Sale', className: 'bg-yellow-100 text-yellow-700' },
+      sold: { label: 'Sold', className: 'bg-blue-100 text-blue-700' },
       cancelled: { label: 'Cancelled', className: 'bg-red-100 text-red-700' },
+      expired: { label: 'Expired', className: 'bg-gray-100 text-gray-600' },
     };
 
     const statusInfo = statusMap[status] || { label: status, className: 'bg-gray-100 text-gray-700' };
@@ -91,7 +91,7 @@ export default function MyTicketsPage() {
           >
             <ArrowLeft className="w-6 h-6 text-muted-700" />
           </button>
-          <h1 className="text-xl font-bold text-muted-900">My Tickets</h1>
+          <h1 className="text-xl font-bold text-muted-900">My Listings</h1>
         </div>
       </div>
 
@@ -111,12 +111,12 @@ export default function MyTicketsPage() {
               </div>
             ))}
           </div>
-        ) : ownedAssets.length === 0 ? (
+        ) : listings.length === 0 ? (
           <>
             <EmptyState
-              icon={Ticket}
-              heading="No tickets yet"
-              subtext="Your purchased tickets will appear here"
+              icon={Tag}
+              heading="No listings yet"
+              subtext="Items you list for sale will appear here"
             />
             <div className="mt-6">
               <BuyerProtection variant="compact" />
@@ -125,66 +125,66 @@ export default function MyTicketsPage() {
         ) : (
           <>
             <div className="space-y-4 mb-6">
-              {ownedAssets.map((asset) => (
-                <div key={asset.id} className="bg-white rounded-lg shadow-soft overflow-hidden">
+              {listings.map((listing) => (
+                <div key={listing.id} className="bg-white rounded-lg shadow-soft overflow-hidden">
                   <div className="p-4">
                     <div className="flex gap-4">
-                      {/* Asset Image */}
+                      {/* Listing Image */}
                       <div className="w-20 h-20 bg-gray-100 rounded-lg flex-shrink-0 relative overflow-hidden">
                         <Image
-                          src={asset.itemImageUrl}
-                          alt={asset.itemName}
+                          src={listing.itemImageUrl}
+                          alt={listing.itemName}
                           fill
                           className="object-cover"
                         />
                       </div>
 
-                      {/* Asset Details */}
+                      {/* Listing Details */}
                       <div className="flex-1 min-w-0">
                         <h3 className="text-base font-semibold text-gray-900 mb-1 truncate">
-                          {asset.itemName}
+                          {listing.itemName}
                         </h3>
                         <div className="flex items-center gap-2 mb-2">
-                          {getStatusBadge(asset.status)}
+                          {getStatusBadge(listing.status)}
                           <span className="text-xs text-gray-500">
-                            {asset.itemType === 'event' ? 'Event' : 'Product'}
+                            {listing.itemType === 'event' ? 'Event' : 'Product'}
                           </span>
                         </div>
                         <div className="flex items-baseline gap-2">
                           <p className="text-lg font-bold text-primary-600">
-                            ${asset.purchasePrice.toFixed(2)}
+                            ${listing.askPrice.toFixed(2)}
                           </p>
-                          <span className="text-sm text-gray-500">× {asset.quantity}</span>
+                          <span className="text-sm text-gray-500">× {listing.quantity}</span>
                         </div>
                       </div>
                     </div>
 
-                    {/* Asset Metadata */}
+                    {/* Listing Metadata */}
                     <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-500">Ref #</span>
-                        <span className="text-gray-900 font-medium">{asset.referenceNumber}</span>
+                        <span className="text-gray-900 font-medium">{listing.referenceNumber}</span>
                       </div>
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Purchased</span>
-                        <span className="text-gray-900">{formatDate(asset.purchasedAt)}</span>
+                        <span className="text-gray-500">Listed</span>
+                        <span className="text-gray-900">{formatDate(listing.listedAt)}</span>
                       </div>
-                      {asset.deliveredAt && (
+                      {listing.soldAt && (
                         <div className="flex justify-between text-sm">
-                          <span className="text-gray-500">Delivered</span>
-                          <span className="text-gray-900">{formatDate(asset.deliveredAt)}</span>
+                          <span className="text-gray-500">Sold</span>
+                          <span className="text-gray-900">{formatDate(listing.soldAt)}</span>
+                        </div>
+                      )}
+                      {listing.cancelledAt && (
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-500">Cancelled</span>
+                          <span className="text-gray-900">{formatDate(listing.cancelledAt)}</span>
                         </div>
                       )}
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Quantity</span>
-                        <span className="text-gray-900">
-                          {asset.quantityAvailable} of {asset.quantity} available
-                        </span>
-                      </div>
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-500">Total Paid</span>
+                        <span className="text-gray-500">Total Value</span>
                         <span className="text-gray-900 font-semibold">
-                          ${(asset.purchasePrice * asset.quantity).toFixed(2)}
+                          ${(listing.askPrice * listing.quantity).toFixed(2)}
                         </span>
                       </div>
                     </div>

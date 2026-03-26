@@ -6,9 +6,9 @@ import { useSession } from 'next-auth/react';
 import { ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import { ProductCardSkeleton } from '@/components/ui/Skeleton';
-import AnimatedModal from '@/components/ui/AnimatedModal';
 import Button from '@/components/ui/Button';
 import { BuyerProtection, TrustBadgesGroup, TrustMessaging } from '@/components/trust';
+import PurchaseFlowModal from '@/components/purchase/PurchaseFlowModal';
 import ListingEntryModal from '@/components/listing/ListingEntryModal';
 
 interface Product {
@@ -244,33 +244,29 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
         </div>
       </div>
 
-      {/* Purchase Confirmation Dialog */}
-      <AnimatedModal isOpen={showPurchaseDialog} onClose={closePurchaseDialog}>
-        <div className="p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-3 text-center">
-            Success
-          </h3>
-          <p className="text-gray-700 mb-6 text-center">
-            Purchase request submitted successfully
-          </p>
-          <Button
-            onClick={closePurchaseDialog}
-            variant="primary"
-            size="lg"
-            className="w-full min-h-[44px]"
-          >
-            OK
-          </Button>
-        </div>
-      </AnimatedModal>
+      {/* Purchase Flow */}
+      {product && (
+        <PurchaseFlowModal
+          isOpen={showPurchaseDialog}
+          onClose={closePurchaseDialog}
+          itemId={product.id}
+          itemName={product.name}
+          itemPrice={product.price}
+          itemImageUrl={product.imageUrl}
+          maxQuantity={product.remainingQty}
+          itemType="product"
+        />
+      )}
 
       {/* For Sale Listing Entry Flow */}
       {product && (
         <ListingEntryModal
           isOpen={showForSaleDialog}
           onClose={closeForSaleDialog}
+          itemId={product.id}
           itemName={product.name}
           itemPrice={product.price}
+          itemImageUrl={product.imageUrl}
           maxQuantity={product.remainingQty}
           itemType="product"
         />
