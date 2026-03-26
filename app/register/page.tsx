@@ -96,15 +96,15 @@ export default function RegisterPage() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-elevated p-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create Account</h1>
-          <p className="text-sm text-gray-600 mt-2">Join us today</p>
+          <h1 className="text-3xl font-bold text-muted-900">Create Account</h1>
+          <p className="text-sm text-muted-600 mt-2">Join us today</p>
         </div>
 
         {/* Register Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email/Phone Input */}
           <div>
-            <label htmlFor="emailOrPhone" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="emailOrPhone" className="block text-sm font-semibold text-muted-700 mb-2">
               Email or Phone
             </label>
             <input
@@ -119,7 +119,7 @@ export default function RegisterPage() {
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-semibold text-muted-700 mb-2">
               Password
             </label>
             <div className="relative">
@@ -153,7 +153,7 @@ export default function RegisterPage() {
 
           {/* Confirm Password Input */}
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="confirmPassword" className="block text-sm font-semibold text-muted-700 mb-2">
               Confirm Password
             </label>
             <div className="relative">

@@ -1,10 +1,10 @@
 # Known Issues
 
-## Empty artistImageUrl in Seed Data (RESOLVED)
+## Concert artist imagery state
 
-**Status: Fixed in commit 9a75986 (fix-img-tags-and-seed feature)**
+**Status: Current behavior as of page-polish scrutiny**
 
-The `prisma/seed.ts` file previously had empty strings for `artistImageUrl` on all concert events. This was fixed by adding picsum.photos placeholder URLs for all 4 concert entries. The `ConcertCard.tsx` component also has fallback rendering for empty `artistImageUrl` values.
+The `prisma/seed.ts` file currently sets concert `artistImageUrl` fields to empty strings, and `components/concert/ConcertCard.tsx` does not render the `artistImageUrl` prop. Concert cards currently use a CSS-only gradient treatment instead of image-backed artwork. Any future work expecting real concert imagery must update both the seed data and the card component together.
 
 ## Testing Next.js Image Components
 

@@ -74,14 +74,14 @@ export default function MyPage() {
   };
 
   const menuItems = [
-    { label: 'Order record', href: '/my/orders', icon: FileText, color: 'text-blue-500' },
-    { label: 'Personal information', href: '/my/personal', icon: User, color: 'text-green-500' },
-    { label: 'Bank card binding', href: '/my/bank-card', icon: CreditCard, color: 'text-purple-500' },
-    { label: 'Security center', href: '/my/security', icon: ShieldCheck, color: 'text-red-500' },
-    { label: 'Notification', href: '/my/notification', icon: Bell, color: 'text-yellow-500' },
-    { label: 'VIP', href: '/my/vip', icon: Star, color: 'text-amber-500' },
-    { label: 'Company Profile', href: '/my/company', icon: Building2, color: 'text-cyan-500' },
-    { label: 'Language', href: '/my/language', icon: Languages, color: 'text-indigo-500' },
+    { label: 'Order record', href: '/my/orders', icon: FileText, color: 'text-blue-500', bgColor: 'bg-blue-100' },
+    { label: 'Personal information', href: '/my/personal', icon: User, color: 'text-green-500', bgColor: 'bg-green-100' },
+    { label: 'Bank card binding', href: '/my/bank-card', icon: CreditCard, color: 'text-purple-500', bgColor: 'bg-purple-100' },
+    { label: 'Security center', href: '/my/security', icon: ShieldCheck, color: 'text-red-500', bgColor: 'bg-red-100' },
+    { label: 'Notification', href: '/my/notification', icon: Bell, color: 'text-yellow-500', bgColor: 'bg-yellow-100' },
+    { label: 'VIP', href: '/my/vip', icon: Star, color: 'text-amber-500', bgColor: 'bg-amber-100' },
+    { label: 'Company Profile', href: '/my/company', icon: Building2, color: 'text-cyan-500', bgColor: 'bg-cyan-100' },
+    { label: 'Language', href: '/my/language', icon: Languages, color: 'text-indigo-500', bgColor: 'bg-indigo-100' },
   ];
 
   const skeletonContent = (
@@ -207,7 +207,7 @@ export default function MyPage() {
                     className="flex items-center justify-between px-4 py-4 hover:bg-surface-50 active:bg-surface-100 transition-colors"
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-9 h-9 rounded-lg bg-${item.color.replace('text-', '')}-100 flex items-center justify-center`}>
+                      <div className={`w-9 h-9 rounded-lg ${item.bgColor} flex items-center justify-center`}>
                         <item.icon className={`w-5 h-5 ${item.color}`} />
                       </div>
                       <span className="text-muted-900 font-medium">{item.label}</span>

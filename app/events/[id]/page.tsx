@@ -152,6 +152,14 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           {/* Gradient overlay for better text readability */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
         </div>
+      ) : event.type === 'concert' ? (
+        <div className="w-full h-[40vh] bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 flex items-center justify-center relative overflow-hidden">
+          <div className="text-center text-white px-6">
+            <div className="text-6xl mb-4">🎵</div>
+            <h2 className="text-2xl font-bold mb-2">{event.artistName || 'Concert'}</h2>
+            <p className="text-sm opacity-90">Live Performance</p>
+          </div>
+        </div>
       ) : (
         <div className="w-full h-[35vh] bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
           <div className="text-center text-white">

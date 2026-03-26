@@ -75,8 +75,8 @@ export default function LoginPage() {
       <div className="w-full max-w-md bg-white rounded-2xl shadow-elevated p-8">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Welcome Back</h1>
-          <p className="text-sm text-gray-600 mt-2">Sign in to continue</p>
+          <h1 className="text-3xl font-bold text-muted-900">Welcome Back</h1>
+          <p className="text-sm text-muted-600 mt-2">Sign in to continue</p>
         </div>
 
         {/* Tab Switcher */}
@@ -117,7 +117,7 @@ export default function LoginPage() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email/Phone Input */}
           <div>
-            <label htmlFor="emailOrPhone" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="emailOrPhone" className="block text-sm font-semibold text-muted-700 mb-2">
               {activeTab === 'email' ? 'Email Address' : 'Phone Number'}
             </label>
             <input
@@ -132,7 +132,7 @@ export default function LoginPage() {
 
           {/* Password Input */}
           <div>
-            <label htmlFor="password" className="block text-sm font-semibold text-gray-700 mb-2">
+            <label htmlFor="password" className="block text-sm font-semibold text-muted-700 mb-2">
               Password
             </label>
             <div className="relative">

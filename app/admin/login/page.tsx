@@ -66,9 +66,9 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-cyan-50 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-surface-50 to-primary-50 px-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-modal shadow-xl p-8">
+        <div className="bg-white rounded-modal shadow-elevated p-8">
           {/* Admin Branding */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
