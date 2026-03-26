@@ -1,0 +1,172 @@
+{
+  "groupId": "admin-and-validators",
+  "testedAt": "2026-03-26T04:10:28.979075+00:00",
+  "isolation": {
+    "baseUrl": "http://localhost:3100",
+    "missionDir": "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d",
+    "browserSession": "30bafa4037e3__u2",
+    "credentials": {
+      "email": "admin@example.com",
+      "password": "admin123"
+    }
+  },
+  "toolsUsed": [
+    "agent-browser",
+    "pnpm",
+    "python3"
+  ],
+  "commands": [
+    {
+      "command": "pnpm exec vitest run",
+      "outcome": "pass",
+      "details": "Exited 0; 40 test files passed, 277 tests passed."
+    },
+    {
+      "command": "pnpm typecheck",
+      "outcome": "pass",
+      "details": "Exited 0 with no type errors."
+    },
+    {
+      "command": "pnpm lint",
+      "outcome": "pass",
+      "details": "Exited 0 with no ESLint warnings or errors; Next.js emitted deprecation/workspace-root warnings only."
+    }
+  ],
+  "assertions": [
+    {
+      "id": "VAL-CROSS-005",
+      "title": "All existing tests pass",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Run `pnpm exec vitest run`",
+          "expected": "Test runner exits 0 with all tests passing",
+          "observed": "Exited 0; 40 files and 277 tests passed."
+        },
+        {
+          "action": "Run `pnpm typecheck`",
+          "expected": "TypeScript exits 0",
+          "observed": "Exited 0."
+        },
+        {
+          "action": "Run `pnpm lint`",
+          "expected": "Lint exits 0",
+          "observed": "Exited 0; no ESLint warnings or errors."
+        }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "n/a",
+        "network": "n/a",
+        "commands": [
+          "pnpm exec vitest run -> 0 (40 files, 277 tests passed)",
+          "pnpm typecheck -> 0",
+          "pnpm lint -> 0"
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-007",
+      "title": "Admin panel accessible and visually coherent",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open `/admin/login` at 375x812",
+          "expected": "Admin login page is reachable",
+          "observed": "Admin login rendered with email/password form."
+        },
+        {
+          "action": "Sign in with admin@example.com / admin123",
+          "expected": "Redirect to admin dashboard",
+          "observed": "Redirected to `/admin/dashboard`."
+        },
+        {
+          "action": "Inspect dashboard and API activity",
+          "expected": "Admin UI uses updated visual system and admin data loads",
+          "observed": "Dashboard showed shared Inter typography, rounded cards, shadows, and `GET /api/admin/stats` requests while rendering totals and management links."
+        },
+        {
+          "action": "Log out and revisit `/admin/dashboard`",
+          "expected": "Non-authenticated access is blocked",
+          "observed": "After logout, `/admin/dashboard` redirected to `/admin/login`."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/admin-and-validators/admin-login-page.png",
+          "page-polish/admin-and-validators/admin-dashboard.png",
+          "page-polish/admin-and-validators/admin-gated-after-logout.png"
+        ],
+        "consoleErrors": "`agent-browser errors` returned `Invalid or unexpected token`, so no clean console-errors readback was available; no visible runtime breakage occurred during the tested flow.",
+        "network": "POST /api/auth/callback/credentials -> redirect to /admin/dashboard; GET /api/admin/stats observed twice and dashboard data rendered; after logout, direct GET /admin/dashboard redirected to /admin/login."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-011",
+      "title": "Admin panel consistent design tokens",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Capture user-facing home page and admin dashboard screenshots",
+          "expected": "Shared visual language can be compared",
+          "observed": "Both pages captured successfully."
+        },
+        {
+          "action": "Inspect computed body styles on user home and admin dashboard",
+          "expected": "Shared font/token baseline",
+          "observed": "Both pages reported `font: 16px 400 Inter`, black text, and transparent page background."
+        },
+        {
+          "action": "Visually compare cards, spacing, and controls",
+          "expected": "Admin panel matches user-facing colors/radius/shadows",
+          "observed": "Admin dashboard uses the same Inter font family, rounded cards, elevated surfaces, and blue-accent controls consistent with the user home page rather than a separate visual language."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/admin-and-validators/user-home.png",
+          "page-polish/admin-and-validators/admin-dashboard.png"
+        ],
+        "consoleErrors": "n/a",
+        "network": "n/a",
+        "styleChecks": [
+          "User home body: font 16px 400 Inter; color rgb(0, 0, 0)",
+          "Admin dashboard body: font 16px 400 Inter; color rgb(0, 0, 0)"
+        ]
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The mission-specific `/Users/wendy/.factory/library/user-testing.md` guidance file was absent, so only mission AGENTS guidance and the validation contract could be followed.",
+      "resolved": true,
+      "resolution": "Proceeded with the provided mission instructions and assigned assertion definitions.",
+      "affectedAssertions": [
+        "VAL-CROSS-005",
+        "VAL-CROSS-007",
+        "VAL-VIS-011"
+      ]
+    },
+    {
+      "description": "`agent-browser errors` returned `Invalid or unexpected token` on this local app session instead of a normal console error listing.",
+      "resolved": false,
+      "resolution": "Recorded the tool issue in evidence and relied on visible UI behavior plus network/output checks for the affected UI assertions.",
+      "affectedAssertions": [
+        "VAL-CROSS-007"
+      ]
+    },
+    {
+      "description": "`pnpm test` launches Vitest watch mode and did not exit on its own even after all tests passed.",
+      "resolved": true,
+      "resolution": "Reran tests with `pnpm exec vitest run` to obtain a one-shot exit code for reportable evidence.",
+      "affectedAssertions": [
+        "VAL-CROSS-005"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 3 assertions: 3 passed. Admin login, auth gating, and visual coherence were confirmed in the browser, and page-polish validators (`pnpm exec vitest run`, `pnpm typecheck`, `pnpm lint`) all exited successfully."
+}

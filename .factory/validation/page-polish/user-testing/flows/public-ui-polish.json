@@ -1,0 +1,451 @@
+{
+  "groupId": "public-ui-polish",
+  "testedAt": "2026-03-26T00:00:00Z",
+  "isolation": {
+    "baseUrl": "http://localhost:3100",
+    "session": "30bafa4037e3__u1",
+    "viewport": "375x812",
+    "credentials": "test@example.com / password123",
+    "missionDir": "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-ADD-001",
+      "title": "Register page modern visual design",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open /register at 375x812 and capture the page",
+          "expected": "Register page matches login design language with rich background and polished form container",
+          "observed": "Register page showed the same dark-blue gradient background and elevated rounded form card style as login."
+        },
+        {
+          "action": "Check viewport overflow metrics",
+          "expected": "No horizontal overflow",
+          "observed": "clientWidth, scrollWidth, and bodyScrollWidth were all 375."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-ADD-001-register-page.png"],
+        "consoleErrors": "none",
+        "network": "No network requests were required after initial page load."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-ADD-002",
+      "title": "Search bar refined styling",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect search bars on Goods, Football, Basketball, and Concert tabs",
+          "expected": "Rounded search bars with icon treatment, subtle border/shadow, and consistent sizing",
+          "observed": "All four tabs exposed a 343x50 rounded search input with pill radius and subtle shadow; labels changed appropriately per surface."
+        },
+        {
+          "action": "Check mobile overflow on each visited tab",
+          "expected": "No horizontal overflow on tab pages",
+          "observed": "Goods, Football, Basketball, and Concert pages stayed within the 375px viewport."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/public-ui-polish/VAL-ADD-002-goods-search.png",
+          "page-polish/public-ui-polish/VAL-ADD-002-football-search.png",
+          "page-polish/public-ui-polish/VAL-ADD-002-basketball-search.png",
+          "page-polish/public-ui-polish/VAL-ADD-002-concert-search.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/products and GET /api/events?type=* completed during tab loads."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-001",
+      "title": "Full user journey visual consistency",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Log in and record journey through home, product detail, football, and profile surfaces",
+          "expected": "Pages feel visually consistent with no jarring transitions or layout shifts",
+          "observed": "Recorded journey showed consistent typography, gradient accents, rounded cards, and persistent visual language across the authenticated path."
+        },
+        {
+          "action": "Review ending profile surface and intermediate screenshots",
+          "expected": "No obvious FOUC or broken transitions",
+          "observed": "No obvious flash-of-unstyled-content was seen; transitions remained visually coherent during manual playback."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-CROSS-001-profile-end.png"],
+        "consoleErrors": "none",
+        "network": "Journey included successful auth, products, and football event fetches.",
+        "recordings": [
+          "page-polish/public-ui-polish/VAL-CROSS-001-user-journey-partial.webm",
+          "page-polish/public-ui-polish/VAL-CROSS-001-user-journey-2.webm"
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-002",
+      "title": "Design token consistency across all pages",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Compare login, register, goods, profile, VIP, and orders surfaces",
+          "expected": "Shared primary color, font, radius, and shadow system across pages",
+          "observed": "Pages consistently used Inter, rounded inputs/cards, blue gradient accents, and the same elevated shadow language."
+        },
+        {
+          "action": "Cross-check with captured card/button styling",
+          "expected": "No obviously ad-hoc styling on visited pages",
+          "observed": "Buttons and cards reused the same radius and shadow patterns throughout the tested public surfaces."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/public-ui-polish/VAL-VIS-001-login-page.png",
+          "page-polish/public-ui-polish/VAL-ADD-001-register-page.png",
+          "page-polish/public-ui-polish/VAL-VIS-008-profile-page.png",
+          "page-polish/public-ui-polish/VAL-VIS-010-vip-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Visual-only comparison; no extra network requirements."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-004",
+      "title": "Mobile viewport (375px) no horizontal overflow",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Measure scrollWidth versus clientWidth on visited pages",
+          "expected": "scrollWidth equals clientWidth on every tested public surface",
+          "observed": "Login, register, goods, football, basketball, concert, profile, orders, VIP, and product detail stayed within 375px."
+        },
+        {
+          "action": "Inspect event detail page width",
+          "expected": "Event detail also fits within viewport",
+          "observed": "Event detail at /events/cmn6xwlr50008l0g5r9xk0dga reported clientWidth 375 and scrollWidth 376, indicating horizontal overflow."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/public-ui-polish/VAL-VIS-001-login-page.png",
+          "page-polish/public-ui-polish/VAL-VIS-004-product-detail.png",
+          "page-polish/public-ui-polish/VAL-VIS-012-event-detail.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Observed while loading GET /api/events/cmn6xwlr50008l0g5r9xk0dga."
+      },
+      "issues": "Event detail page exceeded viewport width by 1px at mobile size."
+    },
+    {
+      "id": "VAL-CROSS-006",
+      "title": "No functional regression",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Log in with test@example.com / password123",
+          "expected": "Authentication succeeds and redirects to authenticated home",
+          "observed": "Credentials login succeeded, redirected to /, and product data loaded successfully."
+        },
+        {
+          "action": "Navigate through core authenticated pages and logout",
+          "expected": "Navigation, data fetching, and logout work without regressions",
+          "observed": "Navigation and logout worked, but direct event detail route /events/cmn6xwlrj0009l0g5cyf7eiuk returned 'Event not found', and order records initially rendered a Loading state before settling."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/public-ui-polish/VAL-CROSS-006-post-login-home.png",
+          "page-polish/public-ui-polish/VAL-CROSS-006-post-logout.png",
+          "page-polish/public-ui-polish/VAL-VIS-012-event-detail.png"
+        ],
+        "consoleErrors": "Only development warnings were present; no fatal runtime error surfaced.",
+        "network": "POST /api/auth/callback/credentials, POST /api/auth/signout, GET /api/products, GET /api/events?type=*, and GET /api/events/:id were observed."
+      },
+      "issues": "A directly tested event detail ID returned 'Event not found', so not all tested event-detail functionality behaved cleanly."
+    },
+    {
+      "id": "VAL-VIS-001",
+      "title": "Login page modern visual design",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open /login and capture the mobile view",
+          "expected": "Gradient/rich background with elevated rounded form container",
+          "observed": "Login page displayed a rich blue gradient background with a rounded, shadowed form card and clear content hierarchy."
+        },
+        {
+          "action": "Check viewport width metrics",
+          "expected": "No horizontal overflow",
+          "observed": "clientWidth, scrollWidth, and bodyScrollWidth were all 375."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-001-login-page.png"],
+        "consoleErrors": "none",
+        "network": "GET /login and GET /api/auth/session during load."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-002",
+      "title": "Home banner carousel auto-play and indicators",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Record the home page carousel for 6.5 seconds",
+          "expected": "Carousel auto-plays with visible indicators updating to the active slide",
+          "observed": "Carousel recording showed automatic slide progression with three visible dot controls and looping behavior."
+        },
+        {
+          "action": "Capture a still frame",
+          "expected": "Indicators visibly rendered on the banner",
+          "observed": "Banner screenshot shows the dot indicators beneath the hero."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-002-home-carousel.png"],
+        "consoleErrors": "none",
+        "network": "Home page product/image requests loaded while recording.",
+        "recordings": ["page-polish/public-ui-polish/VAL-VIS-002-home-carousel.webm"]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-003",
+      "title": "Product cards polished styling",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Inspect goods grid cards on the home page",
+          "expected": "Rounded cards with shadow, consistent imagery, bold price, and spacing",
+          "observed": "Goods cards appeared in a uniform grid with rounded corners, elevated styling, strong price emphasis, and consistent image blocks."
+        },
+        {
+          "action": "Confirm page width on mobile",
+          "expected": "No horizontal overflow",
+          "observed": "Goods page remained at scrollWidth 375."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-003-product-cards.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/products and image requests loaded successfully."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-004",
+      "title": "Product detail page refined layout",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open a product detail page from the goods grid",
+          "expected": "Large hero image, bold price, and touch-friendly action buttons",
+          "observed": "Detail page showed a full-width image about 365px tall on an 812px viewport and 64px-tall rounded For sale/Purchase buttons."
+        },
+        {
+          "action": "Check mobile overflow metrics",
+          "expected": "Contained within the viewport",
+          "observed": "Product detail scrollWidth matched 375px."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-004-product-detail.png"],
+        "consoleErrors": "none",
+        "network": "Product detail opened from goods surface without failed requests."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-005",
+      "title": "Football match cards VS layout with country flags",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open /football and inspect the match list",
+          "expected": "Cards show VS matchup layout with prominent country flags or clear country markers",
+          "observed": "Football cards displayed clear country-vs-country matchups using large flag emojis and polished 343px-wide cards."
+        },
+        {
+          "action": "Check card/search sizing on mobile",
+          "expected": "Search bar and cards fit the viewport",
+          "observed": "Football search bar measured 343x50 and the page stayed at scrollWidth 375."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-005-football-page.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/events?type=football requests succeeded."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-006",
+      "title": "Basketball match cards distinctive design",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Open /basketball and compare against football cards",
+          "expected": "Basketball cards have a distinctive team-focused visual treatment",
+          "observed": "Basketball cards rendered as mostly plain text rows with emoji markers and no visible card radius, shadow, or differentiated background."
+        },
+        {
+          "action": "Inspect computed card styling",
+          "expected": "Rounded/shadowed card treatment",
+          "observed": "Measured basketball event links reported radius 0px and box-shadow none."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-006-basketball-page.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/events?type=basketball requests succeeded."
+      },
+      "issues": "Basketball cards did not present the distinctive polished card treatment required by the assertion."
+    },
+    {
+      "id": "VAL-VIS-007",
+      "title": "Concert cards with visual treatment on imagery",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Open /concert and inspect event cards",
+          "expected": "Concert cards use imagery with overlay/color treatment for readable text",
+          "observed": "Concert items displayed text and emoji only, without visible image panels or overlay treatment."
+        },
+        {
+          "action": "Inspect computed card styling",
+          "expected": "Rounded, shadowed, image-treated cards",
+          "observed": "Measured concert event links reported radius 0px, shadow none, and no background image."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-007-concert-page.png"],
+        "consoleErrors": "none",
+        "network": "GET /api/events?type=concert requests succeeded."
+      },
+      "issues": "Concert cards lacked the specified imagery and overlay-based visual treatment."
+    },
+    {
+      "id": "VAL-VIS-008",
+      "title": "My profile gradient header and stat cards",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open /my after login and capture the page",
+          "expected": "Gradient header, circular avatar, and elevated stat/menu cards",
+          "observed": "Profile page showed a blue gradient header, an 80x80 circular avatar placeholder, a rounded elevated stats card, and a rounded elevated menu container."
+        },
+        {
+          "action": "Check overflow metrics",
+          "expected": "No horizontal overflow",
+          "observed": "Profile page scrollWidth matched 375px."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-008-profile-page.png"],
+        "consoleErrors": "none",
+        "network": "Authenticated profile route rendered successfully."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-009",
+      "title": "Order record page tab design and order cards",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Open /my/orders and inspect purchase/for-sale tabs",
+          "expected": "Highlighted active tab and populated order cards with thumbnail, title, price, and status badge",
+          "observed": "Tabs switched correctly and used 44px-tall pills, but the page initially showed Loading... and no populated order cards or status badges were present in either captured state."
+        },
+        {
+          "action": "Toggle to For Sale and capture both views",
+          "expected": "Both tabs show styled order cards",
+          "observed": "For Sale view still lacked visible order card content in the captured mobile surface."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/public-ui-polish/VAL-VIS-009-orders-page.png",
+          "page-polish/public-ui-polish/VAL-VIS-009-orders-page-loaded.png",
+          "page-polish/public-ui-polish/VAL-VIS-009-orders-for-sale.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Order page rendered but captured UI did not show completed order data."
+      },
+      "issues": "Expected styled order cards with thumbnails, price, and badges were not visible in the tested mobile flows."
+    },
+    {
+      "id": "VAL-VIS-010",
+      "title": "VIP page tiers with visual differentiation",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open /my/vip and capture the full page",
+          "expected": "All 8 tiers visually differentiated with current tier highlighted",
+          "observed": "VIP page listed eight tiers with distinct gradient headers, elevated cards, and VIP2 highlighted using a stronger outline treatment and CURRENT label."
+        },
+        {
+          "action": "Inspect tier card styling",
+          "expected": "Premium visual differentiation between tiers",
+          "observed": "Tier cards showed varied gradient backgrounds and shadowed 12px-radius containers."
+        }
+      ],
+      "evidence": {
+        "screenshots": ["page-polish/public-ui-polish/VAL-VIS-010-vip-page.png"],
+        "consoleErrors": "none",
+        "network": "VIP page rendered from authenticated surface without failures."
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-VIS-012",
+      "title": "Event detail pages polished layout",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Open a football event detail route and inspect hierarchy",
+          "expected": "Full-width image, clear title/date/venue hierarchy, spacing, and consistent action buttons",
+          "observed": "The working event detail route showed title/venue/price hierarchy and consistent 64px action buttons, but no rendered image element was present."
+        },
+        {
+          "action": "Check mobile width on the event detail page",
+          "expected": "Page remains fully contained in viewport",
+          "observed": "The event detail page measured scrollWidth 376 versus clientWidth 375."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "page-polish/public-ui-polish/VAL-VIS-012-football-event-detail.png",
+          "page-polish/public-ui-polish/VAL-VIS-012-event-detail.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/events/:id requests succeeded for the working detail route."
+      },
+      "issues": "Event detail lacked the specified full-width hero image and also overflowed horizontally by 1px."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The referenced .factory/library/user-testing.md guidance file was not present in the environment.",
+      "resolved": true,
+      "resolution": "Followed the mission AGENTS.md testing guidance and the task-specific isolation rules instead.",
+      "affectedAssertions": ["VAL-ADD-001", "VAL-ADD-002", "VAL-CROSS-001", "VAL-CROSS-002", "VAL-CROSS-004", "VAL-CROSS-006", "VAL-VIS-001", "VAL-VIS-002", "VAL-VIS-003", "VAL-VIS-004", "VAL-VIS-005", "VAL-VIS-006", "VAL-VIS-007", "VAL-VIS-008", "VAL-VIS-009", "VAL-VIS-010", "VAL-VIS-012"]
+    },
+    {
+      "description": "A full user-journey recording had to be split into two files because the initial recording attempt stopped after a ref-refresh interruption.",
+      "resolved": true,
+      "resolution": "Preserved the first partial recording and captured the remaining journey in a second recording file.",
+      "affectedAssertions": ["VAL-CROSS-001"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 17 assigned assertions on the real mobile UI: 10 passed and 7 failed. Key failures were event-detail horizontal overflow and missing imagery, plain basketball/concert card treatments, and missing populated order-card evidence on the order record page."
+}
