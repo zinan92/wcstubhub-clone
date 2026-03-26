@@ -15,6 +15,11 @@ interface Product {
   name: string;
   price: number;
   imageUrl: string;
+  remainingQty: number;
+  isBestValue: boolean;
+  isSellingFast: boolean;
+  urgencyThreshold: number | null;
+  isVerified: boolean;
 }
 
 export default function Home() {

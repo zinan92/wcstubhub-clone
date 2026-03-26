@@ -42,6 +42,10 @@ model Product {
   isVerified        Boolean  @default(false)
   isBuyerProtected  Boolean  @default(true)
   hasSecureDelivery Boolean  @default(false)
+  // Listing intelligence attributes
+  isBestValue       Boolean  @default(false)
+  isSellingFast     Boolean  @default(false)
+  urgencyThreshold  Int?     // Show "Only X left" when remainingQty <= this value
   createdAt         DateTime @default(now())
 }
 
@@ -69,6 +73,10 @@ model Event {
   isOfficial        Boolean   @default(false)
   isBuyerProtected  Boolean   @default(true)
   hasSecureDelivery Boolean   @default(false)
+  // Listing intelligence attributes
+  isBestValue       Boolean   @default(false)
+  isSellingFast     Boolean   @default(false)
+  urgencyThreshold  Int?      // Show "Only X left" when remainingQty <= this value
   createdAt         DateTime  @default(now())
 }
 

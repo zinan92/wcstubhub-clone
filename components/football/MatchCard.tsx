@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { ListingIntelligenceBadges } from '@/components/listing-intelligence';
 
 interface MatchCardProps {
   id: string;
@@ -9,6 +10,11 @@ interface MatchCardProps {
   date: string;
   venue: string;
   price: number;
+  remainingQty?: number;
+  isBestValue?: boolean;
+  isSellingFast?: boolean;
+  urgencyThreshold?: number;
+  isOfficial?: boolean;
 }
 
 export default function MatchCard({
@@ -20,6 +26,11 @@ export default function MatchCard({
   date,
   venue,
   price,
+  remainingQty,
+  isBestValue,
+  isSellingFast,
+  urgencyThreshold,
+  isOfficial,
 }: MatchCardProps) {
   // Format date
   const eventDate = new Date(date);
@@ -80,8 +91,20 @@ export default function MatchCard({
           </div>
 
           {/* Price */}
-          <div className="text-2xl font-bold text-primary-600 text-center">
+          <div className="text-2xl font-bold text-primary-600 text-center mb-3">
             ${price.toFixed(2)}
+          </div>
+
+          {/* Listing Intelligence Badges */}
+          <div className="flex justify-center">
+            <ListingIntelligenceBadges
+              isBestValue={isBestValue}
+              isSellingFast={isSellingFast}
+              remainingQty={remainingQty}
+              urgencyThreshold={urgencyThreshold ?? undefined}
+              isOfficial={isOfficial}
+              size="sm"
+            />
           </div>
         </div>
       </div>

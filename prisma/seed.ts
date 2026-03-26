@@ -69,6 +69,9 @@ async function main() {
       isVerified: true,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: true,
+      isSellingFast: false,
+      urgencyThreshold: 10,
     },
   });
 
@@ -85,6 +88,9 @@ async function main() {
       isVerified: false,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: false,
+      isSellingFast: true,
+      urgencyThreshold: 15,
     },
   });
 
@@ -97,10 +103,13 @@ async function main() {
       price: 32.99,
       category: 'Football Jersey',
       stock: 90,
-      remainingQty: 78,
+      remainingQty: 7,
       isVerified: true,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: false,
+      isSellingFast: false,
+      urgencyThreshold: 10,
     },
   });
 
@@ -117,6 +126,9 @@ async function main() {
       isVerified: true,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: false,
+      isSellingFast: true,
+      urgencyThreshold: 20,
     },
   });
 
@@ -133,6 +145,9 @@ async function main() {
       isVerified: false,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: true,
+      isSellingFast: false,
+      urgencyThreshold: 12,
     },
   });
 
@@ -149,6 +164,9 @@ async function main() {
       isVerified: true,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: false,
+      isSellingFast: false,
+      urgencyThreshold: 15,
     },
   });
 
@@ -171,6 +189,9 @@ async function main() {
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: false,
+      isSellingFast: true,
+      urgencyThreshold: 500,
     },
   });
 
@@ -191,6 +212,9 @@ async function main() {
       isOfficial: false,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: true,
+      isSellingFast: false,
+      urgencyThreshold: 600,
     },
   });
 
@@ -207,10 +231,13 @@ async function main() {
       venue: 'Maracanã Stadium, Rio de Janeiro',
       price: 120.00,
       description: 'Epic rivalry: Brazil vs Germany. Classic international showdown.',
-      remainingQty: 5000,
+      remainingQty: 320,
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: false,
+      isSellingFast: false,
+      urgencyThreshold: 500,
     },
   });
 
@@ -231,6 +258,9 @@ async function main() {
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: false,
+      isSellingFast: true,
+      urgencyThreshold: 800,
     },
   });
 
@@ -250,6 +280,9 @@ async function main() {
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: true,
+      isSellingFast: false,
+      urgencyThreshold: 400,
     },
   });
 
@@ -268,6 +301,9 @@ async function main() {
       isOfficial: false,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: false,
+      isSellingFast: false,
+      urgencyThreshold: 500,
     },
   });
 
@@ -286,6 +322,9 @@ async function main() {
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: false,
+      isSellingFast: true,
+      urgencyThreshold: 300,
     },
   });
 
@@ -304,6 +343,9 @@ async function main() {
       isOfficial: false,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: false,
+      isSellingFast: false,
+      urgencyThreshold: 350,
     },
   });
 
@@ -323,6 +365,9 @@ async function main() {
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: false,
+      isSellingFast: true,
+      urgencyThreshold: 200,
     },
   });
 
@@ -341,6 +386,9 @@ async function main() {
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: true,
+      isSellingFast: false,
+      urgencyThreshold: 250,
     },
   });
 
@@ -359,6 +407,9 @@ async function main() {
       isOfficial: false,
       isBuyerProtected: true,
       hasSecureDelivery: true,
+      isBestValue: false,
+      isSellingFast: false,
+      urgencyThreshold: 200,
     },
   });
 
@@ -377,6 +428,9 @@ async function main() {
       isOfficial: true,
       isBuyerProtected: true,
       hasSecureDelivery: false,
+      isBestValue: false,
+      isSellingFast: true,
+      urgencyThreshold: 150,
     },
   });
 

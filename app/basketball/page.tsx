@@ -19,6 +19,11 @@ interface BasketballEvent {
   date: string;
   venue: string;
   price: number;
+  remainingQty: number;
+  isBestValue: boolean;
+  isSellingFast: boolean;
+  urgencyThreshold: number | null;
+  isOfficial: boolean;
 }
 
 export default function BasketballPage() {
@@ -169,6 +174,11 @@ export default function BasketballPage() {
                     date={event.date}
                     venue={event.venue}
                     price={event.price}
+                    remainingQty={event.remainingQty}
+                    isBestValue={event.isBestValue}
+                    isSellingFast={event.isSellingFast}
+                    urgencyThreshold={event.urgencyThreshold ?? undefined}
+                    isOfficial={event.isOfficial}
                   />
                 </m.div>
               ))}

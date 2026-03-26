@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { Calendar, MapPin, Music } from 'lucide-react';
+import { ListingIntelligenceBadges } from '@/components/listing-intelligence';
 
 interface ConcertCardProps {
   id: string;
@@ -11,6 +12,11 @@ interface ConcertCardProps {
   date: string;
   venue: string;
   price: number;
+  remainingQty?: number;
+  isBestValue?: boolean;
+  isSellingFast?: boolean;
+  urgencyThreshold?: number;
+  isOfficial?: boolean;
 }
 
 export default function ConcertCard({
@@ -20,6 +26,11 @@ export default function ConcertCard({
   date,
   venue,
   price,
+  remainingQty,
+  isBestValue,
+  isSellingFast,
+  urgencyThreshold,
+  isOfficial,
 }: ConcertCardProps) {
   const formatDate = (dateString: string) => {
     const eventDate = new Date(dateString);
@@ -94,12 +105,22 @@ export default function ConcertCard({
           <div className="border-t border-purple-100 mb-4"></div>
 
           {/* Price */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between mb-3">
             <span className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
               {formatPrice(price)}
             </span>
             <span className="text-xs text-white bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-1.5 rounded-full font-semibold shadow-soft">Concert</span>
           </div>
+
+          {/* Listing Intelligence Badges */}
+          <ListingIntelligenceBadges
+            isBestValue={isBestValue}
+            isSellingFast={isSellingFast}
+            remainingQty={remainingQty}
+            urgencyThreshold={urgencyThreshold ?? undefined}
+            isOfficial={isOfficial}
+            size="sm"
+          />
         </div>
     </Link>
   );

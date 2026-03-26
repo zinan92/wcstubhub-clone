@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 import Button from '@/components/ui/Button';
 import { BuyerProtection, TrustBadgesGroup, TrustMessaging } from '@/components/trust';
+import { ListingIntelligenceBadges } from '@/components/listing-intelligence';
 import PurchaseFlowModal from '@/components/purchase/PurchaseFlowModal';
 import ListingEntryModal from '@/components/listing/ListingEntryModal';
 
@@ -29,6 +30,9 @@ interface Event {
   isOfficial: boolean;
   isBuyerProtected: boolean;
   hasSecureDelivery: boolean;
+  isBestValue: boolean;
+  isSellingFast: boolean;
+  urgencyThreshold: number | null;
 }
 
 interface EventDetailPageProps {
@@ -280,6 +284,18 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
           </div>
         )}
 
+        {/* Listing Intelligence Badges */}
+        <div className="mb-6">
+          <ListingIntelligenceBadges
+            isBestValue={event.isBestValue}
+            isSellingFast={event.isSellingFast}
+            remainingQty={event.remainingQty}
+            urgencyThreshold={event.urgencyThreshold ?? undefined}
+            isOfficial={event.isOfficial}
+            size="sm"
+          />
+        </div>
+
         {/* Trust Badges - Conditionally rendered */}
         {(event.isOfficial || event.isBuyerProtected || event.hasSecureDelivery) && (
           <div className="mb-6">
@@ -293,6 +309,14 @@ export default function EventDetailPage({ params }: EventDetailPageProps) {
             />
           </div>
         )}
+
+        {/* Delivery Timing */}
+        <div className="mb-6 bg-accent-50 border border-accent-200 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-accent-900 mb-2">📦 Delivery & Timing</h3>
+          <p className="text-sm text-accent-700">
+            Tickets will be delivered electronically within 24 hours of purchase. E-tickets are available for immediate mobile entry.
+          </p>
+        </div>
 
         {/* Buyer Protection - Compact */}
         <div className="mb-24">

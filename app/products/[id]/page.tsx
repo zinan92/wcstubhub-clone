@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { ProductCardSkeleton } from '@/components/ui/Skeleton';
 import Button from '@/components/ui/Button';
 import { BuyerProtection, TrustBadgesGroup, TrustMessaging } from '@/components/trust';
+import { ListingIntelligenceBadges } from '@/components/listing-intelligence';
 import PurchaseFlowModal from '@/components/purchase/PurchaseFlowModal';
 import ListingEntryModal from '@/components/listing/ListingEntryModal';
 
@@ -21,6 +22,9 @@ interface Product {
   isVerified: boolean;
   isBuyerProtected: boolean;
   hasSecureDelivery: boolean;
+  isBestValue: boolean;
+  isSellingFast: boolean;
+  urgencyThreshold: number | null;
 }
 
 interface ProductDetailPageProps {
@@ -199,6 +203,18 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
           </p>
         </div>
 
+        {/* Listing Intelligence Badges */}
+        <div className="mb-6">
+          <ListingIntelligenceBadges
+            isBestValue={product.isBestValue}
+            isSellingFast={product.isSellingFast}
+            remainingQty={product.remainingQty}
+            urgencyThreshold={product.urgencyThreshold ?? undefined}
+            isVerified={product.isVerified}
+            size="sm"
+          />
+        </div>
+
         {/* Trust Badges - Conditionally rendered */}
         {(product.isVerified || product.isBuyerProtected || product.hasSecureDelivery) && (
           <div className="mb-6">
@@ -212,6 +228,14 @@ export default function ProductDetailPage({ params }: ProductDetailPageProps) {
             />
           </div>
         )}
+
+        {/* Delivery Timing */}
+        <div className="mb-6 bg-primary-50 border border-primary-200 rounded-lg p-4">
+          <h3 className="text-sm font-semibold text-primary-900 mb-2">🚚 Delivery & Shipping</h3>
+          <p className="text-sm text-primary-700">
+            Fast and secure delivery with tracking. Most items ship within 1-2 business days and arrive in 3-5 business days.
+          </p>
+        </div>
 
         {/* Buyer Protection - Compact */}
         <div className="mb-24">
