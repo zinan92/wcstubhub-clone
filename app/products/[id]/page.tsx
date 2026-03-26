@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ArrowLeft } from 'lucide-react';
@@ -32,6 +32,14 @@ interface ProductDetailPageProps {
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+  return (
+    <Suspense fallback={<ProductCardSkeleton />}>
+      <ProductDetailContent params={params} />
+    </Suspense>
+  );
+}
+
+function ProductDetailContent({ params }: ProductDetailPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();

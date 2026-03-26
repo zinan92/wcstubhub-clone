@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { ArrowLeft, Calendar, MapPin } from 'lucide-react';
@@ -40,6 +40,14 @@ interface EventDetailPageProps {
 }
 
 export default function EventDetailPage({ params }: EventDetailPageProps) {
+  return (
+    <Suspense fallback={<MatchCardSkeleton />}>
+      <EventDetailContent params={params} />
+    </Suspense>
+  );
+}
+
+function EventDetailContent({ params }: EventDetailPageProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session, status } = useSession();
