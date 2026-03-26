@@ -1,0 +1,132 @@
+{
+  "groupId": "account-trust-rerun",
+  "testedAt": "2026-03-26T07:14:59.706454+00:00",
+  "isolation": {
+    "baseUrl": "http://localhost:3100",
+    "browserSession": "e5a7eeb25268__u2",
+    "viewport": "375x812",
+    "credentials": {
+      "user": "test@example.com"
+    },
+    "missionDir": "/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-TRUST-007",
+      "title": "Buyer Protection module is visible on transaction-relevant pages",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Log in as test user and open /my/tickets on a 375x812 viewport",
+          "expected": "Buyer Protection content is visible on the account trust surface",
+          "observed": "The My Tickets page rendered a trust block with '24/7 Support', 'Easy Refunds', '100% Guarantee', and a 'Buyer Protection' section reading '100% Money-Back Guarantee. Learn more about our buyer protection policy.'"
+        },
+        {
+          "action": "Open a directly relevant public trust surface at /football for copy comparison",
+          "expected": "Buyer Protection is also visible on browse/listing surfaces",
+          "observed": "The football listing page displayed 'Buyer Protection' with '100% Money-Back Guarantee. Learn more about our buyer protection policy.' plus 'Verified', 'Buyer Protected', and 'Secure Delivery' badges."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/account-trust-rerun/my-tickets-annotated.png",
+          "guest-browsing-and-trust-foundation/account-trust-rerun/football-trust-annotated.png"
+        ],
+        "copyObservations": [
+          "My Tickets: '24/7 Support' / 'Easy Refunds' / '100% Guarantee' / 'Buyer Protection' / '100% Money-Back Guarantee. Learn more about our buyer protection policy.'",
+          "Football: 'Buyer Protection' / '100% Money-Back Guarantee. Learn more about our buyer protection policy.' / 'Verified' / 'Buyer Protected' / 'Secure Delivery'"
+        ],
+        "consoleErrors": "none; browser showed only dev/performance warnings about smooth scrolling and Next/Image sizes",
+        "network": "Authenticated account route loaded successfully at GET /my/tickets -> 200 document; no failing network requests observed during this assertion"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-TRUST-013",
+      "title": "Refund/support/guarantee messaging appears on account/order surfaces",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open /my/tickets after login",
+          "expected": "Account surface shows refund/support/guarantee messaging with an assistance or policy route",
+          "observed": "My Tickets included '24/7 Support', 'Easy Refunds', '100% Guarantee', and a 'buyer protection policy' action."
+        },
+        {
+          "action": "Open /my/orders to validate an order/history surface",
+          "expected": "Order/history surface also shows trust/support messaging",
+          "observed": "Order Records showed '24/7 Support', 'Easy Refunds', and 'Buyer Protection' with the same '100% Money-Back Guarantee. Learn more about our buyer protection policy.' copy beneath purchase history."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/account-trust-rerun/my-tickets-annotated.png",
+          "guest-browsing-and-trust-foundation/account-trust-rerun/my-orders-annotated.png"
+        ],
+        "copyObservations": [
+          "My Tickets: '24/7 Support' / 'Get help anytime with our dedicated customer support team' / 'Easy Refunds' / 'Full refund if your order doesn't arrive or isn't as described' / '100% Guarantee' / 'Every purchase is protected by our Buyer Protection program'",
+          "Order Records: '24/7 Support' / 'Easy Refunds' / 'Buyer Protection' / '100% Money-Back Guarantee. Learn more about our buyer protection policy.'"
+        ],
+        "consoleErrors": "none; only development warnings present",
+        "network": "GET /my/orders -> 200 document; GET /api/user/orders?type=purchase -> 200 fetch"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-TRUST-014",
+      "title": "Trust copy is consistent across the app",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Compare trust naming on the public football page against account surfaces",
+          "expected": "Buyer Protection naming and trust terminology remain consistent across user-facing surfaces",
+          "observed": "The football page uses the badge label 'Buyer Protected' and trust badges 'Verified' / 'Secure Delivery', while account pages use 'Buyer Protection' headings and support/refund/guarantee cards without the 'Buyer Protected' badge wording."
+        },
+        {
+          "action": "Compare /my/tickets and /my/orders trust copy",
+          "expected": "Account and order surfaces use the same trust labels and claims",
+          "observed": "My Tickets adds a separate '100% Guarantee' heading with 'Every purchase is protected by our Buyer Protection program', whereas Order Records omits that heading and instead jumps directly from 'Easy Refunds' to 'Buyer Protection'."
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/account-trust-rerun/football-trust-annotated.png",
+          "guest-browsing-and-trust-foundation/account-trust-rerun/my-tickets-annotated.png",
+          "guest-browsing-and-trust-foundation/account-trust-rerun/my-orders-annotated.png"
+        ],
+        "copyObservations": [
+          "Football: 'Buyer Protection' heading + 'Buyer Protected' badge + 'Verified' + 'Secure Delivery'",
+          "My Tickets: '24/7 Support' + 'Easy Refunds' + '100% Guarantee' + 'Buyer Protection'",
+          "Order Records: '24/7 Support' + 'Easy Refunds' + 'Buyer Protection' (no visible '100% Guarantee' heading)"
+        ],
+        "consoleErrors": "none; only development warnings present",
+        "network": "Public and authenticated pages all loaded with 200 responses; failure is copy inconsistency rather than a routing/network issue"
+      },
+      "issues": "Trust naming remains inconsistent across surfaces: public browse uses 'Buyer Protected' as a badge while account/order pages use 'Buyer Protection', and /my/tickets includes a '100% Guarantee' label that /my/orders does not mirror."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The /my/tickets page loaded successfully instead of the previously reported 404, but the seeded test account currently shows an empty-state tickets list, so trust validation relied on the empty-state trust module rather than populated owned-ticket cards.",
+      "resolved": true,
+      "resolution": "Validated trust copy on /my/tickets and cross-checked against /my/orders and /football for consistency.",
+      "affectedAssertions": [
+        "VAL-TRUST-007",
+        "VAL-TRUST-013",
+        "VAL-TRUST-014"
+      ]
+    },
+    {
+      "description": "The 'buyer protection policy' control on /my/tickets appeared non-interactable in automation and did not reveal any additional modal or route during testing.",
+      "resolved": false,
+      "resolution": "Recorded the visible trust copy and policy-action label as evidence without further interaction.",
+      "affectedAssertions": [
+        "VAL-TRUST-013"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 3 account trust assertions: 2 passed (VAL-TRUST-007, VAL-TRUST-013) and 1 failed (VAL-TRUST-014). /my/tickets no longer 404s, buyer-protection and refund/support messaging are visible on account surfaces, but trust naming is still inconsistent between public and account/order pages."
+}

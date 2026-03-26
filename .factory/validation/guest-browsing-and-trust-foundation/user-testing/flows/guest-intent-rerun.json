@@ -1,0 +1,90 @@
+{
+  "groupId": "guest-intent-rerun",
+  "testedAt": "2026-03-26T07:15:20.564900+00:00",
+  "isolation": {
+    "baseUrl": "http://localhost:3100",
+    "browserSession": "e5a7eeb25268__u1",
+    "viewport": "375x812",
+    "credentialsUsed": [
+      "test@example.com/password123"
+    ],
+    "scope": "shared dev server/database; no code changes; guest auth-gate rerun only"
+  },
+  "toolsUsed": [
+    "agent-browser"
+  ],
+  "assertionResults": [
+    {
+      "id": "VAL-CROSS-006",
+      "title": "Guest browse to login preserves purchase destination",
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Open public home page and tap a product card as guest",
+          "expected": "Reach a public detail page before any auth gate",
+          "observed": "Opened /products/cmn74vjqb0006l04jqv2n3221 as a guest"
+        },
+        {
+          "action": "Tap Purchase on the detail page",
+          "expected": "Redirect to login with callback preserving purchase intent",
+          "observed": "Redirected to /login?callbackUrl=%2Fproducts%2Fcmn74vjqb0006l04jqv2n3221%3Faction%3Dpurchase"
+        },
+        {
+          "action": "Log in with test@example.com/password123",
+          "expected": "Return to the intended purchase destination after callback",
+          "observed": "Returned to /products/cmn74vjqb0006l04jqv2n3221?action=purchase, which auto-opened a purchase success modal; URL then normalized to /products/cmn74vjqb0006l04jqv2n3221 while the purchase modal remained open"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-intent-rerun/VAL-CROSS-006-before-login-detail.png",
+          "guest-browsing-and-trust-foundation/guest-intent-rerun/VAL-CROSS-006-login.png",
+          "guest-browsing-and-trust-foundation/guest-intent-rerun/VAL-CROSS-006-after-login-return.png",
+          "guest-browsing-and-trust-foundation/guest-intent-rerun/VAL-CROSS-006-after-login-flow.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Observed redirect chain /products/cmn74vjqb0006l04jqv2n3221 -> /login?callbackUrl=%2Fproducts%2Fcmn74vjqb0006l04jqv2n3221%3Faction%3Dpurchase -> /products/cmn74vjqb0006l04jqv2n3221?action=purchase -> /products/cmn74vjqb0006l04jqv2n3221"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-008",
+      "title": "Guest browse to login preserves create-listing destination",
+      "status": "fail",
+      "steps": [
+        {
+          "action": "Continue from the authenticated callback return on the same product detail page",
+          "expected": "Be at the intended listing entry flow or destination",
+          "observed": "User landed back on the product detail page after callback, not on a dedicated listing destination"
+        },
+        {
+          "action": "Tap For sale after the callback return",
+          "expected": "Resume the intended create-listing entry flow",
+          "observed": "A listing success modal opened inline on the detail page and the URL stayed /products/cmn74vjqb0006l04jqv2n3221"
+        }
+      ],
+      "evidence": {
+        "screenshots": [
+          "guest-browsing-and-trust-foundation/guest-intent-rerun/VAL-CROSS-006-after-login-flow.png",
+          "guest-browsing-and-trust-foundation/guest-intent-rerun/VAL-CROSS-008-after-login-flow.png"
+        ],
+        "consoleErrors": "none",
+        "network": "After login callback returned to /products/cmn74vjqb0006l04jqv2n3221?action=purchase and normalized to /products/cmn74vjqb0006l04jqv2n3221, triggering For sale stayed on the same detail URL and showed only an inline success modal"
+      },
+      "issues": "The rerun confirms the prior issue for sell intent: authentication returned the user to the detail page, but did not resume a distinct create-listing entry flow after callback."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The guidance file /Users/wendy/.factory/library/user-testing.md referenced by mission instructions was not present.",
+      "resolved": false,
+      "resolution": "Used AGENTS.md plus validation-contract.md and the parent task instructions as the operative guidance.",
+      "affectedAssertions": [
+        "VAL-CROSS-006",
+        "VAL-CROSS-008"
+      ]
+    }
+  ],
+  "blockers": [],
+  "summary": "Re-tested 2 assertions. VAL-CROSS-006 passed because purchase intent was preserved through login and auto-resumed via the callback query, while VAL-CROSS-008 still failed because sell intent did not resume a distinct listing-entry flow after authentication and only surfaced an inline success modal on the detail page."
+}
