@@ -1,13 +1,15 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Users, Package, Calendar, ShoppingCart } from 'lucide-react';
+import { Users, Package, Calendar, ShoppingCart, Ticket, Tag } from 'lucide-react';
 
 interface Stats {
   users: number;
   products: number;
   events: number;
   orders: number;
+  ownedAssets: number;
+  listings: number;
 }
 
 export default function AdminDashboardPage() {
@@ -82,6 +84,20 @@ export default function AdminDashboardPage() {
       bgColor: 'bg-warning-500',
       link: '/admin/orders',
     },
+    {
+      title: 'Owned Assets',
+      value: stats?.ownedAssets ?? 0,
+      icon: Ticket,
+      bgColor: 'bg-info-500',
+      link: '/admin/owned-assets',
+    },
+    {
+      title: 'Listings',
+      value: stats?.listings ?? 0,
+      icon: Tag,
+      bgColor: 'bg-secondary-500',
+      link: '/admin/listings',
+    },
   ];
 
   return (
@@ -92,7 +108,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Stat Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
         {statCards.map((card) => {
           const Icon = card.icon;
           return (
@@ -122,7 +138,7 @@ export default function AdminDashboardPage() {
       {/* Quick Links Section */}
       <div className="bg-white rounded-card shadow-card p-6">
         <h2 className="text-xl font-semibold text-muted-900 mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <a
             href="/admin/products"
             className="flex items-center p-4 border border-muted-200 rounded-lg hover:bg-surface-50 transition-colors"
@@ -150,6 +166,20 @@ export default function AdminDashboardPage() {
           >
             <ShoppingCart className="w-5 h-5 text-muted-600 mr-3" />
             <span className="font-medium text-muted-700">View Orders</span>
+          </a>
+          <a
+            href="/admin/owned-assets"
+            className="flex items-center p-4 border border-muted-200 rounded-lg hover:bg-surface-50 transition-colors"
+          >
+            <Ticket className="w-5 h-5 text-muted-600 mr-3" />
+            <span className="font-medium text-muted-700">View Owned Assets</span>
+          </a>
+          <a
+            href="/admin/listings"
+            className="flex items-center p-4 border border-muted-200 rounded-lg hover:bg-surface-50 transition-colors"
+          >
+            <Tag className="w-5 h-5 text-muted-600 mr-3" />
+            <span className="font-medium text-muted-700">View Listings</span>
           </a>
         </div>
       </div>

@@ -24,11 +24,13 @@ export async function GET(request: NextRequest) {
     }
 
     // Fetch stats from database
-    const [users, products, events, orders] = await Promise.all([
+    const [users, products, events, orders, ownedAssets, listings] = await Promise.all([
       prisma.user.count(),
       prisma.product.count(),
       prisma.event.count(),
       prisma.order.count(),
+      prisma.ownedAsset.count(),
+      prisma.listing.count(),
     ]);
 
     return NextResponse.json({
@@ -36,6 +38,8 @@ export async function GET(request: NextRequest) {
       products,
       events,
       orders,
+      ownedAssets,
+      listings,
     });
   } catch (error) {
     console.error('Error fetching admin stats:', error);

@@ -1,0 +1,53 @@
+{
+  "milestone": "pseudo-order-and-listing-model",
+  "round": 1,
+  "status": "fail",
+  "validatorsRun": {
+    "test": {
+      "passed": true,
+      "command": "cd \"/Users/wendy/wcstubhub-clone\" && npx vitest run",
+      "exitCode": 0
+    },
+    "typecheck": {
+      "passed": true,
+      "command": "cd \"/Users/wendy/wcstubhub-clone\" && pnpm typecheck",
+      "exitCode": 0
+    },
+    "lint": {
+      "passed": true,
+      "command": "cd \"/Users/wendy/wcstubhub-clone\" && pnpm lint",
+      "exitCode": 0
+    }
+  },
+  "reviewsSummary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "failedFeatures": [
+      "pseudo-order-and-listing-model"
+    ]
+  },
+  "blockingIssues": [
+    {
+      "featureId": "pseudo-order-and-listing-model",
+      "severity": "blocking",
+      "description": "The admin sidebar still exposes only Dashboard, Products, Events, Users, and legacy Orders. The new pseudo transaction pages `/admin/owned-assets` and `/admin/listings` are omitted, so the shipped admin UI provides no navigable path to the pseudo transaction records this feature added. That falls short of the milestone requirement to ensure admins can view/filter pseudo transaction records where appropriate."
+    },
+    {
+      "featureId": "pseudo-order-and-listing-model",
+      "severity": "blocking",
+      "description": "The dashboard quick actions and stats continue to point only to legacy order management and do not surface owned assets or listings. Combined with the missing sidebar links, pseudo transactions are effectively undiscoverable in the canonical admin experience even though separate pages exist."
+    }
+  ],
+  "appliedUpdates": [],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "skills",
+      "suggestion": "Reinforce in marketplace-worker completion guidance that features adding admin-facing routes must include agent-browser validation with explicit interactiveChecks evidence in the handoff.",
+      "evidence": "Feature pseudo-order-and-listing-model added admin-owned-assets and admin-listings surfaces, but its handoff recorded only commandsRun and no interactiveChecks, contrary to marketplace-worker step 5.",
+      "isSystemic": false
+    }
+  ],
+  "rejectedObservations": [],
+  "previousRound": null
+}

@@ -1,0 +1,34 @@
+{
+  "featureId": "pseudo-order-and-listing-model",
+  "reviewedAt": "2026-03-26T16:12:00Z",
+  "commitId": "6345accb",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "fail",
+  "codeReview": {
+    "summary": "The Prisma schema and seed data do add dedicated pseudo transaction models with explicit lifecycle statuses, but the admin exposure is incomplete and undercuts the milestone requirement that admins can view/filter pseudo transaction records where appropriate. The feature created separate admin pages and APIs, yet it did not integrate them into the existing admin navigation/dashboard or the canonical admin transaction surface, so admins are not actually given an appropriate route to discover and use these records from the shipped UI.",
+    "issues": [
+      {
+        "file": "app/admin/layout.tsx",
+        "line": 33,
+        "severity": "blocking",
+        "description": "The admin sidebar still exposes only Dashboard, Products, Events, Users, and legacy Orders. The new pseudo transaction pages `/admin/owned-assets` and `/admin/listings` are omitted, so the shipped admin UI provides no navigable path to the pseudo transaction records this feature added. That falls short of the milestone requirement to ensure admins can view/filter pseudo transaction records where appropriate."
+      },
+      {
+        "file": "app/admin/dashboard/page.tsx",
+        "line": 124,
+        "severity": "blocking",
+        "description": "The dashboard quick actions and stats continue to point only to legacy order management and do not surface owned assets or listings. Combined with the missing sidebar links, pseudo transactions are effectively undiscoverable in the canonical admin experience even though separate pages exist."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "skills",
+      "observation": "The marketplace-worker skill says to use agent-browser to verify real user/admin flows, but this worker handoff reports only command-line validation and no interactive checks despite adding new admin UI pages.",
+      "evidence": "/Users/wendy/wcstubhub-clone/.factory/skills/marketplace-worker/SKILL.md step 5 requires agent-browser; handoff file `/Users/wendy/.factory/missions/bc99579a-c2db-4a67-aad4-2d259a3c559d/handoffs/2026-03-26T08-10-49-980Z__pseudo-order-and-listing-model__30ffae76-d581-4b0d-ad5c-dab79dbe95b8.json` contains only `commandsRun` and no `interactiveChecks`."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Review failed: the data model and seeds are in place, but admin exposure is not integrated into the actual admin navigation/dashboard, leaving pseudo transaction records effectively inaccessible from the canonical admin UI. Report written for scrutiny triage."
+}

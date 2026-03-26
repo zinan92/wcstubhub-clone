@@ -9,7 +9,9 @@ import {
   Users, 
   ShoppingCart, 
   LogOut,
-  ShieldCheck 
+  ShieldCheck,
+  Ticket,
+  Tag
 } from 'lucide-react';
 
 export default function AdminLayout({
@@ -31,6 +33,8 @@ export default function AdminLayout({
     { name: 'Events', href: '/admin/events', icon: Calendar },
     { name: 'Users', href: '/admin/users', icon: Users },
     { name: 'Orders', href: '/admin/orders', icon: ShoppingCart },
+    { name: 'Owned Assets', href: '/admin/owned-assets', icon: Ticket },
+    { name: 'Listings', href: '/admin/listings', icon: Tag },
   ];
 
   const handleLogout = async () => {
