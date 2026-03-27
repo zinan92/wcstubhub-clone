@@ -1,0 +1,116 @@
+{
+  "groupId": "footer",
+  "testedAt": "2026-03-27T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "viewport": "375x812",
+    "adminCredentials": "admin@example.com / admin123",
+    "session": "1908f41aae6b__footer"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-NAV-008",
+      "title": "Footer renders on all public pages",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage http://localhost:3000", "expected": "Homepage loads", "observed": "Homepage loaded successfully" },
+        { "action": "Scroll to bottom of homepage", "expected": "Footer visible", "observed": "Footer with company info, quick links, legal links, and trust banner visible at bottom" },
+        { "action": "Take screenshot of footer on homepage", "expected": "Screenshot captured", "observed": "Screenshot saved showing full footer on homepage" },
+        { "action": "Navigate to /football page", "expected": "Football page loads", "observed": "Football page loaded successfully" },
+        { "action": "Scroll to bottom of /football page", "expected": "Footer visible", "observed": "Footer with identical content visible at bottom of football page" },
+        { "action": "Take screenshot of footer on football page", "expected": "Screenshot captured", "observed": "Screenshot saved showing full footer on football page" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/footer/VAL-NAV-008-footer-homepage.png",
+          "homepage-and-navigation-upgrade/footer/VAL-NAV-008-footer-football.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200, GET /football -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-009",
+      "title": "Footer does NOT render on admin pages",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /login", "expected": "Login form displayed", "observed": "Login form displayed with email and password fields" },
+        { "action": "Fill admin credentials and submit", "expected": "Login successful", "observed": "Logged in and redirected to /" },
+        { "action": "Navigate to /admin/dashboard", "expected": "Admin dashboard loads", "observed": "Admin dashboard loaded with sidebar navigation and stats" },
+        { "action": "Scroll to bottom of admin page", "expected": "No public footer visible", "observed": "No public footer present; admin page shows its own sidebar layout with Logout at bottom" },
+        { "action": "Take screenshot of admin page", "expected": "Screenshot shows no footer", "observed": "Screenshot confirms admin page has no public footer" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/footer/VAL-NAV-009-admin-no-footer.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/login -> redirect, GET /admin/dashboard -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-010",
+      "title": "Footer quick links and legal links are present",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage and scroll to footer", "expected": "Footer visible", "observed": "Footer visible at bottom of homepage" },
+        { "action": "Take snapshot of footer element", "expected": "Quick links and legal links found", "observed": "6 links found: About, Help Center, Contact (Quick Links) and Terms of Service, Privacy Policy, Cookie Policy (Legal)" },
+        { "action": "Verify all links are tappable", "expected": "All links are interactive link elements", "observed": "All 6 links are rendered as <a> (link) elements with refs, confirming they are tappable" },
+        { "action": "Take annotated screenshot", "expected": "Links annotated with numbers", "observed": "Annotated screenshot shows links labeled [49]-[54] with clear boundaries" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/footer/VAL-NAV-010-footer-links.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-011",
+      "title": "Footer trust banner visible",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage and scroll to footer", "expected": "Footer visible", "observed": "Footer visible at bottom of homepage" },
+        { "action": "Locate trust banner in footer", "expected": "Fan Protect Guarantee banner visible", "observed": "Fan Protect Guarantee banner visible with shield icon, bold title, and descriptive text" },
+        { "action": "Verify banner is visually distinct", "expected": "Banner has distinct styling", "observed": "Banner has gradient background (from-primary-50 to-blue-50), border (border-primary-200), rounded corners, and shield icon - visually distinct from surrounding content" },
+        { "action": "Take screenshot of trust banner", "expected": "Screenshot captured", "observed": "Screenshot saved showing trust banner with text: 'Every purchase is 100% protected. Valid tickets or your money back. Secure transactions backed by our buyer protection guarantee.'" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/footer/VAL-NAV-011-trust-banner.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-012",
+      "title": "Footer renders above bottom tab bar without clipping",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage and scroll to very bottom", "expected": "Footer and tab bar both visible", "observed": "Footer content ends above the bottom tab bar, both are fully visible" },
+        { "action": "Verify footer has bottom padding for tab bar", "expected": "Footer has pb-16 (64px) bottom padding", "observed": "Footer component has class pb-16, providing 64px clearance above the fixed bottom tab bar" },
+        { "action": "Verify no content clipping", "expected": "All footer content visible above tab bar", "observed": "Trust banner (last footer element) text is fully readable and not clipped by tab bar. Tab bar (Goods, Football, Basketball, Concert, My) renders separately below" },
+        { "action": "Take screenshot of footer above tab bar", "expected": "Screenshot shows no clipping", "observed": "Screenshot confirms footer content is fully visible with clear separation from tab bar" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/footer/VAL-NAV-012-footer-above-tabbar.png",
+          "homepage-and-navigation-upgrade/footer/VAL-NAV-012-footer-bottom.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: all 5 passed. Footer renders correctly on public pages (homepage, /football) with company info, quick links (About, Help Center, Contact), legal links (Terms of Service, Privacy Policy, Cookie Policy), and Fan Protect Guarantee trust banner. Footer does not appear on admin pages. Footer has pb-16 bottom padding ensuring content is fully visible above the fixed bottom tab bar with no clipping. No console errors observed."
+}

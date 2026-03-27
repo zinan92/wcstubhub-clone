@@ -1,0 +1,54 @@
+{
+  "milestone": "homepage-and-navigation-upgrade",
+  "round": 1,
+  "status": "fail",
+  "assertionsSummary": {
+    "total": 32,
+    "passed": 31,
+    "failed": 1,
+    "blocked": 0
+  },
+  "passedAssertions": [
+    "VAL-CONTENT-003",
+    "VAL-CONTENT-004",
+    "VAL-CONTENT-006",
+    "VAL-CONTENT-007",
+    "VAL-CONTENT-008",
+    "VAL-CONTENT-009",
+    "VAL-CONTENT-010",
+    "VAL-CONTENT-011",
+    "VAL-CONTENT-012",
+    "VAL-NAV-001",
+    "VAL-NAV-002",
+    "VAL-NAV-003",
+    "VAL-NAV-004",
+    "VAL-NAV-005",
+    "VAL-NAV-006",
+    "VAL-NAV-007",
+    "VAL-NAV-008",
+    "VAL-NAV-009",
+    "VAL-NAV-010",
+    "VAL-NAV-011",
+    "VAL-NAV-012",
+    "VAL-NAV-013",
+    "VAL-NAV-014",
+    "VAL-CROSS-001",
+    "VAL-CROSS-002",
+    "VAL-CROSS-003",
+    "VAL-CROSS-004",
+    "VAL-CROSS-005",
+    "VAL-CROSS-006",
+    "VAL-CROSS-007",
+    "VAL-CROSS-008",
+    "VAL-CROSS-009"
+  ],
+  "failedAssertions": [
+    {
+      "id": "VAL-CONTENT-005",
+      "reason": "Team Merchandise 'See All' links to /products which requires authentication and redirects to /login (not guest-accessible). Popular Events 'See All' links to /football instead of a dedicated events page."
+    }
+  ],
+  "blockedAssertions": [],
+  "appliedUpdates": [],
+  "previousRound": null
+}

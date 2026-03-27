@@ -1,0 +1,216 @@
+{
+  "groupId": "content-carousels",
+  "testedAt": "2026-03-27T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "viewport": "375x812",
+    "authRequired": false,
+    "readOnly": true,
+    "session": "1908f41aae6b__content"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-CONTENT-003",
+      "title": "Homepage has 5 carousel sections with correct headings",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to http://localhost:3000", "expected": "Homepage loads with carousel sections", "observed": "Homepage loaded successfully" },
+        { "action": "Check for section headings", "expected": "5 sections: Popular Events, Football Matches, Live Concerts, Basketball Games, Team Merchandise", "observed": "All 5 headings found via DOM query" },
+        { "action": "Check for See All links", "expected": "Each section has a See All link", "observed": "5 See All links found, one per section" },
+        { "action": "Take full-page screenshot", "expected": "All sections visible in scroll", "observed": "Full homepage screenshot captured showing all 5 sections" }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-003-full-homepage.png"],
+        "consoleErrors": "none",
+        "network": "GET / -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-004",
+      "title": "Horizontal carousel scroll with snap behavior",
+      "status": "pass",
+      "steps": [
+        { "action": "Check scroll-snap CSS on carousel containers", "expected": "scroll-snap-type: x mandatory on each carousel", "observed": "All 5 scrollable containers have scroll-snap-type: x mandatory and overflow-x: auto" },
+        { "action": "Check scrollWidth > clientWidth (peek)", "expected": "Cards extend beyond viewport, signaling scrollability", "observed": "All 5 carousels have scrollWidth (1432-2712px) > clientWidth (375px)" },
+        { "action": "Take screenshot showing peek of next card", "expected": "Partial next card visible at right edge", "observed": "Screenshot shows partial card visible at right edge of Popular Events carousel" }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-004-carousel-peek.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-005",
+      "title": "See All links navigate to correct category pages",
+      "status": "fail",
+      "steps": [
+        { "action": "Check See All href for Football Matches", "expected": "Links to /football", "observed": "/football - correct" },
+        { "action": "Click Football Matches See All", "expected": "Navigate to /football with content", "observed": "Navigated to /football, page loaded with 14 football events" },
+        { "action": "Check See All href for Live Concerts", "expected": "Links to /concert", "observed": "/concert - correct" },
+        { "action": "Click Live Concerts See All", "expected": "Navigate to /concert with content", "observed": "Navigated to /concert, page loaded with content" },
+        { "action": "Check See All href for Basketball Games", "expected": "Links to /basketball", "observed": "/basketball - correct" },
+        { "action": "Click Basketball Games See All", "expected": "Navigate to /basketball with content", "observed": "Navigated to /basketball, page loaded with content" },
+        { "action": "Check See All href for Team Merchandise", "expected": "Links to product listing page, loads with content", "observed": "Links to /products but /products redirects to /login?callbackUrl=%2Fproducts — requires authentication, not guest-accessible" },
+        { "action": "Check See All href for Popular Events", "expected": "Links to events listing", "observed": "Links to /football — same as Football Matches, not a dedicated popular events page" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-005-football-page.png",
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-005-concert-page.png",
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-005-basketball-page.png",
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-005-merchandise-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /football -> 200, GET /concert -> 200, GET /basketball -> 200, GET /products -> 302 redirect to /login"
+      },
+      "issues": "Team Merchandise 'See All' links to /products which requires authentication and redirects to /login. This page should be guest-accessible for browsing. Additionally, Popular Events 'See All' links to /football instead of a dedicated events page."
+    },
+    {
+      "id": "VAL-CONTENT-006",
+      "title": "Carousel cards navigate to correct detail pages",
+      "status": "pass",
+      "steps": [
+        { "action": "Click event card (Phoenix Suns VS Los Angeles Lakers) in Popular Events carousel", "expected": "Navigate to /events/[id] with matching data", "observed": "Navigated to /events/event-stable-005 showing 'Phoenix Suns VS Los Angeles Lakers', $145.00 at Footprint Center, Phoenix — matches card" },
+        { "action": "Click product card (Morocco Football Fan Face Paint Kit) in Team Merchandise carousel", "expected": "Navigate to /products/[id] with matching data", "observed": "Navigated to /products/cmn8elchd000pl05vas1p2yl2 showing 'Morocco Football Fan Face Paint Kit', $9.99 — matches card" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-006-event-detail.png",
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-006-product-detail.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /events/event-stable-005 -> 200, GET /products/cmn8elchd000pl05vas1p2yl2 -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-007",
+      "title": "Each carousel section has at least 5 cards",
+      "status": "pass",
+      "steps": [
+        { "action": "Count cards in each carousel section", "expected": "At least 5 cards per section", "observed": "All 5 sections have 8 cards each: Popular Events (8), Football Matches (8), Live Concerts (8), Basketball Games (8), Team Merchandise (8)" }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-007-carousel-cards.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-008",
+      "title": "Carousel cards show complete metadata",
+      "status": "pass",
+      "steps": [
+        { "action": "Check event card metadata", "expected": "Title, date, venue, price visible", "observed": "Event cards show team names (title), date (e.g. May 21, 2026), venue (e.g. Footprint Center, Phoenix), and price ($145.00). All fields populated." },
+        { "action": "Check product card metadata", "expected": "Name, price, image visible", "observed": "Product cards show name (e.g. Morocco Football Fan Face Paint Kit), price ($9.99), and image (flag image). All fields populated." },
+        { "action": "Check for blank or missing fields", "expected": "No blanks", "observed": "All 3 sampled event cards and 3 sampled product cards have complete metadata" }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-008-card-metadata.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-009",
+      "title": "Homepage no longer shows flat product grid as sole content",
+      "status": "pass",
+      "steps": [
+        { "action": "Check homepage layout", "expected": "Carousel sections instead of flat 2-column grid", "observed": "Homepage has 5 horizontal carousel sections with scroll-snap behavior. No grid-cols-2 elements found. Layout is carousel-based." },
+        { "action": "Verify no 2-column grid CSS", "expected": "No grid-cols-2 classes", "observed": "Zero elements with grid-cols-2 class found in the homepage DOM" }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-003-full-homepage.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-010",
+      "title": "Category pages show at least 8 items each",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /football", "expected": "At least 8 items", "observed": "14 event items displayed" },
+        { "action": "Navigate to /basketball", "expected": "At least 8 items", "observed": "14 event items displayed" },
+        { "action": "Navigate to /concert", "expected": "At least 8 items", "observed": "14 event items displayed" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-010-football-page.png",
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-010-basketball-page.png",
+          "homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-010-concert-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /football -> 200, GET /basketball -> 200, GET /concert -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-011",
+      "title": "No horizontal page overflow at 375px",
+      "status": "pass",
+      "steps": [
+        { "action": "Set viewport to 375x812", "expected": "Viewport set correctly", "observed": "Viewport set to 375x812" },
+        { "action": "Check body scrollWidth <= clientWidth", "expected": "scrollWidth <= clientWidth (375)", "observed": "body.scrollWidth=375, body.clientWidth=375, documentElement.scrollWidth=375, documentElement.clientWidth=375. No overflow." },
+        { "action": "Verify carousels scroll within container", "expected": "No horizontal page scrollbar", "observed": "All 5 carousels have overflow-x: auto with scrollWidth > clientWidth, but the page body has no overflow" }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-011-no-overflow.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-012",
+      "title": "Loading skeletons shown while data fetches",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify skeleton components exist in codebase", "expected": "Skeleton, ProductCardSkeleton, MatchCardSkeleton, HorizontalCarouselSkeleton components exist", "observed": "All skeleton components exist in components/ui/Skeleton.tsx and components/ui/HorizontalCarousel.tsx with proper animate-pulse styling and data-testid attributes" },
+        { "action": "Verify skeletons used in homepage loading state", "expected": "isLoading ternary renders HorizontalCarouselSkeleton for each section", "observed": "app/page.tsx uses useState(true) for isLoading and renders HorizontalCarouselSkeleton for all 5 sections (Popular Events, Football Matches, Live Concerts, Basketball Games, Team Merchandise) when isLoading is true" },
+        { "action": "Attempt to capture skeleton screenshot", "expected": "Skeleton visible during data fetch", "observed": "Localhost API responds too fast (<30ms) to capture skeleton state in screenshot. The isLoading state transitions from true to false almost instantly. Code review confirms correct implementation." }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/content-carousels/VAL-CONTENT-012-skeleton-loading.png"],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": "Could not visually capture the skeleton state in a screenshot because localhost API responds in <30ms. Code review confirms HorizontalCarouselSkeleton components are properly rendered during the isLoading=true state for all 5 carousel sections."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "The /products page requires authentication and redirects to /login, preventing guest access to the Team Merchandise listing page via See All link",
+      "resolved": false,
+      "resolution": null,
+      "affectedAssertions": ["VAL-CONTENT-005"]
+    },
+    {
+      "description": "Popular Events 'See All' links to /football instead of a dedicated events page",
+      "resolved": false,
+      "resolution": null,
+      "affectedAssertions": ["VAL-CONTENT-005"]
+    },
+    {
+      "description": "Loading skeletons render too briefly on localhost to capture in screenshots due to near-instant API response times",
+      "resolved": true,
+      "resolution": "Verified skeleton implementation through code review of components/ui/Skeleton.tsx, components/ui/HorizontalCarousel.tsx, and app/page.tsx",
+      "affectedAssertions": ["VAL-CONTENT-012"]
+    },
+    {
+      "description": "After navigating back from a detail page, the homepage snapshot sometimes returns fewer interactive elements requiring an additional wait for data to reload",
+      "resolved": true,
+      "resolution": "Added 2-second wait after navigation back to allow client-side data re-fetch to complete",
+      "affectedAssertions": ["VAL-CONTENT-005", "VAL-CONTENT-006"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 10 assertions: 9 passed, 1 failed (VAL-CONTENT-005: Team Merchandise See All links to /products which requires auth and redirects to /login instead of being guest-accessible; Popular Events See All links to /football instead of a dedicated events page)."
+}

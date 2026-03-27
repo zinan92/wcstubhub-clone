@@ -1,0 +1,210 @@
+{
+  "groupId": "cross-area",
+  "testedAt": "2026-03-27T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "viewport": "375x812",
+    "testCredentials": "test@example.com / password123",
+    "adminCredentials": "admin@example.com / admin123",
+    "session": "1908f41aae6b__cross"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-CROSS-001",
+      "title": "First-visit homepage shows all new features together",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to http://localhost:3000", "expected": "Homepage loads", "observed": "Homepage loaded successfully" },
+        { "action": "Check for fixed top nav", "expected": "Top nav with logo, search icon, user icon", "observed": "Top nav present with WCStubHub logo, search icon (Open search), user icon (Go to login)" },
+        { "action": "Check for banner carousel", "expected": "Banner carousel with navigation", "observed": "Banner carousel with Previous/Next buttons and 3 dot indicators visible" },
+        { "action": "Check for content carousels", "expected": "Multiple carousel sections with cards", "observed": "5 carousel sections: Popular Events, Football Matches, Live Concerts, Basketball Games, Team Merchandise - each with See All links and multiple cards" },
+        { "action": "Check for footer", "expected": "Footer with company info and links", "observed": "Footer with WCStubHub branding, Quick Links (About, Help Center, Contact), Legal (Terms, Privacy, Cookie Policy), Fan Protect Guarantee trust banner" },
+        { "action": "Check for bottom tab bar", "expected": "Bottom navigation tabs", "observed": "Bottom tab bar with Goods, Football, Basketball, Concert, My tabs" },
+        { "action": "Check search accessibility", "expected": "Search accessible via nav icon", "observed": "Search icon (Open search button) present in top nav" },
+        { "action": "Check console errors", "expected": "No errors", "observed": "Zero console errors" }
+      ],
+      "evidence": {
+        "screenshots": ["homepage-and-navigation-upgrade/cross-area/VAL-CROSS-001-full-homepage.png"],
+        "consoleErrors": "none",
+        "network": "GET / -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-002",
+      "title": "Search-to-detail-to-back flow works end-to-end",
+      "status": "pass",
+      "steps": [
+        { "action": "Click search icon in top nav", "expected": "Search overlay opens", "observed": "Full-screen search overlay opened with trending items (products and events)" },
+        { "action": "Type 'jersey' in search field", "expected": "Search results appear", "observed": "9 jersey results appeared (Belgium, Croatia, Mexico, Italy, England, Portugal, USA, Argentina, Brazil Home Jerseys)" },
+        { "action": "Tap 'Belgium Home Jersey 2026' result", "expected": "Navigate to product detail", "observed": "Navigated to /products/cmn8elch70006l05v1b3fnkhm - Belgium Home Jersey 2026 detail page loaded" },
+        { "action": "Verify nav and footer on detail", "expected": "Top nav and footer present", "observed": "Top nav (StubHub logo, search, user icon) and footer present on detail page" },
+        { "action": "Click browser back", "expected": "Return to homepage", "observed": "Returned to http://localhost:3000/" },
+        { "action": "Check console errors", "expected": "No errors throughout", "observed": "Zero console errors" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-002-search-overlay-open.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-002-search-results.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-002-detail-page.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-002-back-to-homepage.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/search?q=jersey -> 200, GET /products/cmn8elch70006l05v1b3fnkhm -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-003",
+      "title": "Carousel-to-detail-to-back flow works",
+      "status": "pass",
+      "steps": [
+        { "action": "Tap Phoenix Suns VS Los Angeles Lakers carousel card", "expected": "Navigate to event detail", "observed": "Navigated to /events/event-stable-005 - event detail page loaded correctly with event info" },
+        { "action": "Click browser back", "expected": "Return to homepage at approximate scroll position", "observed": "Returned to http://localhost:3000/" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-003-detail-from-carousel.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-003-back-to-homepage.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /events/event-stable-005 -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-004",
+      "title": "Guest browsing works across all navigation paths",
+      "status": "pass",
+      "steps": [
+        { "action": "Browse homepage carousels as guest", "expected": "Carousels accessible without login", "observed": "All 5 carousel sections visible and interactive without login prompt" },
+        { "action": "Use search as guest", "expected": "Search works without login", "observed": "Search overlay opens, type queries, see results - all without login" },
+        { "action": "Tap Football bottom tab", "expected": "Football page loads without login", "observed": "Navigated to /football - page loaded with 14+ football events, no login prompt" },
+        { "action": "Tap event card from football page", "expected": "Detail page without login", "observed": "Navigated to /events/event-stable-001 - Jordan VS Argentina detail loaded without login prompt" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-004-football-tab.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-004-guest-detail.png"
+        ],
+        "consoleErrors": "none",
+        "network": "All pages returned 200 without auth redirects"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-005",
+      "title": "Existing purchase and listing flows still work",
+      "status": "pass",
+      "steps": [
+        { "action": "Login as test@example.com", "expected": "Login successful", "observed": "Login successful, redirected to homepage" },
+        { "action": "Navigate to /events/event-stable-001", "expected": "Detail page with Purchase and For sale buttons", "observed": "Detail page loaded with both Purchase and For sale buttons visible" },
+        { "action": "Click Purchase -> set quantity -> Next", "expected": "Purchase flow: quantity -> summary", "observed": "Quantity modal opened with spinner (max 2500), then order summary displayed" },
+        { "action": "Click Continue -> Confirm Purchase", "expected": "Purchase completed", "observed": "Confirmation step shown, then 'Purchase Complete! Your tickets have been added to My Tickets' success message" },
+        { "action": "Navigate back to event detail, click For sale", "expected": "Listing flow opens", "observed": "Listing modal opened with Quantity and Ask Price fields" },
+        { "action": "Set price to $100 -> Next -> Continue -> Confirm Listing", "expected": "Listing created", "observed": "'Listing Created! Your tickets are now listed for sale' success message displayed" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-005-purchase-modal.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-005-purchase-summary.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-005-purchase-complete.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-005-purchase-confirmed.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-005-listing-complete.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/orders -> 200, POST /api/listings -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-006",
+      "title": "Trust badges and listing intelligence still render",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to event detail /events/event-stable-005", "expected": "Trust badges and listing intelligence visible", "observed": "Event detail shows 'Best Value' and 'Verified Listing' badges, Buyer Protection section visible" },
+        { "action": "Navigate to product detail", "expected": "Trust badges on product page", "observed": "Product detail shows 'Best Value', 'Verified Listing', 'Verified', 'Buyer Protection' badges, Delivery & Shipping section, and Buyer Protection section - all properly rendered within new layout" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-006-event-detail-full.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-006-product-detail-full.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /events/event-stable-005 -> 200, GET /products/* -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-007",
+      "title": "Admin panel unaffected",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /admin/login", "expected": "Admin login page without public nav/footer", "observed": "Admin login page rendered with Email/Password fields only - no public top nav or footer visible" },
+        { "action": "Login as admin@example.com / admin123", "expected": "Admin dashboard loads", "observed": "Redirected to /admin/dashboard - dashboard loaded with stats cards (2 Users, 30 Products, 42 Events, 2 Orders, 6 Owned Assets, 6 Listings)" },
+        { "action": "Navigate to Products management", "expected": "CRUD page loads", "observed": "Products management page loaded with product list table" },
+        { "action": "Verify no public nav/footer on admin pages", "expected": "No public nav or footer", "observed": "Admin pages show only Admin Portal sidebar navigation with Dashboard, Products, Events, Users, Orders, Owned Assets, Listings - no public top nav or footer" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-007-admin-dashboard.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-007-admin-products.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/admin/login -> 200, GET /admin/dashboard -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-008",
+      "title": "All features work at 375px mobile viewport",
+      "status": "pass",
+      "steps": [
+        { "action": "Verify viewport is 375x812", "expected": "375px width", "observed": "JavaScript confirms window.innerWidth=375, bodyScrollWidth=375, bodyClientWidth=375" },
+        { "action": "Check top nav fits", "expected": "Top nav fits within 375px", "observed": "Top nav renders correctly with logo, search icon, and user icon all visible" },
+        { "action": "Check carousels scroll horizontally", "expected": "Horizontal scroll without page overflow", "observed": "Carousels scroll horizontally with peek of next card visible. hasHorizontalOverflow=false confirmed" },
+        { "action": "Check search overlay is full-screen", "expected": "Full-screen search at 375px", "observed": "Search overlay covers full viewport with trending items and search input" },
+        { "action": "Check footer is readable", "expected": "Footer readable at 375px", "observed": "Footer fully readable with Quick Links, Legal links, and Fan Protect Guarantee banner all legible" },
+        { "action": "Check tab bar visible", "expected": "Bottom tab bar visible", "observed": "Tab bar shows all 5 tabs (Goods, Football, Basketball, Concert, My) readable at 375px" },
+        { "action": "Check no horizontal scrollbar on body", "expected": "scrollWidth <= clientWidth", "observed": "bodyScrollWidth (375) === bodyClientWidth (375), no horizontal overflow" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-008-homepage-375px.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-008-search-overlay-375px.png",
+          "homepage-and-navigation-upgrade/cross-area/VAL-CROSS-008-footer-375px.png"
+        ],
+        "consoleErrors": "none",
+        "network": "All pages at 375px returned 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CROSS-009",
+      "title": "No console errors on full interaction flow",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear console errors", "expected": "Clean slate", "observed": "Console cleared" },
+        { "action": "Load homepage", "expected": "No errors", "observed": "Page loaded, no errors" },
+        { "action": "Scroll through carousels", "expected": "No errors", "observed": "Scrolled down 900px through carousels, no errors" },
+        { "action": "Open search", "expected": "No errors", "observed": "Search overlay opened with trending items, no errors" },
+        { "action": "Search 'cap' and tap result", "expected": "No errors", "observed": "4 results appeared, tapped 'Norway Team Cap', navigated to detail, no errors" },
+        { "action": "Navigate back to homepage", "expected": "No errors", "observed": "Back to homepage, no errors" },
+        { "action": "Tap different carousel card (Dallas Mavericks)", "expected": "No errors", "observed": "Navigated to event detail, no errors" },
+        { "action": "Navigate back to homepage", "expected": "No errors", "observed": "Back to homepage, no errors" },
+        { "action": "Scroll to footer", "expected": "No errors", "observed": "Scrolled to bottom of page showing footer, no errors" },
+        { "action": "Check console errors after full flow", "expected": "Zero console errors", "observed": "Zero console errors confirmed - empty error output" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "none",
+        "network": "All requests returned 200 throughout flow"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 9 assertions: 9 passed, 0 failed. All cross-area flows work correctly. Homepage shows all new features (nav, carousels, footer, tab bar). Search-to-detail and carousel-to-detail flows work end-to-end with back navigation. Guest browsing works across all paths without login prompts. Purchase and listing flows complete successfully without interference from new UI. Trust badges and listing intelligence render correctly. Admin panel is unaffected by public UI changes. All features work at 375px mobile viewport with no horizontal overflow. Zero console errors throughout full interaction flow."
+}

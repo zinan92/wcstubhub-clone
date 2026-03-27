@@ -1,0 +1,183 @@
+{
+  "groupId": "navigation",
+  "testedAt": "2026-03-27T12:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "viewport": "375x812",
+    "testCredentials": "test@example.com / password123",
+    "adminCredentials": "admin@example.com / admin123",
+    "session": "1908f41aae6b__nav"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-NAV-001",
+      "title": "Top nav bar renders on all public pages",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage /", "expected": "Top nav with logo, search icon, user icon visible", "observed": "Top nav with WC StubHub logo, search icon, user icon visible" },
+        { "action": "Navigate to /football", "expected": "Top nav visible", "observed": "Top nav with same elements visible" },
+        { "action": "Navigate to /basketball", "expected": "Top nav visible", "observed": "Top nav with same elements visible" },
+        { "action": "Navigate to /concert", "expected": "Top nav visible", "observed": "Top nav with same elements visible" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-001-homepage.png",
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-001-football.png",
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-001-basketball.png",
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-001-concert.png"
+        ],
+        "consoleErrors": "none",
+        "network": "All pages loaded with 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-002",
+      "title": "Top nav does NOT render on admin pages",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /admin", "expected": "Redirected to admin login, no public top nav or footer", "observed": "Admin login page shown without public top nav bar or footer" },
+        { "action": "Login as admin@example.com", "expected": "Admin dashboard without public nav", "observed": "Admin dashboard rendered with admin sidebar, no public top nav or footer" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-002-admin.png",
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-002-admin-dashboard.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Admin login and dashboard loaded successfully"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-003",
+      "title": "Logo in top nav navigates home",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /football", "expected": "Football page loaded", "observed": "Football page loaded with top nav" },
+        { "action": "Click logo/app name 'Go to homepage'", "expected": "Navigate to /", "observed": "Navigated to http://localhost:3000/" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-003-logo-home.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET / -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-004",
+      "title": "Search icon in top nav opens search overlay",
+      "status": "pass",
+      "steps": [
+        { "action": "On homepage, click 'Open search' button in top nav", "expected": "Full-screen search overlay opens with trending items", "observed": "Search overlay opened showing search input, TRENDING section with PRODUCTS and EVENTS" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-004-search-overlay.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Search overlay loaded trending items"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-005",
+      "title": "User icon behavior based on auth state",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear cookies to ensure logged-out state", "expected": "Session cleared", "observed": "Cookies cleared, user icon shows 'Go to login'" },
+        { "action": "Click user icon (logged out)", "expected": "Navigate to /login", "observed": "Navigated to http://localhost:3000/login" },
+        { "action": "Login with test@example.com / password123", "expected": "Login successful, user icon changes", "observed": "Logged in, user icon changed to avatar circle with 'Go to profile' label" },
+        { "action": "Click user icon (logged in)", "expected": "Navigate to /my", "observed": "Navigated to http://localhost:3000/my with profile menu" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-005-logged-out.png",
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-005-logged-in.png",
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-005-profile-page.png"
+        ],
+        "consoleErrors": "none",
+        "network": "POST /api/auth/login -> success, GET /my -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-006",
+      "title": "Top nav is sticky/fixed on scroll",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage", "expected": "Homepage loaded with top nav", "observed": "Homepage loaded" },
+        { "action": "Scroll down 500px", "expected": "Top nav remains pinned at top", "observed": "Top nav remained fixed at top of viewport, content scrolled beneath it" },
+        { "action": "Scroll down 1000px more", "expected": "Top nav still pinned", "observed": "Top nav still pinned at top, significantly scrolled content visible below" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-006-scrolled.png",
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-006-scrolled-more.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-007",
+      "title": "Top nav and bottom tab bar coexist without overlap",
+      "status": "pass",
+      "steps": [
+        { "action": "View homepage at 375px viewport", "expected": "Both top nav and bottom tab bar visible, content between them with proper padding", "observed": "Top nav (WC StubHub, search, user icon) at top and bottom tab bar (Goods, Football, Basketball, Concert, My) at bottom, with carousel content between. No overlap." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-007-both-bars.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-013",
+      "title": "No horizontal overflow from nav or footer at 375px",
+      "status": "pass",
+      "steps": [
+        { "action": "Set viewport to 375x812", "expected": "Mobile viewport", "observed": "Viewport set to 375x812" },
+        { "action": "Check scrollWidth vs clientWidth on body and documentElement", "expected": "scrollWidth <= clientWidth (no overflow)", "observed": "scrollWidth=375, clientWidth=375, hasOverflow=false" },
+        { "action": "Scroll to footer and verify", "expected": "Footer fits within 375px, all text readable", "observed": "Footer renders cleanly at 375px with company info, quick links, legal links, and trust banner all readable" },
+        { "action": "Check scrollWidth again at footer position", "expected": "No overflow", "observed": "scrollWidth=375, clientWidth=375, hasOverflow=false" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "homepage-and-navigation-upgrade/navigation/VAL-NAV-013-footer-375px.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-NAV-014",
+      "title": "No console errors from nav and footer",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear console errors", "expected": "Clean slate", "observed": "Console cleared" },
+        { "action": "Load homepage, scroll to footer", "expected": "Zero console errors", "observed": "Zero console errors" },
+        { "action": "Navigate to /football, scroll to footer", "expected": "Zero console errors", "observed": "Zero console errors" },
+        { "action": "Navigate to /concert, scroll to footer", "expected": "Zero console errors", "observed": "Zero console errors" },
+        { "action": "Check agent-browser errors", "expected": "No errors reported", "observed": "No errors reported across all pages" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "none",
+        "network": "All pages loaded with 200, no error responses"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 9 assertions: all 9 passed. Top nav renders correctly on all public pages with logo, search, and user icon. Admin pages correctly exclude the public nav. Logo navigation, search overlay, and auth-aware user icon all work as specified. Nav is sticky on scroll, coexists with bottom tab bar without overlap, has no horizontal overflow at 375px, and produces zero console errors."
+}
