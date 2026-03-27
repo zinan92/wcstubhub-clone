@@ -34,7 +34,7 @@ describe('SearchOverlay', () => {
       render(<SearchOverlay isOpen={true} onClose={vi.fn()} />);
       const dialog = screen.getByRole('dialog');
       expect(dialog).toBeInTheDocument();
-      expect(dialog).toHaveClass('fixed', 'inset-0', 'z-50');
+      expect(dialog).toHaveClass('fixed', 'inset-0', 'z-[60]');
     });
 
     it('renders with auto-focused input', () => {

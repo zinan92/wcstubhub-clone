@@ -131,7 +131,7 @@ export default function SearchOverlay({ isOpen, onClose }: SearchOverlayProps) {
       role="dialog"
       aria-modal="true"
       aria-labelledby="search-overlay-title"
-      className="fixed inset-0 z-50 bg-white flex flex-col"
+      className="fixed inset-0 z-[60] bg-white flex flex-col"
       onClick={handleBackdropClick}
     >
       {/* Header */}
