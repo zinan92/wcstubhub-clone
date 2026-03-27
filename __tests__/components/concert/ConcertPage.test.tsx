@@ -54,7 +54,7 @@ describe('ConcertPage', () => {
     global.fetch = vi.fn();
   });
 
-  it('renders search bar with correct placeholder', async () => {
+  it('renders search trigger button with correct text', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockConcerts,
     });
@@ -62,7 +62,7 @@ describe('ConcertPage', () => {
     render(<ConcertPage />);
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText('Find a star or performance')).toBeInTheDocument();
+      expect(screen.getByText(/find a star or performance/i)).toBeInTheDocument();
     });
   });
 
@@ -98,94 +98,56 @@ describe('ConcertPage', () => {
     expect(global.fetch).toHaveBeenCalledWith('/api/events?type=concert');
   });
 
-  it('filters concerts by artist name when searching', async () => {
+  it('displays all concerts without filtering', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockConcerts,
     });
 
-    const user = userEvent.setup();
     render(<ConcertPage />);
 
     await waitFor(() => {
       expect(screen.getByText(/Taylor Swift: The Eras Tour/i)).toBeInTheDocument();
-    });
-
-    const searchInput = screen.getByPlaceholderText('Find a star or performance');
-    await user.type(searchInput, 'Taylor');
-
-    await waitFor(() => {
-      expect(screen.getByText(/Taylor Swift: The Eras Tour/i)).toBeInTheDocument();
-      expect(screen.queryByText(/Ed Sheeran: Mathematics Tour/i)).not.toBeInTheDocument();
-      expect(screen.queryByText(/The Weeknd: After Hours Til Dawn/i)).not.toBeInTheDocument();
+      // All events should be visible (filtering is now done in the overlay)
+      expect(screen.getByText(/Ed Sheeran: Mathematics Tour/i)).toBeInTheDocument();
+      expect(screen.getByText(/The Weeknd: After Hours Til Dawn/i)).toBeInTheDocument();
     });
   });
 
-  it('filters concerts by event name when searching', async () => {
+  it('displays Mathematics Tour event', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockConcerts,
     });
 
-    const user = userEvent.setup();
     render(<ConcertPage />);
 
     await waitFor(() => {
       expect(screen.getByText(/Mathematics Tour/i)).toBeInTheDocument();
-    });
-
-    const searchInput = screen.getByPlaceholderText('Find a star or performance');
-    await user.type(searchInput, 'Mathematics');
-
-    await waitFor(() => {
       expect(screen.getByText(/Ed Sheeran: Mathematics Tour/i)).toBeInTheDocument();
-      expect(screen.queryByText(/Taylor Swift/i)).not.toBeInTheDocument();
-      expect(screen.queryByText(/The Weeknd/i)).not.toBeInTheDocument();
+      // All events are visible
+      expect(screen.getAllByText(/Taylor Swift/i).length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/The Weeknd/i).length).toBeGreaterThan(0);
     });
   });
 
-  it('shows empty state when search has no matches', async () => {
+  it('shows empty state when API returns no events', async () => {
     (global.fetch as any).mockResolvedValueOnce({
-      json: async () => mockConcerts,
+      json: async () => [],
     });
 
-    const user = userEvent.setup();
     render(<ConcertPage />);
-
-    await waitFor(() => {
-      expect(screen.getAllByText(/Taylor Swift/i).length).toBeGreaterThan(0);
-    });
-
-    const searchInput = screen.getByPlaceholderText('Find a star or performance');
-    await user.type(searchInput, 'NonexistentArtist');
 
     await waitFor(() => {
       expect(screen.getByText(/No concerts found/i)).toBeInTheDocument();
       expect(screen.getByText('Try a different search term')).toBeInTheDocument();
-      expect(screen.queryAllByText(/Taylor Swift/i).length).toBe(0);
     });
   });
 
-  it('restores all concerts when search is cleared', async () => {
+  it('displays all concerts when loaded', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockConcerts,
     });
 
-    const user = userEvent.setup();
     render(<ConcertPage />);
-
-    await waitFor(() => {
-      expect(screen.getAllByText(/Taylor Swift/i).length).toBeGreaterThan(0);
-    });
-
-    const searchInput = screen.getByPlaceholderText('Find a star or performance');
-    
-    // Type and filter
-    await user.type(searchInput, 'Taylor');
-    await waitFor(() => {
-      expect(screen.queryByText(/Ed Sheeran/i)).not.toBeInTheDocument();
-    });
-
-    // Clear search
-    await user.clear(searchInput);
 
     await waitFor(() => {
       expect(screen.getAllByText(/Taylor Swift/i).length).toBeGreaterThan(0);

@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import BasketballPage from '@/app/basketball/page';
 
+// Mock Next.js router
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 // Mock Next.js Image component
 vi.mock('next/image', () => ({
   default: ({ src, alt }: { src: string; alt: string }) => <img src={src} alt={alt} />,
@@ -55,7 +62,7 @@ describe('BasketballPage', () => {
     vi.clearAllMocks();
   });
 
-  it('renders the search bar with correct placeholder', async () => {
+  it('renders the search trigger button with correct text', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockBasketballEvents,
     });
@@ -63,8 +70,8 @@ describe('BasketballPage', () => {
     render(<BasketballPage />);
     
     await waitFor(() => {
-      const searchInput = screen.getByPlaceholderText('Find matches');
-      expect(searchInput).toBeDefined();
+      const searchButton = screen.getByText(/find matches/i);
+      expect(searchButton).toBeDefined();
     });
   });
 
@@ -143,7 +150,7 @@ describe('BasketballPage', () => {
     expect(skeleton).toBeDefined();
   });
 
-  it('filters basketball events by team name when searching', async () => {
+  it('displays all basketball events without filtering', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockBasketballEvents,
     });
@@ -154,40 +161,26 @@ describe('BasketballPage', () => {
       expect(screen.getByText('Phoenix Suns')).toBeDefined();
     });
 
-    const searchInput = screen.getByPlaceholderText('Find matches');
-    fireEvent.change(searchInput, { target: { value: 'Lakers' } });
-
-    await waitFor(() => {
-      // Should show both Lakers games
-      const lakersElements = screen.getAllByText(/Lakers/);
-      expect(lakersElements.length).toBeGreaterThan(0);
-      
-      // Should NOT show Warriors
-      expect(screen.queryByText('Golden State Warriors')).toBeNull();
-    });
+    // All events should be visible (filtering is now done in the overlay)
+    const lakersElements = screen.getAllByText(/Lakers/);
+    expect(lakersElements.length).toBeGreaterThan(0);
+    expect(screen.getByText('Golden State Warriors')).toBeDefined();
   });
 
-  it('shows empty state when no matches found', async () => {
+  it('shows empty state when API returns no events', async () => {
     (global.fetch as any).mockResolvedValueOnce({
-      json: async () => mockBasketballEvents,
+      json: async () => [],
     });
 
     render(<BasketballPage />);
     
-    await waitFor(() => {
-      expect(screen.getByText('Phoenix Suns')).toBeDefined();
-    });
-
-    const searchInput = screen.getByPlaceholderText('Find matches');
-    fireEvent.change(searchInput, { target: { value: 'NonexistentTeam' } });
-
     await waitFor(() => {
       expect(screen.getByText('No matches found')).toBeDefined();
       expect(screen.getByText('Try a different search term')).toBeDefined();
     });
   });
 
-  it('search is case-insensitive', async () => {
+  it('displays all events including suns', async () => {
     (global.fetch as any).mockResolvedValueOnce({
       json: async () => mockBasketballEvents,
     });
@@ -196,13 +189,8 @@ describe('BasketballPage', () => {
     
     await waitFor(() => {
       expect(screen.getByText('Phoenix Suns')).toBeDefined();
-    });
-
-    const searchInput = screen.getByPlaceholderText('Find matches');
-    fireEvent.change(searchInput, { target: { value: 'suns' } });
-
-    await waitFor(() => {
-      expect(screen.getByText('Phoenix Suns')).toBeDefined();
+      // All events should be visible
+      expect(screen.getByText('Golden State Warriors')).toBeDefined();
     });
   });
 });

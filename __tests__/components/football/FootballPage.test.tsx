@@ -2,6 +2,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import FootballPage from '@/app/football/page';
 
+// Mock Next.js router
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 // Mock fetch
 global.fetch = vi.fn();
 
@@ -43,12 +50,12 @@ describe('FootballPage', () => {
     });
   });
 
-  it('renders search bar with placeholder "Find matches"', async () => {
+  it('renders search trigger button with "Find matches" text', async () => {
     render(<FootballPage />);
     
     await waitFor(() => {
-      const searchInput = screen.getByPlaceholderText(/find matches/i);
-      expect(searchInput).toBeDefined();
+      const searchButton = screen.getByText(/find matches/i);
+      expect(searchButton).toBeDefined();
     });
   });
 
@@ -111,7 +118,7 @@ describe('FootballPage', () => {
     });
   });
 
-  it('filters matches by team name when searching', async () => {
+  it('displays all matches without filtering', async () => {
     render(<FootballPage />);
 
     await waitFor(() => {
@@ -119,24 +126,18 @@ describe('FootballPage', () => {
       expect(screen.getByText(/algeria/i)).toBeDefined();
     });
 
-    const searchInput = screen.getByPlaceholderText(/find matches/i);
-    fireEvent.change(searchInput, { target: { value: 'Argentina' } });
-
-    await waitFor(() => {
-      expect(screen.getByText(/jordan/i)).toBeDefined(); // Jordan VS Argentina should still be visible
-      expect(screen.queryByText(/algeria/i)).toBeNull(); // Algeria VS Austria should be filtered out
-    });
+    // Both matches should be visible (filtering is now done in the overlay)
+    expect(screen.getByText(/jordan/i)).toBeDefined();
+    expect(screen.getByText(/algeria/i)).toBeDefined();
   });
 
-  it('shows empty state when no matches found', async () => {
-    render(<FootballPage />);
-
-    await waitFor(() => {
-      expect(screen.getByText(/jordan/i)).toBeDefined();
+  it('shows empty state when API returns no events', async () => {
+    (global.fetch as any).mockResolvedValueOnce({
+      ok: true,
+      json: async () => [],
     });
 
-    const searchInput = screen.getByPlaceholderText(/find matches/i);
-    fireEvent.change(searchInput, { target: { value: 'NonexistentTeam' } });
+    render(<FootballPage />);
 
     await waitFor(() => {
       expect(screen.getByText(/no matches found/i)).toBeDefined();

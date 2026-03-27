@@ -1,10 +1,10 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Package } from 'lucide-react';
+import { Package, Search } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';
 import BannerCarousel from '@/components/goods/BannerCarousel';
-import SearchBar from '@/components/goods/SearchBar';
+import SearchOverlay from '@/components/goods/SearchOverlay';
 import ProductGrid from '@/components/goods/ProductGrid';
 import FloatingCustomerService from '@/components/goods/FloatingCustomerService';
 import { ProductCardSkeleton } from '@/components/ui/Skeleton';
@@ -24,9 +24,8 @@ interface Product {
 
 export default function Home() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Fetch products on mount
   useEffect(() => {
@@ -35,7 +34,6 @@ export default function Home() {
         const response = await fetch('/api/products');
         const data = await response.json();
         setProducts(data);
-        setFilteredProducts(data);
       } catch (error) {
         console.error('Error fetching products:', error);
       } finally {
@@ -46,18 +44,6 @@ export default function Home() {
     fetchProducts();
   }, []);
 
-  // Filter products in real-time as user types
-  useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setFilteredProducts(products);
-    } else {
-      const filtered = products.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase())
-      );
-      setFilteredProducts(filtered);
-    }
-  }, [searchQuery, products]);
-
   return (
     <main className="min-h-screen bg-gray-50 pb-20">
       {/* Banner Carousel */}
@@ -65,14 +51,19 @@ export default function Home() {
         <BannerCarousel />
       </div>
 
-      {/* Search Bar */}
+      {/* Search Trigger */}
       <div className="px-4 pb-4">
-        <SearchBar
-          value={searchQuery}
-          onChange={setSearchQuery}
-          placeholder="Find products"
-        />
+        <button
+          onClick={() => setIsSearchOpen(true)}
+          className="w-full flex items-center gap-3 px-4 py-3 bg-white border border-muted-200 rounded-full shadow-soft hover:shadow-card transition-all"
+        >
+          <Search className="w-5 h-5 text-muted-400" />
+          <span className="text-muted-500">Find products</span>
+        </button>
       </div>
+
+      {/* Search Overlay */}
+      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* Commodities Section */}
       <div className="px-4 pb-4">
@@ -106,7 +97,7 @@ export default function Home() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <ProductGrid products={filteredProducts} />
+              <ProductGrid products={products} />
             </m.div>
           )}
         </AnimatePresence>

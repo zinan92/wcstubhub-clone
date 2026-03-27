@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Trophy } from 'lucide-react';
+import { Trophy, Search } from 'lucide-react';
 import { AnimatePresence, m } from 'motion/react';
-import SearchBar from '@/components/goods/SearchBar';
+import SearchOverlay from '@/components/goods/SearchOverlay';
 import MatchCard from '@/components/football/MatchCard';
 import { MatchCardSkeleton } from '@/components/ui/Skeleton';
 import EmptyState from '@/components/ui/EmptyState';
@@ -30,9 +30,8 @@ interface FootballEvent {
 
 export default function FootballPage() {
   const [events, setEvents] = useState<FootballEvent[]>([]);
-  const [filteredEvents, setFilteredEvents] = useState<FootballEvent[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   // Fetch football events on mount
   useEffect(() => {
@@ -41,7 +40,6 @@ export default function FootballPage() {
         const response = await fetch('/api/events?type=football');
         const data = await response.json();
         setEvents(data);
-        setFilteredEvents(data);
       } catch (error) {
         console.error('Error fetching football events:', error);
       } finally {
@@ -52,31 +50,21 @@ export default function FootballPage() {
     fetchEvents();
   }, []);
 
-  // Filter events in real-time as user types
-  useEffect(() => {
-    if (searchQuery.trim() === '') {
-      setFilteredEvents(events);
-    } else {
-      const query = searchQuery.toLowerCase();
-      const filtered = events.filter(
-        (event) =>
-          event.team1?.toLowerCase().includes(query) ||
-          event.team2?.toLowerCase().includes(query)
-      );
-      setFilteredEvents(filtered);
-    }
-  }, [searchQuery, events]);
-
   return (
     <main className="min-h-screen bg-gray-50 pb-20">
-      {/* Search Bar */}
+      {/* Search Trigger */}
       <div className="px-4 pt-4 pb-3">
-        <SearchBar
-          value={searchQuery}
-          onChange={setSearchQuery}
-          placeholder="Find matches"
-        />
+        <button
+          onClick={() => setIsSearchOpen(true)}
+          className="w-full flex items-center gap-3 px-4 py-3 bg-white border border-muted-200 rounded-full shadow-soft hover:shadow-card transition-all"
+        >
+          <Search className="w-5 h-5 text-muted-400" />
+          <span className="text-muted-500">Find matches</span>
+        </button>
       </div>
+
+      {/* Search Overlay */}
+      <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
 
       {/* World Cup Banner */}
       <div className="px-4 pb-4">
@@ -126,7 +114,7 @@ export default function FootballPage() {
                 <MatchCardSkeleton key={i} />
               ))}
             </m.div>
-          ) : filteredEvents.length === 0 ? (
+          ) : events.length === 0 ? (
             <m.div
               key="empty"
               initial={{ opacity: 0 }}
@@ -157,7 +145,7 @@ export default function FootballPage() {
               }}
               className="space-y-4"
             >
-              {filteredEvents.map((event) => (
+              {events.map((event) => (
                 <m.div
                   key={event.id}
                   variants={{
