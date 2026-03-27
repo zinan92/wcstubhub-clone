@@ -3,20 +3,12 @@ set -e
 
 cd /Users/wendy/wcstubhub-clone
 
-# Install dependencies if node_modules missing or package.json changed
-if [ ! -d "node_modules" ] || [ "package.json" -nt "node_modules/.package-lock.json" ] 2>/dev/null; then
-  pnpm install
-fi
+# Install dependencies
+pnpm install --frozen-lockfile 2>/dev/null || pnpm install
 
-# Generate Prisma client if schema exists
-if [ -f "prisma/schema.prisma" ]; then
-  pnpm exec prisma generate 2>/dev/null || true
-  pnpm exec prisma db push 2>/dev/null || true
-fi
+# Generate Prisma client
+pnpm exec prisma generate
 
-# Seed database if seed script exists and db is empty
-if [ -f "prisma/seed.ts" ] || [ -f "prisma/seed.js" ]; then
-  pnpm db:seed 2>/dev/null || true
-fi
-
-echo "Init complete"
+# Push schema and seed database
+pnpm exec prisma db push
+pnpm db:seed
