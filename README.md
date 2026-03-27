@@ -1,6 +1,6 @@
 # wcstubhub-clone
 
-A premium mobile-first ticket marketplace and sports merchandise platform, built as a clone of wcstubhub.com (SAE-A Trading). Users can browse and purchase goods, football and basketball event tickets, and concert tickets with full guest access, trust architecture, listing intelligence badges, and multi-step transaction flows. Includes a comprehensive admin panel and account center with ticket/listing management.
+A premium mobile-first ticket marketplace and sports merchandise platform, built as a clone of wcstubhub.com (SAE-A Trading). Users can browse and purchase goods, football and basketball event tickets, and concert tickets with full guest access, trust architecture, listing intelligence badges, and multi-step transaction flows. Features a unified search system with full-screen overlay, horizontal carousel sections, sticky top navigation, and a comprehensive footer. Includes 30 products and 42 events seeded across all categories, a comprehensive admin panel, and account center with ticket/listing management.
 
 ## Tech Stack
 
@@ -39,7 +39,7 @@ pnpm exec prisma db push
 
 ### Seed the Database
 
-Populate the database with sample products, events, users, and VIP tiers:
+Populate the database with 30 products, 42 events, sample users, and VIP tiers:
 
 ```bash
 pnpm db:seed
@@ -102,6 +102,7 @@ wcstubhub-clone/
 │   │   └── listings/           # Listing management
 │   └── api/                    # API routes
 │       ├── auth/               # NextAuth endpoints
+│       ├── search/             # Unified search API (GET /api/search?q=)
 │       ├── products/           # Product API
 │       ├── events/             # Event API
 │       ├── user/               # User API (orders, owned-assets, listings)
@@ -117,6 +118,10 @@ wcstubhub-clone/
 │   ├── football/               # Football page components
 │   ├── basketball/             # Basketball page components
 │   ├── concert/                # Concert page components
+│   ├── search/                 # Search overlay and autocomplete
+│   ├── home/                   # Homepage carousel sections
+│   ├── TopNavigation.tsx       # Sticky top navigation bar
+│   ├── Footer.tsx              # Footer with links and trust banner
 │   ├── BottomTabNavigation.tsx # Frosted glass bottom tab bar
 │   └── LayoutWrapper.tsx       # Layout wrapper
 ├── lib/
@@ -126,7 +131,7 @@ wcstubhub-clone/
 │   ├── schema.prisma           # Database schema
 │   └── seed.ts                 # Database seed script
 ├── types/                      # TypeScript type definitions
-├── __tests__/                  # Test suite (47 files, 354 tests)
+├── __tests__/                  # Test suite (54 files, 466 tests)
 │   ├── api/                    # API route tests (incl. admin/)
 │   ├── components/             # Component tests
 │   ├── layouts/                # Layout tests
@@ -137,14 +142,28 @@ wcstubhub-clone/
 
 ## Features
 
+### Search
+
+- **Unified search API:** Single `GET /api/search?q=` endpoint that searches across both products and events
+- **Full-screen search overlay:** Triggered from the top navigation search icon with smooth open/close transitions
+- **Trending items:** Pre-populated trending searches displayed when the overlay opens
+- **Autocomplete:** Real-time suggestions as users type, with debounced API calls
+
+### Navigation & Layout
+
+- **Top navigation bar:** Sticky header with logo, search icon, and user avatar (or sign-in link for guests)
+- **Homepage carousels:** Horizontal scroll sections — Popular Events, Football Matches, Live Concerts, Basketball Games, and Team Merchandise
+- **Footer:** Company info, quick links (Help Center, Sell Tickets, Gift Cards), legal links (Privacy, Terms, Cookie Policy), and Fan Protect Guarantee trust banner
+
 ### Marketplace Browsing
 
-- **Goods tab (Home):** Browse FIFA World Cup 2026 jersey merchandise with real product images, sports-themed gradient banners, categories, and detailed product pages
+- **Goods tab (Home):** Browse FIFA World Cup 2026 merchandise (jerseys, scarves, caps, memorabilia, accessories) with real product images, sports-themed gradient banners, categories, and detailed product pages
 - **Football tab:** Upcoming football matches displayed as country-flag VS layout cards with staggered entrance animations
 - **Basketball tab:** Basketball games in distinctive dark-themed cards with staggered animations
 - **Concert tab:** Music events presented in purple gradient concert cards
 - **Guest access:** Full marketplace browsing without authentication; auth required only for transactions
 - **Product/Event detail pages:** Polished detail pages with image galleries, pricing, and remaining quantity
+- **Expanded content:** 30 products across 5 categories and 42 events (14 football, 14 basketball, 14 concerts)
 
 ### Trust Architecture
 
