@@ -1,0 +1,65 @@
+{
+  "milestone": "homepage-and-navigation-upgrade",
+  "round": 1,
+  "status": "pass",
+  "validatorsRun": {
+    "test": { "passed": true, "command": "npx vitest run --reporter=verbose", "exitCode": 0 },
+    "typecheck": { "passed": true, "command": "pnpm typecheck", "exitCode": 0 },
+    "lint": { "passed": true, "command": "pnpm lint", "exitCode": 0 }
+  },
+  "reviewsSummary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "failedFeatures": []
+  },
+  "blockingIssues": [],
+  "appliedUpdates": [
+    {
+      "target": "library",
+      "description": "Updated architecture.md Layout Architecture section to document TopNavBar and Footer in LayoutWrapper with their visibility rules (both hidden on /admin/*)",
+      "sourceFeature": "top-navigation-bar, footer-component"
+    }
+  ],
+  "suggestedGuidanceUpdates": [
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: 'Use Tailwind CSS utilities or globals.css for all styling. Do not use styled-jsx (<style jsx>) as it introduces an inconsistent styling pattern.'",
+      "evidence": "horizontal-carousel-component uses <style jsx global> for .hide-scrollbar utility in components/ui/HorizontalCarousel.tsx (lines 88-99 and 154-165). No other component in the project uses styled-jsx. AGENTS.md says 'Tailwind CSS for styling' but doesn't explicitly prohibit styled-jsx.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: 'When iterating React children in wrapper components, use React.Children.toArray() or React.Children.map() instead of Array.isArray(children).'",
+      "evidence": "HorizontalCarousel uses Array.isArray(children) ternary at line 69 instead of the more robust React.Children API. This is the first wrapper component of this kind but sets a pattern others may follow.",
+      "isSystemic": false
+    },
+    {
+      "target": "AGENTS.md",
+      "suggestion": "Add convention: 'Client-side fetch calls should check response.ok before parsing JSON. Throw or handle non-2xx responses gracefully.'",
+      "evidence": "Homepage page.tsx makes 5 fetch().json() calls without response.ok checks (lines 63-73). Same pattern found in football, concert, and basketball category pages. A server error would silently produce incorrect state data.",
+      "isSystemic": true
+    },
+    {
+      "target": "skills",
+      "suggestion": "In platform-worker skill, clarify TDD requirement: 'If picking up uncommitted work from a prior worker session, review and verify existing tests rather than strictly writing tests first. TDD applies to new implementations, not recovery of existing work.'",
+      "evidence": "horizontal-carousel-component worker found pre-existing component and test files from prior session (1056c0bd) that were never committed. homepage-carousel-layout worker also didn't strictly follow TDD. Both workers marked followedProcedure: true despite not writing tests first.",
+      "isSystemic": true
+    }
+  ],
+  "rejectedObservations": [
+    {
+      "observation": "Duplicate CSS class 'flex items-center' in HorizontalCarousel.tsx See All link",
+      "reason": "Harmless cosmetic issue — duplicate Tailwind class has no functional impact and would be caught by optional Tailwind class deduplication linting. Not worth a convention change."
+    },
+    {
+      "observation": "Test-carousel page requires authentication",
+      "reason": "This is a development-only demo page, not user-facing. Auth requirement is acceptable and doesn't warrant a convention about test page auth rules."
+    },
+    {
+      "observation": "LayoutWrapper has duplicate boolean variables (hideTopNav and hideFooter both checking pathname.startsWith('/admin'))",
+      "reason": "Intentional design for future flexibility — visibility rules for TopNavBar and Footer may diverge later. Not a convention issue."
+    }
+  ],
+  "previousRound": null
+}

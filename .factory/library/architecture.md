@@ -11,7 +11,9 @@
 
 ## Layout Architecture
 
-- `LayoutWrapper` wraps all pages (SessionProvider, LazyMotion, ToastProvider, BottomTabNavigation)
+- `LayoutWrapper` wraps all pages (SessionProvider, LazyMotion, ToastProvider, TopNavBar, Footer, BottomTabNavigation)
+- `TopNavBar` hidden on: /admin/* pages (fixed header with logo, search icon, auth-aware user icon, z-50)
+- `Footer` hidden on: /admin/* pages (company info, quick links, legal links, trust banner)
 - `BottomTabNavigation` hidden on: /login, /register, /admin/*, /products/*, /events/*
 - Admin pages use separate layout at app/admin/layout.tsx
 
