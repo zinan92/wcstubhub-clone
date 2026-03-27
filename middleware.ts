@@ -50,6 +50,7 @@ export default withAuth(
           '/football',
           '/basketball',
           '/concert',
+          '/products',
           '/login',
           '/register',
           '/admin/login',
