@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import { LazyMotion, domAnimation } from 'motion/react';
 import BottomTabNavigation from './BottomTabNavigation';
 import TopNavBar from './TopNavBar';
+import Footer from './Footer';
 import { ToastProvider } from './ui/Toast';
 
 export default function LayoutWrapper({ children }: { children: React.ReactNode }) {
@@ -18,8 +19,9 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     pathname.startsWith('/products/') ||
     pathname.startsWith('/events/');
 
-  // Don't show top nav on admin pages
+  // Don't show top nav and footer on admin pages
   const hideTopNav = pathname.startsWith('/admin');
+  const hideFooter = pathname.startsWith('/admin');
 
   return (
     <SessionProvider>
@@ -29,6 +31,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
           {/* Add top padding to prevent content from being hidden behind fixed nav */}
           <div className={!hideTopNav ? 'pt-14' : ''}>
             {children}
+            {!hideFooter && <Footer />}
           </div>
           {!hideBottomTabs && <BottomTabNavigation />}
         </ToastProvider>
