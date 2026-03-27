@@ -91,8 +91,8 @@ describe('SearchOverlay', () => {
         ok: true,
         json: async () => ({
           products: [
-            { id: 'p1', name: 'Product 1', price: 50, imageUrl: 'img1.png' },
-            { id: 'p2', name: 'Product 2', price: 60, imageUrl: 'img2.png' },
+            { id: 'p1', name: 'Product 1', price: 50, imageUrl: 'https://flagcdn.com/w640/us.png' },
+            { id: 'p2', name: 'Product 2', price: 60, imageUrl: 'https://flagcdn.com/w640/gb.png' },
           ],
           events: [
             { id: 'e1', title: 'Event 1', type: 'football', price: 100, venue: 'Venue 1', date: '2026-06-15T19:00:00Z' },
@@ -140,7 +140,7 @@ describe('SearchOverlay', () => {
           ok: true,
           json: async () => ({
             products: [
-              { id: 'p1', name: 'Brazil Jersey', price: 89.99, imageUrl: 'img.png' },
+              { id: 'p1', name: 'Brazil Jersey', price: 89.99, imageUrl: 'https://flagcdn.com/w640/br.png' },
             ],
             events: [
               { id: 'e1', title: 'Brazil vs Argentina', type: 'football', price: 250, venue: 'Stadium', date: '2026-06-15T19:00:00Z' },
@@ -176,7 +176,7 @@ describe('SearchOverlay', () => {
           ok: true,
           json: async () => ({
             products: [
-              { id: 'p1', name: 'Test Product', price: 99.99, imageUrl: 'img.png' },
+              { id: 'p1', name: 'Test Product', price: 99.99, imageUrl: 'https://flagcdn.com/w640/de.png' },
             ],
             events: [],
           }),
@@ -204,7 +204,7 @@ describe('SearchOverlay', () => {
         ok: true,
         json: async () => ({
           products: [
-            { id: 'product-123', name: 'Test Product', price: 50, imageUrl: 'img.png' },
+            { id: 'product-123', name: 'Test Product', price: 50, imageUrl: 'https://flagcdn.com/w640/fr.png' },
           ],
           events: [],
         }),
@@ -277,7 +277,7 @@ describe('SearchOverlay', () => {
       mockFetch.mockResolvedValue({
         ok: true,
         json: async () => ({
-          products: [{ id: 'p1', name: 'Product', price: 50, imageUrl: 'img.png' }],
+          products: [{ id: 'p1', name: 'Product', price: 50, imageUrl: 'https://flagcdn.com/w640/it.png' }],
           events: [],
         }),
       });

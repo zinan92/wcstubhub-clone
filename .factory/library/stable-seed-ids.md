@@ -30,6 +30,13 @@ For validation testing reliability, the seed script uses deterministic IDs that 
 - `event-stable-011`: The Weeknd: After Hours Til Dawn (2026-09-05, $249.99)
 - `event-stable-012`: Beyoncé: Renaissance World Tour (2026-09-12, $349.99)
 
+## Expanded Dataset
+
+Beyond the 6 stable products and 12 stable events above, the seed script creates additional items (30 products total, 42 events total). The expanded dataset includes:
+- **Products**: 5 categories (Football Jersey, Scarf, Cap, Memorabilia, Accessories), 18 distinct price points ($9.99-$49.99)
+- **Events**: 14 per type (football, basketball, concert), 37 distinct event price points
+- **Images**: Each product uses a unique flagcdn.com country code — no duplicate imageUrls allowed
+
 ## Usage in Validation
 
 Validation flows can now reliably reference these stable routes:

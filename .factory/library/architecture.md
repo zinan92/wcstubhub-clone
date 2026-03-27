@@ -25,7 +25,7 @@
 
 ## API Patterns
 
-- Public routes: /api/products, /api/events, /api/vip-tiers
+- Public routes: /api/products, /api/events, /api/vip-tiers, /api/search
 - User routes: /api/user/profile, /api/user/orders, /api/user/owned-assets, /api/user/listings
 - Admin routes: /api/admin/* (stats, products, events, orders, users, listings, owned-assets)
 - All use Prisma client from lib/prisma.ts singleton

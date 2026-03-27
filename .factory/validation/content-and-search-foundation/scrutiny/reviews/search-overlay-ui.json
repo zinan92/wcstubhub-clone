@@ -1,0 +1,51 @@
+{
+  "featureId": "search-overlay-ui",
+  "reviewedAt": "2026-03-27T03:30:00.000Z",
+  "commitId": "efedd2ab",
+  "transcriptSkeletonReviewed": true,
+  "diffReviewed": true,
+  "status": "pass",
+  "codeReview": {
+    "summary": "Solid implementation covering all 9 requirements. SearchOverlay component is well-structured with proper separation of concerns: trending items display, debounced autocomplete, type-grouped results with badges, navigation, no-results state, body scroll lock, and multi-dismissal (close button + Escape). All 4 pages (homepage, football, basketball, concert) correctly replaced SearchBar with the new overlay trigger pattern. 19 comprehensive tests cover rendering, interaction, navigation, and edge cases. Two non-blocking issues found: missing debounce timer cleanup on unmount, and orphaned SearchBar component.",
+    "issues": [
+      {
+        "file": "components/goods/SearchOverlay.tsx",
+        "line": 106,
+        "severity": "non_blocking",
+        "description": "Debounce timer (debounceTimerRef) is not cleaned up on component unmount or when isOpen changes to false. If user types and the overlay closes before the 300ms debounce fires, the timeout will still call fetchResults/setResults on an unmounted component. Should add a cleanup effect: useEffect(() => () => { if (debounceTimerRef.current) clearTimeout(debounceTimerRef.current); }, []); or clear the timer in the isOpen effect cleanup."
+      },
+      {
+        "file": "components/goods/SearchOverlay.tsx",
+        "line": 46,
+        "severity": "non_blocking",
+        "description": "The fetchResults function is defined inline and used inside a useEffect (line 46), but is not in the dependency array and not wrapped in useCallback. React's exhaustive-deps lint rule would typically flag this. It works correctly because fetchResults doesn't depend on any state that changes between renders (it receives the query as a parameter), but it's a latent maintenance risk."
+      },
+      {
+        "file": "components/goods/SearchBar.tsx",
+        "line": 1,
+        "severity": "non_blocking",
+        "description": "SearchBar component (components/goods/SearchBar.tsx) and its test file (__tests__/components/goods/SearchBar.test.tsx) are now dead code — no page imports SearchBar after this commit. The feature description says 'replace', and the worker replaced all usages, but left the old component files in the codebase."
+      },
+      {
+        "file": "components/goods/SearchOverlay.tsx",
+        "line": 52,
+        "severity": "non_blocking",
+        "description": "The setTimeout for auto-focus (line 52, 100ms delay) has no cleanup. If the overlay opens and closes within 100ms, the focus call would execute on a null ref (harmless due to optional chaining, but the timeout is orphaned). Minor, but worth noting for completeness."
+      }
+    ]
+  },
+  "sharedStateObservations": [
+    {
+      "area": "conventions",
+      "observation": "The old SearchBar component was replaced across all pages but not removed from the codebase. AGENTS.md doesn't mention a convention for cleaning up dead components when they're fully replaced. Future workers may be confused by the orphaned SearchBar.",
+      "evidence": "components/goods/SearchBar.tsx and __tests__/components/goods/SearchBar.test.tsx still exist but have zero imports from app/ pages after commit efedd2ab."
+    },
+    {
+      "area": "conventions",
+      "observation": "The SearchOverlay is placed inside the page components (4 copies of <SearchOverlay isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />). Since it's a full-screen overlay with fixed positioning, it could alternatively be placed once in the layout. This isn't wrong, but the pattern of duplicating modal usage across pages vs. placing it in a shared layout isn't documented.",
+      "evidence": "app/page.tsx, app/football/page.tsx, app/basketball/page.tsx, app/concert/page.tsx each independently render <SearchOverlay /> with their own isSearchOpen state."
+    }
+  ],
+  "addressesFailureFrom": null,
+  "summary": "Feature passes review. The SearchOverlay implementation comprehensively covers all 9 requirements: full-screen modal with auto-focused input, trending items before typing, 300ms debounced autocomplete via GET /api/search?q=, type-grouped results with blue/green badges, navigation to detail pages, no-results state, body scroll lock, Escape key dismissal, and full-screen coverage at 375px. All 4 public pages correctly replaced SearchBar with overlay trigger buttons. 19 tests are well-structured and thorough. Found 4 non-blocking issues: missing debounce timer cleanup on unmount, fetchResults not wrapped in useCallback, orphaned SearchBar component files, and uncleared auto-focus setTimeout. None of these are blocking — the feature works correctly and handles all specified behaviors."
+}
