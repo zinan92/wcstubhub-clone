@@ -1,247 +1,360 @@
 # wcstubhub-clone
 
-A premium mobile-first ticket marketplace and sports merchandise platform, built as a clone of wcstubhub.com (SAE-A Trading). Users can browse and purchase goods, football and basketball event tickets, and concert tickets with full guest access, trust architecture, listing intelligence badges, and multi-step transaction flows. Features a unified search system with full-screen overlay, horizontal carousel sections, sticky top navigation, and a comprehensive footer. Includes 30 products and 42 events seeded across all categories, a comprehensive admin panel, and account center with ticket/listing management.
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js&logoColor=white)](https://nextjs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Tests](https://img.shields.io/badge/tests-466%20passed-brightgreen)](./__tests__)
+[![Vercel](https://img.shields.io/badge/deploy-Vercel-black?logo=vercel)](https://vercel.com)
 
-## Tech Stack
+移动优先的票务市场平台 -- FIFA World Cup 2026 主题，信任架构，智能定价，完整交易流程。
 
-- **Framework:** Next.js 15 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS with custom design tokens
-- **Animations:** Motion (Framer Motion v12)
-- **Typography:** Inter (Google Fonts, Next.js optimized)
-- **Database:** SQLite via Prisma ORM
-- **Authentication:** NextAuth.js
-- **Icons:** Lucide React
-- **Testing:** Vitest, React Testing Library
-- **Package Manager:** pnpm
+---
 
-## Getting Started
+## 痛点
 
-### Prerequisites
+票务二级市场存在三个核心问题：
 
-- Node.js 18+
-- pnpm
+1. **信任缺失** -- 买家不知道卖家是否可靠，平台不提供任何保障承诺
+2. **信息不对称** -- 哪张票性价比最高？哪些场次快售罄？买家只能盲猜
+3. **交易摩擦** -- 从浏览到下单到转卖，流程断裂，移动端体验差
 
-### Installation
+## 解决方案
 
-```bash
-pnpm install
+wcstubhub-clone 用三层机制解决上述问题：
+
+| 层级 | 机制 | 实现 |
+|------|------|------|
+| **信任层** | Buyer Protection + Verified Seller + Secure Delivery 三重徽章 | `components/trust/` |
+| **智能层** | Best Value / Selling Fast / Only X Left 算法标签 | `components/listing-intelligence/` |
+| **交易层** | 多步购买 + 多步挂单 + 状态全生命周期追踪 | `components/purchase/` + `components/listing/` |
+
+同时提供完整的管理后台（商品/赛事/用户/订单 CRUD）和 VIP 会员体系。
+
+---
+
+## 架构
+
+```
+                         ┌─────────────────────┐
+                         │   Mobile Browser     │
+                         │  (Frosted Glass UI)  │
+                         └──────────┬───────────┘
+                                    │
+                         ┌──────────▼───────────┐
+                         │   Next.js 15 App      │
+                         │   (App Router + RSC)   │
+                         ├────────────────────────┤
+                         │  middleware.ts          │
+                         │  (Auth Route Guard)     │
+                         ├────────┬───────────────┤
+                         │ Pages  │  API Routes    │
+                         │ /app/* │  /api/*        │
+                         └────────┴───────┬───────┘
+                                          │
+                         ┌────────────────▼───────┐
+                         │   Prisma 6.1 ORM       │
+                         │   (7 Models, 4 Enums)  │
+                         ├────────────────────────┤
+                         │   SQLite (dev/prod)     │
+                         └────────────────────────┘
 ```
 
-### Database Setup
+认证流: `NextAuth.js (Credentials) → Session Cookie → middleware.ts → Protected Routes`
 
-Generate the Prisma client and push the schema to SQLite:
+---
+
+## 快速开始
 
 ```bash
+# 1. 克隆并安装
+git clone https://github.com/zinan92/wcstubhub-clone.git
+cd wcstubhub-clone
+pnpm install
+
+# 2. 环境变量
+cp .env.example .env
+# 默认使用本地 SQLite，需要设置 NEXTAUTH_SECRET
+
+# 3. 数据库初始化 + 种子数据
 pnpm exec prisma generate
 pnpm exec prisma db push
+pnpm db:seed    # 30 商品 + 42 赛事 + 示例用户 + VIP 等级
+
+# 4. 启动开发服务器
+pnpm dev        # http://localhost:3000
 ```
 
-### Seed the Database
+### 测试凭证
 
-Populate the database with 30 products, 42 events, sample users, and VIP tiers:
+| 角色 | 邮箱 | 密码 |
+|------|------|------|
+| 普通用户 | `test@example.com` | `password123` |
+| 管理员 | `admin@example.com` | `admin123` |
 
-```bash
-pnpm db:seed
-```
+### 可用脚本
 
-### Run the Dev Server
+| 脚本 | 用途 |
+|------|------|
+| `pnpm dev` | 启动开发服务器 |
+| `pnpm build` | 生产构建（含 DB push + seed） |
+| `pnpm test` | 运行 Vitest 测试套件 |
+| `pnpm lint` | ESLint 检查 |
+| `pnpm typecheck` | TypeScript 类型检查 |
+| `pnpm db:seed` | 重新填充种子数据 |
 
-```bash
-pnpm dev
-```
+---
 
-The app will be available at [http://localhost:3000](http://localhost:3000).
+## 功能一览
 
-## Available Scripts
+| 领域 | 功能 | 说明 |
+|------|------|------|
+| **市场浏览** | 4 个分类 Tab | Goods(商品) / Football / Basketball / Concert |
+| **市场浏览** | 5 组轮播 | Popular Events, Football, Concerts, Basketball, Merchandise |
+| **市场浏览** | 全屏搜索 | 统一搜索 API，自动补全，热门趋势 |
+| **信任架构** | 三重信任徽章 | Buyer Protection / Verified Seller / Secure Delivery |
+| **信任架构** | Fan Protect Guarantee | 页脚信任横幅 |
+| **智能标签** | Best Value | 算法标记最佳性价比 |
+| **智能标签** | Selling Fast / Only X Left | 基于库存和销售速度的紧迫度提示 |
+| **交易流程** | 多步购买 | 数量选择 -> 订单摘要 -> 确认 -> DB 写入 |
+| **交易流程** | 多步挂单 | 创建 Listing -> 定价 -> 摘要 -> 确认 |
+| **交易流程** | 状态追踪 | pending -> confirmed -> delivered -> listed -> sold |
+| **账户中心** | My Tickets / Listings / Orders | 购买记录 + 挂单管理 + 订单历史 |
+| **账户中心** | VIP 会员 | 多等级 VIP，积分体系，等级渐变样式 |
+| **管理后台** | 完整 CRUD | 商品/赛事/用户/订单/资产/挂单管理 |
+| **管理后台** | Dashboard | 平台指标概览 |
 
-| Script | Command | Description |
-|--------|---------|-------------|
-| `dev` | `pnpm dev` | Start the development server |
-| `build` | `pnpm build` | Build for production |
-| `start` | `pnpm start` | Start the production server |
-| `lint` | `pnpm lint` | Run ESLint |
-| `typecheck` | `pnpm typecheck` | Run TypeScript type checking |
-| `test` | `pnpm test` | Run tests with Vitest |
-| `db:seed` | `pnpm db:seed` | Seed the database |
+---
 
-## Project Structure
+## API 参考
+
+### 公开端点
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| `GET` | `/api/products` | 商品列表 |
+| `GET` | `/api/products/:id` | 商品详情 |
+| `GET` | `/api/events` | 赛事列表（支持 `?type=football` 筛选） |
+| `GET` | `/api/events/:id` | 赛事详情 |
+| `GET` | `/api/search?q=` | 统一搜索（商品 + 赛事） |
+| `GET` | `/api/vip-tiers` | VIP 等级列表 |
+| `POST` | `/api/auth/register` | 用户注册 |
+| `POST/GET` | `/api/auth/[...nextauth]` | NextAuth 登录/会话 |
+
+### 受保护端点（需登录）
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| `GET` | `/api/user/profile` | 当前用户信息 |
+| `GET/POST` | `/api/user/orders` | 用户订单 |
+| `GET/POST` | `/api/user/owned-assets` | 用户拥有的资产 |
+| `GET/POST` | `/api/user/listings` | 用户挂单 |
+
+### 管理员端点（需 admin 角色）
+
+| 方法 | 路径 | 说明 |
+|------|------|------|
+| `GET` | `/api/admin/stats` | 平台统计 |
+| `GET/POST` | `/api/admin/products` | 商品管理 |
+| `PUT/DELETE` | `/api/admin/products/:id` | 商品编辑/删除 |
+| `GET/POST` | `/api/admin/events` | 赛事管理 |
+| `PUT/DELETE` | `/api/admin/events/:id` | 赛事编辑/删除 |
+| `GET` | `/api/admin/users` | 用户列表 |
+| `GET` | `/api/admin/orders` | 订单列表 |
+| `GET` | `/api/admin/owned-assets` | 资产列表 |
+| `GET` | `/api/admin/listings` | 挂单列表 |
+
+---
+
+## 技术栈
+
+| 类别 | 技术 | 版本 |
+|------|------|------|
+| 框架 | Next.js (App Router) | 15.1 |
+| 语言 | TypeScript | 5.x |
+| 样式 | Tailwind CSS | 3.4 |
+| 动画 | Motion (Framer Motion) | 12.x |
+| ORM | Prisma | 6.1 |
+| 数据库 | SQLite | -- |
+| 认证 | NextAuth.js | 4.24 |
+| 图标 | Lucide React | 1.6 |
+| 测试 | Vitest + React Testing Library | 2.1 / 16.1 |
+| 包管理 | pnpm | -- |
+| 部署 | Vercel | -- |
+
+---
+
+## 项目结构
 
 ```
 wcstubhub-clone/
 ├── app/
-│   ├── page.tsx                # Home (Goods tab)
-│   ├── layout.tsx              # Root layout
-│   ├── template.tsx            # Page transition animations
-│   ├── football/               # Football events tab
-│   ├── basketball/             # Basketball events tab
-│   ├── concert/                # Concert events tab
-│   ├── events/                 # Event detail pages
-│   ├── products/               # Product detail pages
-│   ├── login/                  # Login page
-│   ├── register/               # Registration page
-│   ├── my/                     # Account center
-│   │   ├── tickets/            # My Tickets (purchased)
-│   │   ├── listings/           # My Listings (for sale)
-│   │   ├── orders/             # Order history
-│   │   ├── vip/                # VIP membership info
-│   │   ├── personal/           # Personal info
-│   │   ├── bank-card/          # Bank card management
-│   │   ├── security/           # Security settings
-│   │   ├── notification/       # Notification settings
-│   │   ├── language/           # Language settings
-│   │   └── company/            # Company info
-│   ├── admin/                  # Admin panel
-│   │   ├── login/              # Admin login
-│   │   ├── dashboard/          # Admin dashboard
-│   │   ├── products/           # Product management (CRUD)
-│   │   ├── events/             # Event management (CRUD)
-│   │   ├── users/              # User management
-│   │   ├── orders/             # Order management
-│   │   ├── owned-assets/       # Owned asset management
-│   │   └── listings/           # Listing management
-│   └── api/                    # API routes
-│       ├── auth/               # NextAuth endpoints
-│       ├── search/             # Unified search API (GET /api/search?q=)
-│       ├── products/           # Product API
-│       ├── events/             # Event API
-│       ├── user/               # User API (orders, owned-assets, listings)
-│       ├── vip-tiers/          # VIP tier API
-│       └── admin/              # Admin API routes
-├── components/                 # Shared UI components
-│   ├── ui/                     # Design system primitives
-│   ├── trust/                  # Trust architecture components
-│   ├── listing-intelligence/   # Listing intelligence badges
-│   ├── purchase/               # Multi-step purchase flow
-│   ├── listing/                # Multi-step listing flow
-│   ├── goods/                  # Goods page components
-│   ├── football/               # Football page components
-│   ├── basketball/             # Basketball page components
-│   ├── concert/                # Concert page components
-│   ├── search/                 # Search overlay and autocomplete
-│   ├── home/                   # Homepage carousel sections
-│   ├── TopNavigation.tsx       # Sticky top navigation bar
-│   ├── Footer.tsx              # Footer with links and trust banner
-│   ├── BottomTabNavigation.tsx # Frosted glass bottom tab bar
-│   └── LayoutWrapper.tsx       # Layout wrapper
+│   ├── page.tsx                 # 首页 (Goods Tab)
+│   ├── layout.tsx               # 根布局
+│   ├── template.tsx             # 页面转场动画
+│   ├── football/                # 足球赛事 Tab
+│   ├── basketball/              # 篮球赛事 Tab
+│   ├── concert/                 # 演唱会 Tab
+│   ├── events/[id]/             # 赛事详情
+│   ├── products/[id]/           # 商品详情
+│   ├── login/                   # 登录
+│   ├── register/                # 注册
+│   ├── my/                      # 账户中心
+│   │   ├── tickets/             # 我的票券
+│   │   ├── listings/            # 我的挂单
+│   │   ├── orders/              # 订单历史
+│   │   ├── vip/                 # VIP 会员
+│   │   └── ...                  # 个人/银行卡/安全/通知/语言/公司
+│   ├── admin/                   # 管理后台
+│   │   ├── dashboard/           # 数据概览
+│   │   ├── products/            # 商品 CRUD
+│   │   ├── events/              # 赛事 CRUD
+│   │   ├── users/               # 用户管理
+│   │   ├── orders/              # 订单管理
+│   │   ├── owned-assets/        # 资产管理
+│   │   └── listings/            # 挂单管理
+│   └── api/                     # 21 个 REST 端点
+│       ├── auth/                # NextAuth + 注册
+│       ├── search/              # 统一搜索
+│       ├── products/            # 商品 API
+│       ├── events/              # 赛事 API
+│       ├── user/                # 用户 API (orders/assets/listings/profile)
+│       ├── vip-tiers/           # VIP 等级
+│       └── admin/               # 管理 API (stats/products/events/users/orders/assets/listings)
+├── components/
+│   ├── ui/                      # 设计系统基础组件
+│   ├── trust/                   # 信任架构组件
+│   ├── listing-intelligence/    # 智能标签组件
+│   ├── purchase/                # 多步购买流程
+│   ├── listing/                 # 多步挂单流程
+│   ├── search/                  # 搜索覆盖层 + 自动补全
+│   ├── home/                    # 首页轮播区块
+│   └── TopNavigation.tsx        # 顶部导航
 ├── lib/
-│   ├── auth.ts                 # NextAuth configuration
-│   └── prisma.ts               # Prisma client singleton
+│   ├── auth.ts                  # NextAuth 配置
+│   └── prisma.ts                # Prisma 客户端单例
 ├── prisma/
-│   ├── schema.prisma           # Database schema
-│   └── seed.ts                 # Database seed script
-├── types/                      # TypeScript type definitions
-├── __tests__/                  # Test suite (54 files, 466 tests)
-│   ├── api/                    # API route tests (incl. admin/)
-│   ├── components/             # Component tests
-│   ├── layouts/                # Layout tests
-│   └── cross-area-flows.test.tsx
-├── middleware.ts               # Auth and route protection middleware
-└── vitest.config.ts            # Vitest configuration
+│   ├── schema.prisma            # 数据库 Schema (7 Model, 4 Enum)
+│   └── seed.ts                  # 种子脚本
+├── types/                       # TypeScript 类型定义
+├── __tests__/                   # 54 文件，466 测试
+├── middleware.ts                # 认证 + 路由保护中间件
+└── vitest.config.ts             # 测试配置
 ```
 
-## Features
+---
 
-### Search
+## 配置
 
-- **Unified search API:** Single `GET /api/search?q=` endpoint that searches across both products and events
-- **Full-screen search overlay:** Triggered from the top navigation search icon with smooth open/close transitions
-- **Trending items:** Pre-populated trending searches displayed when the overlay opens
-- **Autocomplete:** Real-time suggestions as users type, with debounced API calls
+### 环境变量
 
-### Navigation & Layout
+| 变量 | 必填 | 默认值 | 说明 |
+|------|------|--------|------|
+| `DATABASE_URL` | 是 | `file:./dev.db` | SQLite 数据库路径 |
+| `NEXTAUTH_SECRET` | 是 | -- | NextAuth 加密密钥（任意随机字符串） |
+| `NEXTAUTH_URL` | 否 | `http://localhost:3000` | 应用 URL（Vercel 部署时自动设置） |
 
-- **Top navigation bar:** Sticky header with logo, search icon, and user avatar (or sign-in link for guests)
-- **Homepage carousels:** Horizontal scroll sections — Popular Events, Football Matches, Live Concerts, Basketball Games, and Team Merchandise
-- **Footer:** Company info, quick links (Help Center, Sell Tickets, Gift Cards), legal links (Privacy, Terms, Cookie Policy), and Fan Protect Guarantee trust banner
+### 数据模型
 
-### Marketplace Browsing
+7 个 Prisma Model：`User`、`Product`、`Event`、`Order`、`OwnedAsset`、`Listing`、`VipTier`
 
-- **Goods tab (Home):** Browse FIFA World Cup 2026 merchandise (jerseys, scarves, caps, memorabilia, accessories) with real product images, sports-themed gradient banners, categories, and detailed product pages
-- **Football tab:** Upcoming football matches displayed as country-flag VS layout cards with staggered entrance animations
-- **Basketball tab:** Basketball games in distinctive dark-themed cards with staggered animations
-- **Concert tab:** Music events presented in purple gradient concert cards
-- **Guest access:** Full marketplace browsing without authentication; auth required only for transactions
-- **Product/Event detail pages:** Polished detail pages with image galleries, pricing, and remaining quantity
-- **Expanded content:** 30 products across 5 categories and 42 events (14 football, 14 basketball, 14 concerts)
+4 个 Enum：`EventType`(football/basketball/concert)、`ItemType`(product/event)、`OrderStatus`、`OwnedAssetStatus`、`ListingStatus`
 
-### Trust Architecture
+---
 
-- **Buyer Protection:** Trust header with buyer protection messaging on detail pages
-- **Trust Badges:** Verified Seller, Official Merchandise, and Secure Delivery badges
-- **Trust Messaging:** Contextual trust signals throughout the purchase flow
+## For AI Agents
 
-### Listing Intelligence
+### 项目元数据
 
-- **Best Value:** Algorithmic badge highlighting best-priced listings
-- **Selling Fast / Only X Left:** Urgency indicators based on stock and sales velocity
-- **Verified Listing:** Badge for listings that meet verification criteria
+```yaml
+schema: ai-agent/v1
+name: wcstubhub-clone
+description: Mobile-first ticket marketplace with trust architecture and listing intelligence
+tech_stack:
+  framework: next.js-15-app-router
+  language: typescript
+  orm: prisma-6.1
+  database: sqlite
+  auth: nextauth-credentials
+  styling: tailwindcss-3.4
+  testing: vitest
+api:
+  base_url: http://localhost:3000/api
+  auth_method: session-cookie (NextAuth.js)
+  public_endpoints:
+    - GET /api/products
+    - GET /api/products/:id
+    - GET /api/events
+    - GET /api/events/:id
+    - GET /api/search?q={query}
+    - GET /api/vip-tiers
+    - POST /api/auth/register
+  protected_endpoints:
+    - GET /api/user/profile
+    - GET|POST /api/user/orders
+    - GET|POST /api/user/owned-assets
+    - GET|POST /api/user/listings
+  admin_endpoints:
+    - GET /api/admin/stats
+    - GET|POST /api/admin/products
+    - PUT|DELETE /api/admin/products/:id
+    - GET|POST /api/admin/events
+    - PUT|DELETE /api/admin/events/:id
+    - GET /api/admin/users
+    - GET /api/admin/orders
+    - GET /api/admin/owned-assets
+    - GET /api/admin/listings
+test_credentials:
+  user: { email: "test@example.com", password: "password123" }
+  admin: { email: "admin@example.com", password: "admin123" }
+setup_commands:
+  - pnpm install
+  - pnpm exec prisma generate
+  - pnpm exec prisma db push
+  - pnpm db:seed
+  - pnpm dev
+test_command: pnpm test
+test_stats: "466 tests across 54 files"
+```
 
-### Transaction Flows
-
-- **Multi-step purchase:** Quantity selection → order summary → confirmation with persisted DB writes
-- **Multi-step listing:** Create listing flow with quantity, pricing, summary, and confirmation steps
-- **Order tracking:** Full status lifecycle (pending, confirmed, shipped, delivered, cancelled)
-
-### Account Center
-
-- **My Tickets:** View purchased tickets with status tracking and error/retry states
-- **My Listings:** View and manage created listings with lifecycle status indicators
-- **Profile (My tab):** Account info, VIP level with tier gradients, balance, points, and order history
-- **Settings:** Personal info, bank card, security, notifications, language, company info
-
-### Authentication
-
-- **Login/Register:** Premium pages with gradient backgrounds and animated transitions
-- **NextAuth.js:** Session-based auth with credential provider
-- **VIP Tiers:** Tiered membership system with level-based perks
-
-### Design System and UX
-
-- **Design tokens:** 6 semantic color groups (primary, accent, success, warning, error, surface), custom shadows (soft, card, elevated), and border-radius tokens (card, modal) defined in Tailwind config
-- **Shared UI components:** AnimatedModal, Toast notifications, Skeleton loading placeholders, and styled Button in `components/ui/`
-- **Page transitions:** Animated route transitions via `app/template.tsx` using Motion (Framer Motion v12)
-- **Mobile-first navigation:** Frosted glass bottom tab bar (`backdrop-blur-xl`) with animated active indicators and 44px+ touch targets
-- **Loading states:** Skeleton placeholders replace spinners across all data-fetching pages
-- **Animations:** Staggered card entrance animations, modal transitions, and toast slide-ins powered by Motion
-- **Typography:** Inter font loaded via Next.js font optimization
-- **Empty states:** Dedicated empty-state illustrations for pages with no data
-
-### Admin Panel
-
-- **Dashboard:** Overview of platform metrics with styled cards
-- **Product management:** Create, read, update, and delete merchandise listings
-- **Event management:** Create, read, update, and delete football, basketball, and concert events
-- **User management:** View and manage registered users
-- **Order management:** View and manage all orders
-- **Owned Assets:** View and manage user-owned assets (purchased items)
-- **Listings:** View and manage marketplace listings
-
-## Data Model
-
-The database includes seven main models:
-
-- **User** -- Accounts with email/phone, VIP level, balance, points, and invite codes
-- **Product** -- Merchandise items with name, description, image, price, category, and stock
-- **Event** -- Football, basketball, or concert events with teams/artists, venue, date, and price
-- **Order** -- Purchase records linking users to products or events with status tracking
-- **OwnedAsset** -- User-owned tickets/merchandise with lifecycle status (active, used, expired, transferred)
-- **Listing** -- Marketplace listings for resale with status (draft, active, sold, cancelled, expired)
-- **VipTier** -- VIP level definitions with thresholds
-
-## Test Credentials
-
-| Role | Email | Password |
-|------|-------|----------|
-| User | test@example.com | password123 |
-| Admin | admin@example.com | admin123 |
-
-## Environment Variables
-
-Copy `.env.example` to `.env` and configure:
+### Agent HTTP 调用示例
 
 ```bash
-cp .env.example .env
+# 1. 获取 CSRF token 和 session cookie
+curl -c cookies.txt http://localhost:3000/api/auth/csrf
+
+# 2. 登录获取 session
+curl -b cookies.txt -c cookies.txt \
+  -X POST http://localhost:3000/api/auth/callback/credentials \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "email=test@example.com&password=password123&csrfToken=TOKEN_FROM_STEP_1"
+
+# 3. 搜索商品和赛事
+curl http://localhost:3000/api/search?q=world+cup
+
+# 4. 获取足球赛事列表
+curl http://localhost:3000/api/events?type=football
+
+# 5. 创建订单（需登录 session）
+curl -b cookies.txt \
+  -X POST http://localhost:3000/api/user/orders \
+  -H "Content-Type: application/json" \
+  -d '{"itemType":"event","itemId":"EVENT_ID","quantity":2}'
+
+# 6. 创建挂单
+curl -b cookies.txt \
+  -X POST http://localhost:3000/api/user/listings \
+  -H "Content-Type: application/json" \
+  -d '{"itemType":"event","itemId":"EVENT_ID","askPrice":150,"quantity":1}'
 ```
 
-The default configuration uses a local SQLite database and requires a `NEXTAUTH_SECRET` value.
+---
+
+## 相关项目
+
+本项目为独立项目，无外部依赖仓库。
+
+---
+
+## License
+
+[MIT](LICENSE)
