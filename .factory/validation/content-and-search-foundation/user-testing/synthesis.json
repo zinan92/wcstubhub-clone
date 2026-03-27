@@ -1,11 +1,11 @@
 {
   "milestone": "content-and-search-foundation",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "assertionsSummary": {
     "total": 13,
-    "passed": 12,
-    "failed": 1,
+    "passed": 13,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
@@ -20,21 +20,11 @@
     "VAL-SEARCH-007",
     "VAL-SEARCH-008",
     "VAL-SEARCH-009",
+    "VAL-SEARCH-010",
     "VAL-SEARCH-011"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-SEARCH-010",
-      "reason": "Bottom tab bar (z-index 50) renders on top of the search overlay (also z-index 50) due to later DOM order. The overlay covers the full 375x812 viewport and body scroll is prevented, but the tab bar at the bottom (~65px tall) remains visible and interactable, partially obscuring overlay content. Fix: increase search overlay z-index above 50, or hide the bottom tab bar when overlay is open."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
-  "appliedUpdates": [
-    {
-      "target": "user-testing.md",
-      "description": "Added Flow Validator Guidance sections for curl and agent-browser surfaces with isolation rules",
-      "source": "setup"
-    }
-  ],
-  "previousRound": null
+  "appliedUpdates": [],
+  "previousRound": ".factory/validation/content-and-search-foundation/user-testing/synthesis-round1.json"
 }

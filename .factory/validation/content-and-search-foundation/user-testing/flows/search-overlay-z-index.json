@@ -1,0 +1,45 @@
+{
+  "flowId": "search-overlay-z-index",
+  "testedAt": "2026-03-27T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "viewport": "375x812",
+    "authRequired": false
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": {
+    "VAL-SEARCH-010": {
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Navigate to http://localhost:3000 at 375x812 viewport",
+          "expected": "Homepage loads with bottom tab bar visible",
+          "observed": "Homepage loaded successfully with bottom tab bar (Goods, Football, Basketball, Concert, My) visible at the bottom"
+        },
+        {
+          "action": "Tap the search bar ('Find products') to open search overlay",
+          "expected": "Search overlay opens covering full viewport",
+          "observed": "Search overlay opened covering full viewport with trending items displayed"
+        },
+        {
+          "action": "Verify overlay covers full viewport and tab bar is hidden",
+          "expected": "Overlay has z-index > 50 (tab bar), position fixed, inset 0. Bottom tab bar is not visible.",
+          "observed": "Overlay has z-index: 60, position: fixed, top: 0px, bottom: 0px, left: 0px, right: 0px. Bottom tab bar is completely hidden behind the overlay."
+        },
+        {
+          "action": "Verify body scroll is locked",
+          "expected": "document.body.style.overflow === 'hidden'",
+          "observed": "Body overflow is 'hidden', preventing page body scroll while overlay is open"
+        }
+      ],
+      "evidence": [
+        "content-and-search-foundation/search-overlay-z-index/VAL-SEARCH-010-homepage.png",
+        "content-and-search-foundation/search-overlay-z-index/VAL-SEARCH-010-overlay-open.png"
+      ],
+      "notes": "The z-index fix is confirmed working. The search overlay uses z-index: 60 (z-[60]) which renders above the bottom tab bar's z-index: 50 (z-50). The overlay covers the full viewport with position: fixed and inset: 0. Body scroll is properly locked with overflow: hidden. The bottom tab bar is completely hidden behind the overlay. No console errors observed."
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 1 assertion: 1 passed. VAL-SEARCH-010 z-index fix confirmed — search overlay (z-index: 60) properly renders above bottom tab bar (z-index: 50), covering the full viewport at 375x812."
+}
