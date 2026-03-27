@@ -1,0 +1,115 @@
+{
+  "groupId": "content-api",
+  "testedAt": "2026-03-27T00:00:00.000Z",
+  "isolation": {
+    "tool": "curl",
+    "baseUrl": "http://localhost:3000",
+    "auth": "none (public APIs)"
+  },
+  "toolsUsed": ["curl", "python3 (json processing)"],
+  "assertions": [
+    {
+      "id": "VAL-CONTENT-001",
+      "title": "Minimum 30 products in database",
+      "status": "pass",
+      "steps": [
+        { "action": "GET /api/products", "expected": "200 with at least 30 products", "observed": "200 with exactly 30 products" },
+        { "action": "Check categories", "expected": "Varied categories (jerseys, scarves, caps, memorabilia, etc.)", "observed": "6 categories found: badge, cap, jersey, keychain, poster, scarf" },
+        { "action": "Check prices", "expected": "At least 5 distinct price points", "observed": "18 distinct price points ranging from $9.99 to $49.99" },
+        { "action": "Check images", "expected": "No duplicate images", "observed": "30 unique images, 0 duplicates" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "n/a (API test)",
+        "network": "GET /api/products -> 200, 30 items",
+        "files": ["content-and-search-foundation/content-api/VAL-CONTENT-001-products.json"]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-CONTENT-002",
+      "title": "Minimum 40 events in database",
+      "status": "pass",
+      "steps": [
+        { "action": "GET /api/events", "expected": "200 with at least 40 events", "observed": "200 with exactly 42 events" },
+        { "action": "Check type distribution", "expected": "At least 12 football, 12 basketball, 12 concerts", "observed": "14 football, 14 basketball, 14 concerts" },
+        { "action": "Check venues", "expected": "Varied venues", "observed": "36 unique venues" },
+        { "action": "Check dates", "expected": "Varied dates", "observed": "42 unique dates" },
+        { "action": "Check prices", "expected": "Varied prices", "observed": "37 distinct prices, range $68 - $349.99" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "n/a (API test)",
+        "network": "GET /api/events -> 200, 42 items",
+        "files": ["content-and-search-foundation/content-api/VAL-CONTENT-002-events.json"]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-001",
+      "title": "Unified search API exists and returns typed results",
+      "status": "pass",
+      "steps": [
+        { "action": "GET /api/search?q=jersey", "expected": "200 with shape { products: [...], events: [...] }", "observed": "200 with products (10) and events (0) arrays" },
+        { "action": "Check product fields", "expected": "Products contain id, name, price, imageUrl", "observed": "All required fields present: id, name, price, imageUrl (plus additional fields)" },
+        { "action": "Check event fields", "expected": "Events contain id, title, type, price, venue, date", "observed": "No events matched 'jersey' — verified event fields via Taylor Swift search: all required fields present" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "n/a (API test)",
+        "network": "GET /api/search?q=jersey -> 200",
+        "files": ["content-and-search-foundation/content-api/VAL-SEARCH-001-jersey.json"]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-002",
+      "title": "Search API matches across all content types",
+      "status": "pass",
+      "steps": [
+        { "action": "GET /api/search?q=England", "expected": "Returns football events", "observed": "1 football event ('England VS Italy') + 1 product ('England Home Jersey 2026')" },
+        { "action": "GET /api/search?q=taylor", "expected": "Returns concert events", "observed": "1 concert event ('Taylor Swift: The Eras Tour')" },
+        { "action": "GET /api/search?q=jersey", "expected": "Returns products", "observed": "10 products returned" },
+        { "action": "GET /api/search?q=Lakers", "expected": "Returns basketball events", "observed": "2 basketball events returned" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "n/a (API test)",
+        "network": "4 queries returning different content types, all 200",
+        "files": [
+          "content-and-search-foundation/content-api/VAL-SEARCH-002-england.json",
+          "content-and-search-foundation/content-api/VAL-SEARCH-002-taylor.json",
+          "content-and-search-foundation/content-api/VAL-SEARCH-001-jersey.json",
+          "content-and-search-foundation/content-api/VAL-SEARCH-002-lakers.json"
+        ]
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-003",
+      "title": "Search API is case-insensitive and handles edge cases",
+      "status": "pass",
+      "steps": [
+        { "action": "GET /api/search?q=JERSEY vs q=jersey", "expected": "Same results", "observed": "Identical results: same 10 product IDs, same 0 event IDs" },
+        { "action": "GET /api/search?q=xyznonexistent", "expected": "200 with empty arrays", "observed": "200 with products: [], events: []" },
+        { "action": "GET /api/search?q=<script>alert(1)</script>", "expected": "200, no 500 error", "observed": "200" },
+        { "action": "GET /api/search?q= (empty)", "expected": "200, no 500 error", "observed": "200" },
+        { "action": "GET /api/search?q=' OR 1=1 --", "expected": "200, no 500 error", "observed": "200" }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "n/a (API test)",
+        "network": "All 5 queries returned 200",
+        "files": [
+          "content-and-search-foundation/content-api/VAL-SEARCH-003-JERSEY-upper.json",
+          "content-and-search-foundation/content-api/VAL-SEARCH-003-nonexistent.json",
+          "content-and-search-foundation/content-api/VAL-SEARCH-003-empty.json"
+        ]
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 5 assertions: 5 passed, 0 failed, 0 blocked. All content and search API requirements are met. Database has 30 products (6 categories, 18 price points, no duplicate images) and 42 events (14 per type, varied venues/dates/prices). Search API returns typed results, matches across all content types, is case-insensitive, and handles edge cases gracefully."
+}

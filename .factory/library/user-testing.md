@@ -15,6 +15,28 @@
 **Per agent-browser instance**: ~300MB RAM
 **Max concurrent validators**: 5 (1.5GB + 200MB = 1.7GB, well within 70% of ~10GB headroom)
 
+## Flow Validator Guidance: curl
+
+- Use `curl -sf` for API testing
+- Base URL: http://localhost:3000
+- All search/content APIs are public (no auth needed)
+- Parse JSON output with `jq` for assertions
+- Save evidence as JSON files in the assigned evidence directory
+
+## Flow Validator Guidance: agent-browser
+
+- Always use the assigned `--session` parameter
+- Set viewport to 375x812 (mobile) using agent-browser's viewport command
+- Base URL: http://localhost:3000
+- No login needed — all browsing pages are guest-accessible
+- Search overlay is triggered by tapping search bar/icon on any public page
+- The search overlay is a full-screen modal component at `/components/search-overlay`
+- Take screenshots as evidence for visual assertions
+- Check console errors via agent-browser's console capture capabilities
+- Close your session when done with `agent-browser --session "<session>" close`
+- **Isolation**: Each agent-browser session is independent. No shared state between browser sessions.
+- **Read-only testing**: These are read-only tests — no data mutation. Multiple browser sessions can safely run concurrently against the same dev server.
+
 ## Key Testing Notes
 
 - Carousels must be tested with horizontal swipe via agent-browser

@@ -1,0 +1,96 @@
+{
+  "groupId": "search-interactions",
+  "testedAt": "2026-03-27T12:00:00.000Z",
+  "isolation": {
+    "sessionName": "15aef1212cbc__u2",
+    "viewport": "375x812",
+    "baseUrl": "http://localhost:3000",
+    "auth": "none (guest-accessible)"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-SEARCH-007",
+      "title": "Tapping a search result navigates to correct detail page",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to http://localhost:3000", "expected": "Homepage loaded", "observed": "Homepage loaded with banner, search bar, and product grid" },
+        { "action": "Tap 'Find products' search bar to open overlay", "expected": "Search overlay opens with trending items", "observed": "Search overlay opened showing trending products and events" },
+        { "action": "Type 'jersey' in search input", "expected": "Autocomplete results showing jersey products", "observed": "Results showed Belgium Home Jersey 2026, Croatia Home Jersey 2026, Mexico Home Jersey 2026, and more product results" },
+        { "action": "Tap 'View Belgium Home Jersey 2026' product result", "expected": "Navigate to /products/[id] with correct product data", "observed": "Navigated to /products/cmn8cc0ws0006l09owz18n84r showing Belgium Home Jersey 2026, $28.99, with Belgium flag image. Overlay closed." },
+        { "action": "Go back and open search overlay again", "expected": "Homepage restored, overlay opens with trending items", "observed": "Homepage restored, overlay opened with trending items including events" },
+        { "action": "Tap 'View USA VS Mexico' event result from trending", "expected": "Navigate to /events/[id] with correct event data", "observed": "Navigated to /events/cmn8cc0x1000tl09oj80u3rno showing USA VS Mexico event at MetLife Stadium, $98.00. Overlay closed." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-and-search-foundation/search-interactions/VAL-SEARCH-007-product-detail.png",
+          "content-and-search-foundation/search-interactions/VAL-SEARCH-007-event-detail.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/search?q=jersey -> 200"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-008",
+      "title": "No results state shown for unmatched queries",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage and open search overlay", "expected": "Search overlay opens", "observed": "Search overlay opened with trending items" },
+        { "action": "Type 'xyznonexistentthing123' in search input", "expected": "No results found message displayed", "observed": "Displayed 'No results found' heading with 'Try a different search term' helper text and search icon illustration" },
+        { "action": "Verify no blank screen or errors", "expected": "User-friendly empty state with no errors", "observed": "Clean empty state with icon, heading, and helper text. No blank screen, no errors." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-and-search-foundation/search-interactions/VAL-SEARCH-008-no-results.png"
+        ],
+        "consoleErrors": "none",
+        "network": "GET /api/search?q=xyznonexistentthing123 -> 200 (empty results)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-009",
+      "title": "Search overlay can be dismissed",
+      "status": "pass",
+      "steps": [
+        { "action": "Open search overlay via 'Find products' button", "expected": "Overlay opens", "observed": "Overlay opened with trending items and close button visible" },
+        { "action": "Tap 'Close search' button (X icon)", "expected": "Overlay dismisses, homepage restored", "observed": "Overlay dismissed, homepage fully restored with banner, search bar, and product grid visible" },
+        { "action": "Open search overlay again", "expected": "Overlay opens", "observed": "Overlay opened" },
+        { "action": "Press Escape key", "expected": "Overlay dismisses, homepage restored", "observed": "Overlay dismissed, homepage restored. Snapshot confirmed no overlay elements (no 'Close search' button, no textbox) present." }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-and-search-foundation/search-interactions/VAL-SEARCH-009-overlay-dismissed.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-011",
+      "title": "No console errors during complete search flow",
+      "status": "pass",
+      "steps": [
+        { "action": "Clear all console errors and logs", "expected": "Clean slate", "observed": "Errors and console cleared" },
+        { "action": "Navigate to http://localhost:3000", "expected": "Homepage loaded", "observed": "Homepage loaded" },
+        { "action": "Open search overlay (view trending items)", "expected": "Overlay opens with trending", "observed": "Overlay opened showing trending products and events" },
+        { "action": "Type 'cap' to search", "expected": "Search results appear", "observed": "Results showed Switzerland Team Cap, Norway Team Cap, Australia Team Cap, Denmark Team Cap" },
+        { "action": "Tap 'View Switzerland Team Cap' result", "expected": "Navigate to detail page", "observed": "Navigated to /products/cmn8cc0wv000hl09otnwjb9p8 (product detail page)" },
+        { "action": "Navigate back to homepage", "expected": "Homepage restored", "observed": "Homepage restored at http://localhost:3000/" },
+        { "action": "Check errors command output", "expected": "Zero console.error entries", "observed": "errors command returned empty output (no errors)" },
+        { "action": "Check full console output", "expected": "No error-level entries", "observed": "Only info and warning messages (React DevTools notice, Next.js Image optimization warnings, scroll-behavior warning). Zero error-level entries." }
+      ],
+      "evidence": {
+        "screenshots": [],
+        "consoleErrors": "none",
+        "network": "GET /api/search?q= -> 200, GET /api/search?q=cap -> 200"
+      },
+      "issues": null
+    }
+  ],
+  "frictions": [],
+  "blockers": [],
+  "summary": "Tested 4 assertions: all 4 passed. VAL-SEARCH-007: Product and event search results correctly navigate to /products/[id] and /events/[id] respectively with matching data, overlay closes on navigation. VAL-SEARCH-008: No-results state shows user-friendly 'No results found' message with helper text. VAL-SEARCH-009: Overlay dismisses via close button (X) and Escape key, homepage restores correctly. VAL-SEARCH-011: Complete search flow (open overlay -> trending -> type query -> results -> tap result -> detail page -> back) produces zero console.error entries."
+}

@@ -1,0 +1,110 @@
+{
+  "groupId": "search-ui-overlay",
+  "testedAt": "2026-03-27T00:00:00.000Z",
+  "isolation": {
+    "tool": "agent-browser",
+    "sessionName": "15aef1212cbc__u1",
+    "viewport": "375x812",
+    "baseUrl": "http://localhost:3000",
+    "auth": "none (guest-accessible)"
+  },
+  "toolsUsed": ["agent-browser"],
+  "assertions": [
+    {
+      "id": "VAL-SEARCH-004",
+      "title": "Tapping search opens full-screen overlay with trending items",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to homepage (http://localhost:3000)", "expected": "Homepage loads with search bar", "observed": "Homepage loaded with 'Find products' search button visible" },
+        { "action": "Tap 'Find products' search bar", "expected": "Full-screen overlay opens covering viewport", "observed": "Full-screen overlay opened with fixed inset-0 z-50 positioning, covering 375x812 viewport" },
+        { "action": "Check for Trending section", "expected": "Trending or Popular section with at least 3 items (mix of products and events)", "observed": "TRENDING section visible with PRODUCTS subsection (6 items: Switzerland Team Cap, Sweden Fan Scarf, England Home Jersey 2026, Nigeria Team Water Bottle, Australia Team Cap, South Korea Fan Scarf) and EVENTS subsection (6 items: USA VS Mexico, Phoenix Suns VS LA Lakers, Miami Heat VS 76ers, Portland Trail Blazers VS Sacramento Kings, Memphis Grizzlies VS Utah Jazz, Algeria VS Austria)" },
+        { "action": "Check input auto-focus", "expected": "Search input is auto-focused", "observed": "Search input textbox 'Search products and events' is present and focused with cursor ready" },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-004-overlay-homepage.png",
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-004-overlay-events-visible.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A (UI-only assertion)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-005",
+      "title": "Search overlay opens from all public pages",
+      "status": "pass",
+      "steps": [
+        { "action": "Navigate to /football and tap 'Find matches' search bar", "expected": "Search overlay opens with same appearance", "observed": "Search overlay opened with identical TRENDING layout (same products and events), Football tab highlighted in bottom bar" },
+        { "action": "Navigate to /basketball and tap 'Find matches' search bar", "expected": "Search overlay opens with same appearance", "observed": "Search overlay opened with identical TRENDING layout, Basketball tab highlighted" },
+        { "action": "Navigate to /concert and tap 'Find a star or performance' search bar", "expected": "Search overlay opens with same appearance", "observed": "Search overlay opened with identical TRENDING layout, Concert tab highlighted" },
+        { "action": "Compare overlay appearance across all pages", "expected": "Consistent behavior and appearance", "observed": "All overlays show same TRENDING content, same layout, same close button (X), same search input. Only difference is the active tab in bottom bar." },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-004-overlay-homepage.png",
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-005-overlay-football.png",
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-005-overlay-basketball.png",
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-005-overlay-concert.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A (UI-only assertion)"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-006",
+      "title": "Autocomplete results appear while typing",
+      "status": "pass",
+      "steps": [
+        { "action": "Type 'jer' (3 chars) in search input", "expected": "Autocomplete results appear with products", "observed": "RESULTS section appeared with PRODUCTS: Belgium, Croatia, Mexico, England, Portugal, Italy, Brazil, France, USA, Argentina jerseys. All show item name, 'Product' type badge, and price." },
+        { "action": "Type 'usa' to test mixed results", "expected": "Both products and events appear", "observed": "RESULTS showed PRODUCTS section (USA National Team Jersey 2026 - Product badge - $28.99) and EVENTS section (USA VS Mexico - Football badge - $98.00 - MetLife Stadium, New Jersey - 6/29/2026)" },
+        { "action": "Type 'brazil' to verify results update", "expected": "Results update to match new query", "observed": "Results updated to show Brazil Home Jersey 2026 (Product, $32.99) and Brazil VS Germany (Football, $120.00, Maracanã Stadium)" },
+        { "action": "Verify result details", "expected": "Results include item name, type badge, and price", "observed": "Each result shows: product image/icon, item name, colored type badge (Product/Football/Basketball), and price. Events also show venue and date." },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-006-autocomplete-jer.png",
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-006-autocomplete-usa.png",
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-006-autocomplete-brazil.png"
+        ],
+        "consoleErrors": "none",
+        "network": "Search API called on each keystroke with debounce"
+      },
+      "issues": null
+    },
+    {
+      "id": "VAL-SEARCH-010",
+      "title": "Search overlay fills screen and prevents body scroll on mobile",
+      "status": "fail",
+      "steps": [
+        { "action": "Verify viewport is 375x812", "expected": "375x812 viewport", "observed": "Confirmed: window.innerWidth=375, window.innerHeight=812" },
+        { "action": "Open search overlay and check dimensions", "expected": "Overlay covers full viewport", "observed": "Overlay has fixed positioning with inset-0, dimensions exactly 375x812, coversFullViewport=true" },
+        { "action": "Check if bottom tab bar is hidden or behind overlay", "expected": "Tab bar hidden or behind overlay", "observed": "FAIL: Bottom tab bar (nav element) has z-index 50 (same as overlay) and is later in DOM order (index 719 vs overlay index 68), so it renders ON TOP of the overlay. Tab bar is visible at y=747 to y=812, partially covering overlay content." },
+        { "action": "Check body scroll prevention", "expected": "Body scroll disabled", "observed": "PASS: body overflow is 'hidden', programmatic scrollTop change has no effect (scrollTop remains 0)" },
+        { "action": "Check console errors", "expected": "No errors", "observed": "No console errors" }
+      ],
+      "evidence": {
+        "screenshots": [
+          "content-and-search-foundation/search-ui-overlay/VAL-SEARCH-010-fullscreen-overlay-375.png"
+        ],
+        "consoleErrors": "none",
+        "network": "N/A"
+      },
+      "issues": "Bottom tab bar is NOT hidden or behind the overlay. Both have z-index 50, but the tab bar comes later in the DOM and renders on top. The overlay covers the full 375x812 viewport and body scroll is prevented, but the tab bar at the bottom (65px tall) remains visible and interactable, partially obscuring overlay content. The contract requires the tab bar to be hidden or behind the overlay."
+    }
+  ],
+  "frictions": [
+    {
+      "description": "Search bar labels vary by page ('Find products' on homepage, 'Find matches' on football/basketball, 'Find a star or performance' on concert) but the search overlay component is consistent across all pages once opened.",
+      "resolved": true,
+      "resolution": "Identified the correct search trigger element on each page by taking snapshots.",
+      "affectedAssertions": ["VAL-SEARCH-005"]
+    }
+  ],
+  "blockers": [],
+  "summary": "Tested 4 assertions: 3 passed (VAL-SEARCH-004, VAL-SEARCH-005, VAL-SEARCH-006), 1 failed (VAL-SEARCH-010: bottom tab bar visible on top of overlay instead of hidden/behind it). The search overlay opens correctly from all public pages with consistent TRENDING content showing 6 products and 6 events. Autocomplete works with both product and event results, updating dynamically as the user types. The overlay covers the full 375x812 viewport and body scroll is prevented, but the bottom tab bar (z-index 50, same as overlay) appears on top of the overlay rather than being hidden."
+}
