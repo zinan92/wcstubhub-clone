@@ -101,10 +101,11 @@ export const config = {
      * - /api/auth/* (NextAuth API routes)
      * - /api/products/* (public product APIs)
      * - /api/events/* (public event APIs)
+     * - /api/search (public search API)
      * - /_next/* (Next.js internals)
      * - /favicon.ico, /robots.txt (static files)
      * - /public/* (static files)
      */
-    '/((?!api/auth|api/products|api/events|_next|favicon.ico|robots.txt|.*\\..*$).*)',
+    '/((?!api/auth|api/products|api/events|api/search|_next|favicon.ico|robots.txt|.*\\..*$).*)',
   ],
 };
