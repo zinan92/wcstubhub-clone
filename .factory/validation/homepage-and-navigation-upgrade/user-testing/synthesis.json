@@ -1,16 +1,17 @@
 {
   "milestone": "homepage-and-navigation-upgrade",
-  "round": 1,
-  "status": "fail",
+  "round": 2,
+  "status": "pass",
   "assertionsSummary": {
     "total": 32,
-    "passed": 31,
-    "failed": 1,
+    "passed": 32,
+    "failed": 0,
     "blocked": 0
   },
   "passedAssertions": [
     "VAL-CONTENT-003",
     "VAL-CONTENT-004",
+    "VAL-CONTENT-005",
     "VAL-CONTENT-006",
     "VAL-CONTENT-007",
     "VAL-CONTENT-008",
@@ -42,13 +43,8 @@
     "VAL-CROSS-008",
     "VAL-CROSS-009"
   ],
-  "failedAssertions": [
-    {
-      "id": "VAL-CONTENT-005",
-      "reason": "Team Merchandise 'See All' links to /products which requires authentication and redirects to /login (not guest-accessible). Popular Events 'See All' links to /football instead of a dedicated events page."
-    }
-  ],
+  "failedAssertions": [],
   "blockedAssertions": [],
   "appliedUpdates": [],
-  "previousRound": null
+  "previousRound": ".factory/validation/homepage-and-navigation-upgrade/user-testing/synthesis-round1.json"
 }

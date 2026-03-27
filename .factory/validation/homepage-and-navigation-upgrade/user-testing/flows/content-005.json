@@ -1,0 +1,64 @@
+{
+  "flowId": "content-005",
+  "testedAt": "2026-03-27T00:00:00.000Z",
+  "isolation": {
+    "appUrl": "http://localhost:3000",
+    "viewport": "375x812",
+    "session": "3c663b7a5ac0__content005",
+    "auth": "none (guest browsing)"
+  },
+  "assertions": {
+    "VAL-CONTENT-005": {
+      "status": "pass",
+      "steps": [
+        {
+          "action": "Identify all See All links on homepage",
+          "expected": "5 See All links for Popular Events, Football Matches, Live Concerts, Basketball Games, Team Merchandise",
+          "observed": "Found 5 See All links: Popular Events -> /football, Football Matches -> /football, Live Concerts -> /concert, Basketball Games -> /basketball, Team Merchandise -> /products"
+        },
+        {
+          "action": "Click 'Popular Events' See All",
+          "expected": "Navigates to a page with content (likely /football)",
+          "observed": "Navigated to /football, page loaded with 14 event items, heading 'FIFA World Cup 2026'"
+        },
+        {
+          "action": "Click 'Football Matches' See All",
+          "expected": "Navigates to /football with content",
+          "observed": "Navigated to /football, page loaded with 14 event items, heading 'FIFA World Cup 2026'"
+        },
+        {
+          "action": "Click 'Live Concerts' See All",
+          "expected": "Navigates to /concert with content",
+          "observed": "Navigated to /concert, page loaded with 14 event items, heading 'Live Concerts 2026'"
+        },
+        {
+          "action": "Click 'Basketball Games' See All",
+          "expected": "Navigates to /basketball with content",
+          "observed": "Navigated to /basketball, page loaded with 14 event items, heading 'NBA Season 2026'"
+        },
+        {
+          "action": "Click 'Team Merchandise' See All (critical: previously redirected to /login)",
+          "expected": "Navigates to /products with content, NO redirect to /login",
+          "observed": "Navigated to /products, page loaded with 30 product items, heading 'Team Merchandise'. NO redirect to /login - fix confirmed working."
+        },
+        {
+          "action": "Check for console errors across all navigations",
+          "expected": "No console errors",
+          "observed": "No console errors detected"
+        }
+      ],
+      "evidence": [
+        "homepage-and-navigation-upgrade/content-005/VAL-CONTENT-005-popular-events-seeall-football.png",
+        "homepage-and-navigation-upgrade/content-005/VAL-CONTENT-005-football-matches-seeall.png",
+        "homepage-and-navigation-upgrade/content-005/VAL-CONTENT-005-live-concerts-seeall.png",
+        "homepage-and-navigation-upgrade/content-005/VAL-CONTENT-005-basketball-games-seeall.png",
+        "homepage-and-navigation-upgrade/content-005/VAL-CONTENT-005-team-merchandise-seeall-products.png"
+      ],
+      "notes": "All 5 See All links navigate correctly: Popular Events -> /football (acceptable as football is primary event type), Football Matches -> /football, Live Concerts -> /concert, Basketball Games -> /basketball, Team Merchandise -> /products (now guest-accessible, no redirect to /login). All destination pages load with content. Zero console errors."
+    }
+  },
+  "frictions": [],
+  "blockers": [],
+  "toolsUsed": ["agent-browser"],
+  "summary": "Tested 1 assertion (VAL-CONTENT-005): PASS. All 5 See All links navigate to correct category pages with content. The previously failing /products page is now guest-accessible without auth redirect. Popular Events linking to /football is acceptable per re-run context."
+}
